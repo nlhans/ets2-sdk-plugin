@@ -17,7 +17,7 @@ class SharedMemory
 {
 protected:
 
-        const char *namePtr;
+        LPCWSTR namePtr;
         int mapsize;
 
 		// MMF specifics
@@ -38,8 +38,8 @@ public:
         bool Hooked() { return isSharedMemoryHooked; }
         void* GetBuffer() { return pBufferPtr; }
 
-        SharedMemory(char *mapPtr, unsigned int size);
-        ~SharedMemory();
+        SharedMemory(LPCWSTR mapPtr, unsigned int size);
+        void Close();
 
 
 };

@@ -88,6 +88,13 @@
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy "C:\Projects\Software\ets2-sdk-plugin\ets2-telemetry\Debug\ets2-telemetry.dll" "C:\Program Files (x86)\Steam\SteamApps\common\Euro Truck Simulator 2\bin\win_x86\plugins\ets2-telemetry.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
