@@ -15,6 +15,18 @@
     <ClCompile Include="src\sharedmemory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\scs_sdk_1_1\include\common\scssdk_telemetry_common_channels.h" />
+    <ClInclude Include="..\scs_sdk_1_1\include\common\scssdk_telemetry_common_configs.h" />
+    <ClInclude Include="..\scs_sdk_1_1\include\common\scssdk_telemetry_trailer_common_channels.h" />
+    <ClInclude Include="..\scs_sdk_1_1\include\common\scssdk_telemetry_truck_common_channels.h" />
+    <ClInclude Include="..\scs_sdk_1_1\include\eurotrucks2\scssdk_eut2.h" />
+    <ClInclude Include="..\scs_sdk_1_1\include\eurotrucks2\scssdk_telemetry_eut2.h" />
+    <ClInclude Include="..\scs_sdk_1_1\include\scssdk.h" />
+    <ClInclude Include="..\scs_sdk_1_1\include\scssdk_telemetry.h" />
+    <ClInclude Include="..\scs_sdk_1_1\include\scssdk_telemetry_channel.h" />
+    <ClInclude Include="..\scs_sdk_1_1\include\scssdk_telemetry_event.h" />
+    <ClInclude Include="..\scs_sdk_1_1\include\scssdk_value.h" />
+    <ClInclude Include="inc\ets2-telemetry-common.hpp" />
     <ClInclude Include="inc\sharedmemory.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

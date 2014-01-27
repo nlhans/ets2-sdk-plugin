@@ -1,70 +1,80 @@
 #include "SharedMemory.hpp"
-#include <stdio.h>
 
 void SharedMemory::LogError(const char *logPtr)
 {
-#ifdef LOG_ERRORS
-        FILE *fo;
-        fo = fopen( "sharedmemory-debug.txt", "a" );
-        fprintf(fo, "%s\r\n", logPtr);
-        fprintf(fo, "Error code: %d\r\n", GetLastError());
-        fclose(fo);
+#ifdef SHAREDMEM_LOGGING
+	if (this->logFilePtr == NULL)
+	{
+		this->logFilePtr = fopen(SHAREDMEM_FILENAME, "a");
+	}
+	if (this->logFilePtr != NULL)
+	{
+		fprintf(this->logFilePtr, "%s\r\n", logPtr);
+		fprintf(this->logFilePtr, "Windows Error code: %d\r\n\r\n", GetLastError());
+	}
 #endif
 }
 
 SharedMemory::SharedMemory(char *namePtr, unsigned int size)
 {
-        this->mapsize = mapsize;
-        this->name = name;
+    this->mapsize = size;
+    this->namePtr = namePtr;
 
-        hMapFile = CreateFileMapping(
-                INVALID_HANDLE_VALUE, // use paging file
-                NULL, // default security
-                PAGE_READWRITE, // read/write access
-                0, // maximum object size (high-order DWORD)
-                mapsize, // maximum object size (low-order DWORD)
-                (LPCWSTR)namePtr); // name of mapping object
+    hMapFile = CreateFileMapping(
+            INVALID_HANDLE_VALUE, // use paging file
+            NULL, // default security
+            PAGE_READWRITE, // read/write access
+            0, // maximum object size (high-order DWORD)
+            mapsize, // maximum object size (low-order DWORD)
+            (LPCWSTR)namePtr); // name of mapping object
 
-        if (hMapFile == NULL)
-        {
-                if(GetLastError() == (DWORD)183) // already exists
-                {
-                        hMapFile = OpenFileMapping(FILE_MAP_ALL_ACCESS, false, (LPCWSTR)namePtr);
-                        if (hMapFile == NULL)
-                        {
-                                LogError("Could not open file mapping object although it already exists.");
-                                return;
-                        }
-                }
-                else
-                {
-                        LogError("Could not create file mapping object");
-                        LogError(name);
-                        return;
-                }
-        }
+    if (hMapFile == NULL)
+    {
+            if(GetLastError() == (DWORD)183) // already exists
+            {
+                    hMapFile = OpenFileMapping(FILE_MAP_ALL_ACCESS, false, (LPCWSTR)namePtr);
+                    if (hMapFile == NULL)
+                    {
+                            LogError("Could not open file mapping object although it already exists.");
+                            return;
+                    }
+            }
+            else
+            {
+                    LogError("Could not create file mapping object");
+                    LogError(namePtr);
+                    return;
+            }
+    }
 
-        pBuffer = (void*) MapViewOfFile(hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, mapsize);
+    this->pBufferPtr = (void*) MapViewOfFile(hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, mapsize);
 
-        if (pBuffer == NULL)
-        {
-                LogError("Could not reserve buffer for shared memory");
-                CloseHandle(hMapFile);
-                return;
-        }
-
-        isSharedMemoryHooked = true;
-        LogError("Opened MMF");
-        return;
-
+    if (this->pBufferPtr == NULL)
+    {
+        LogError("Could not reserve buffer for shared memory");
+        CloseHandle(hMapFile);
+    }
+	else
+	{
+		isSharedMemoryHooked = true;
+		LogError("Opened MMF");
+	}
+		
 }
 
 
 SharedMemory::~SharedMemory(void)
 {
+#ifdef SHAREDMEM_LOGGING
+		if (logFilePtr != NULL)
+		{
+			fclose(logFilePtr);
+			// TODO: Is this closed properly?
+		}
+#endif
         if (isSharedMemoryHooked)
         {
-                UnmapViewOfFile(pBuffer);
+                UnmapViewOfFile(pBufferPtr);
                 CloseHandle(hMapFile);
                 
         }
