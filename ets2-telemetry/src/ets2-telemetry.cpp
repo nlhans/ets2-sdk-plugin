@@ -26,124 +26,27 @@
 
 #define UNUSED(x)
 
+/**
+/* These macro's are a shortcut to register channels inside the scs_telemetry_init function
+ * They require the channel definition name (without prefix SCS_TELEMETRY_), type and destination.
+ * Not all channel types are implemented; the handler function for a type should be created like so:
+ * telemetry_store_[Type](const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
+ *
+ * RegisterSpecificChannel allows for your own handler name, without the telemetry_store_ prefix.
+ */
+#define registerChannel(name, type, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_##type, &( to ));
+#define registerSpecificChannel(name, type, handler, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_none, handler, &( to ));
+
 SharedMemory *telemMem;
 ets2TelemetryMap_t *telemPtr;
 LPWSTR ets2MmfName = ETS2_PLUGIN_MMF_NAME;
-#if ETS2_PLUGIN_LOGGING_ON == 1
-	#if ETS2_PLUGIN_LOGGING_ETS2 == 1
-		#define ETS2_TELEM_LOG
-	#endif
-#endif
-/**
- * @brief Logging support.
- */
-#ifdef ETS2_TELEM_LOG
-FILE *log_file = NULL;
-#endif
-
-/**
- * @brief Tracking of paused state of the game.
- */
-bool output_paused = true;
-
-/**
- * @brief Should we print the data header next time
- * we are printing the data?
- */
-bool print_header = true;
 
 /**
  * @brief Last timestamp we received.
  */
 scs_timestamp_t last_timestamp = static_cast<scs_timestamp_t>(-1);
+scs_timestamp_t timestamp;
 
-/**
- * @brief Combined telemetry data.
- */
-struct telemetry_state_t
-{
-	scs_timestamp_t timestamp;
-	scs_timestamp_t raw_rendering_timestamp;
-	scs_timestamp_t raw_simulation_timestamp;
-	scs_timestamp_t raw_paused_simulation_timestamp;
-
-	bool	orientation_available;
-	float	heading;
-	float	pitch;
-	float	roll;
-
-	float	speed;
-	float	rpm;
-	int	gear;
-
-} telemetry;
-
-/**
- * @brief Function writting message to the game internal log.
- */
-#ifdef ETS2_TELEM_LOG
-scs_log_t game_log = NULL;
-#endif
-
-// Management of the log file.
-
-bool init_log(void)
-{
-#ifdef ETS2_TELEM_LOG
-	if (log_file) {
-		return true;
-	}
-	log_file = fopen(ETS2_PLUGIN_FILENAME_PREFIX "telemetry.log", "wt");
-	if (! log_file) {
-		return false;
-	}
-	fprintf(log_file, "Log opened\n");
-	return true;
-#else
-	return true;
-#endif
-}
-
-void finish_log(void)
-{
-#ifdef ETS2_TELEM_LOG
-	if (! log_file) {
-		return;
-	}
-	fprintf(log_file, "Log ended\n");
-	fclose(log_file);
-	log_file = NULL;
-#endif
-}
-
-void log_print(const char *const text, ...)
-{
-#ifdef ETS2_TELEM_LOG
-	if (! log_file) {
-		return;
-	}
-	va_list args;
-	va_start(args, text);
-	vfprintf(log_file, text, args);
-	va_end(args);
-#endif
-}
-
-void log_line(const char *const text, ...)
-{
-#ifdef ETS2_TELEM_LOG
-	if (! log_file) {
-		return;
-	}
-	va_list args;
-	va_start(args, text);
-	vfprintf(log_file, text, args);
-	fprintf(log_file, "\n");
-	va_end(args);
-#endif
-}
-
-// Handling of individual events.
 
 SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *const event_info, const scs_context_t UNUSED(context))
 {
@@ -168,201 +71,35 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *c
 
 	// Advance the timestamp by delta since last frame.
 
-	telemetry.timestamp += (info->paused_simulation_time - last_timestamp);
+	timestamp += (info->paused_simulation_time - last_timestamp);
 	last_timestamp = info->paused_simulation_time;
 	
+	/* Copy over the game timestamp to our telemetry memory */
 	if (telemPtr != NULL)
 	{
-		telemPtr->time = telemetry.timestamp;
+		telemPtr->time = timestamp;
 	}
 
-	// The raw values.
-
-	telemetry.raw_rendering_timestamp = info->render_time;
-	telemetry.raw_simulation_timestamp = info->simulation_time;
-	telemetry.raw_paused_simulation_timestamp = info->paused_simulation_time;
-}
-
-SCSAPI_VOID telemetry_frame_end(const scs_event_t UNUSED(event), const void *const UNUSED(event_info), const scs_context_t UNUSED(context))
-{
-	if (output_paused) {
-		return;
-	}
-
-	// The header.
-
-	if (print_header) {
-		print_header = false;
-		log_line("timestamp[us];raw rendering timestamp[us];raw simulation timestamp[us];raw paused simulation timestamp[us];heading[deg];pitch[deg];roll[deg];speed[m/s];rpm;gear");
-	}
-
-	// The data line.
-
-	log_print("%" SCS_PF_U64 ";%" SCS_PF_U64 ";%" SCS_PF_U64 ";%" SCS_PF_U64, telemetry.timestamp, telemetry.raw_rendering_timestamp, telemetry.raw_simulation_timestamp, telemetry.raw_paused_simulation_timestamp);
-	if (telemetry.orientation_available) {
-		log_print(";%f;%f;%f", telemetry.heading, telemetry.pitch, telemetry.roll);
-	}
-	else {
-		log_print(";---;---;---");
-	}
-	log_line(
-		";%f;%f;%d",
-		telemetry.speed,
-		telemetry.rpm,
-		telemetry.gear
-	);
 }
 
 SCSAPI_VOID telemetry_pause(const scs_event_t event, const void *const UNUSED(event_info), const scs_context_t UNUSED(context))
 {
-	output_paused = (event == SCS_TELEMETRY_EVENT_paused);
-
-	if (output_paused) {
-		if (telemPtr != NULL) telemPtr->paused = 1;
-		log_line("Telemetry paused");
+	if (telemPtr != NULL)
+	{
+		telemPtr->paused = (event == SCS_TELEMETRY_EVENT_paused) ? 1 : 0;
 	}
-	else {
-		if (telemPtr != NULL) telemPtr->paused = 0;
-		log_line("Telemetry unpaused");
-	}
-	print_header = true;
 }
 
 SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void *const event_info, const scs_context_t UNUSED(context))
 {
-	// Here we just print the configuration info.
-
 	const struct scs_telemetry_configuration_t *const info = static_cast<const scs_telemetry_configuration_t *>(event_info);
-	log_line("Configuration: %s", info->id);
 
-	for (const scs_named_value_t *current = info->attributes; current->name; ++current) {
-		log_print("  %s", current->name);
-		if (current->index != SCS_U32_NIL) {
-			log_print("[%u]", static_cast<unsigned>(current->index));
-		}
-		log_print(" : ");
-		switch (current->value.type) {
-			case SCS_VALUE_TYPE_INVALID: {
-				log_line("none");
-				break;
-			}
-			case SCS_VALUE_TYPE_bool: {
-				log_line("bool = %s", current->value.value_bool.value ? "true" : "false");
-				break;
-			}
-			case SCS_VALUE_TYPE_s32: {
-				log_line("s32 = %d", static_cast<int>(current->value.value_s32.value));
-				break;
-			}
-			case SCS_VALUE_TYPE_u32: {
-				log_line("u32 = %u", static_cast<unsigned>(current->value.value_u32.value));
-				break;
-			}
-			case SCS_VALUE_TYPE_u64: {
-				log_line("u64 = %" SCS_PF_U64, current->value.value_u64.value);
-				break;
-			}
-			case SCS_VALUE_TYPE_float: {
-				log_line("float = %f", current->value.value_float.value);
-				break;
-			}
-			case SCS_VALUE_TYPE_double: {
-				log_line("double = %f", current->value.value_double.value);
-				break;
-			}
-			case SCS_VALUE_TYPE_fvector: {
-				log_line(
-					"fvector = (%f,%f,%f)",
-					current->value.value_fvector.x,
-					current->value.value_fvector.y,
-					current->value.value_fvector.z
-				);
-				break;
-			}
-			case SCS_VALUE_TYPE_dvector: {
-				log_line(
-					"dvector = (%f,%f,%f)",
-					current->value.value_dvector.x,
-					current->value.value_dvector.y,
-					current->value.value_dvector.z
-				);
-				break;
-			}
-			case SCS_VALUE_TYPE_euler: {
-				log_line(
-					"euler = h:%f p:%f r:%f",
-					current->value.value_euler.heading * 360.0f,
-					current->value.value_euler.pitch * 360.0f,
-					current->value.value_euler.roll * 360.0f
-				);
-				break;
-			}
-			case SCS_VALUE_TYPE_fplacement: {
-				log_line(
-					"fplacement = (%f,%f,%f) h:%f p:%f r:%f",
-					current->value.value_fplacement.position.x,
-					current->value.value_fplacement.position.y,
-					current->value.value_fplacement.position.z,
-					current->value.value_fplacement.orientation.heading * 360.0f,
-					current->value.value_fplacement.orientation.pitch * 360.0f,
-					current->value.value_fplacement.orientation.roll * 360.0f
-				);
-				break;
-			}
-			case SCS_VALUE_TYPE_dplacement: {
-				log_line(
-					"dplacement = (%f,%f,%f) h:%f p:%f r:%f",
-					current->value.value_dplacement.position.x,
-					current->value.value_dplacement.position.y,
-					current->value.value_dplacement.position.z,
-					current->value.value_dplacement.orientation.heading * 360.0f,
-					current->value.value_dplacement.orientation.pitch * 360.0f,
-					current->value.value_dplacement.orientation.roll * 360.0f
-				);
-				break;
-			}
-			case SCS_VALUE_TYPE_string: {
-				log_line("string = %s", current->value.value_string.value);
-				break;
-			}
-			default: {
-				log_line("unknown");
-				break;
-			}
-		}
-	}
-
-	print_header = true;
+	/*** TODO: Figure out what this method does when called ***/
 }
 
-// Handling of individual channels.
-
-SCSAPI_VOID telemetry_store_orientation(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
-{
-	assert(context);
-	telemetry_state_t *const state = static_cast<telemetry_state_t *>(context);
-
-	// This callback was registered with the SCS_TELEMETRY_CHANNEL_FLAG_no_value flag
-	// so it is called even when the value is not available.
-
-	if (! value) {
-		state->orientation_available = false;
-		return;
-	}
-
-	assert(value);
-	assert(value->type == SCS_VALUE_TYPE_euler);
-	state->orientation_available = true;
-	state->heading = value->value_euler.heading * 360.0f;
-	state->pitch = value->value_euler.pitch * 360.0f;
-	state->roll = value->value_euler.roll * 360.0f;
-}
-
+/******* STORING OF SEVERAL SCS DATA TYPES *******/
 SCSAPI_VOID telemetry_store_float(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
 {
-	// The SCS_TELEMETRY_CHANNEL_FLAG_no_value flag was not provided during registration
-	// so this callback is only called when a valid value is available.
-
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_float);
 	assert(context);
@@ -371,9 +108,6 @@ SCSAPI_VOID telemetry_store_float(const scs_string_t name, const scs_u32_t index
 
 SCSAPI_VOID telemetry_store_s32(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
 {
-	// The SCS_TELEMETRY_CHANNEL_FLAG_no_value flag was not provided during registration
-	// so this callback is only called when a valid value is available.
-
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_s32);
 	assert(context);
@@ -382,9 +116,6 @@ SCSAPI_VOID telemetry_store_s32(const scs_string_t name, const scs_u32_t index, 
 
 SCSAPI_VOID telemetry_store_u32(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
 {
-	// The SCS_TELEMETRY_CHANNEL_FLAG_no_value flag was not provided during registration
-	// so this callback is only called when a valid value is available.
-
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_u32);
 	assert(context);
@@ -393,9 +124,6 @@ SCSAPI_VOID telemetry_store_u32(const scs_string_t name, const scs_u32_t index, 
 
 SCSAPI_VOID telemetry_store_bool(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
 {
-	// The SCS_TELEMETRY_CHANNEL_FLAG_no_value flag was not provided during registration
-	// so this callback is only called when a valid value is available.
-
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_bool);
 	assert(context);
@@ -411,9 +139,6 @@ SCSAPI_VOID telemetry_store_bool(const scs_string_t name, const scs_u32_t index,
 
 SCSAPI_VOID telemetry_store_fvector(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
 {
-	// The SCS_TELEMETRY_CHANNEL_FLAG_no_value flag was not provided during registration
-	// so this callback is only called when a valid value is available.
-
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_fvector);
 	assert(context);
@@ -424,12 +149,12 @@ SCSAPI_VOID telemetry_store_fvector(const scs_string_t name, const scs_u32_t ind
 
 SCSAPI_VOID telemetry_store_dplacement(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
 {
-	// The SCS_TELEMETRY_CHANNEL_FLAG_no_value flag was not provided during registration
-	// so this callback is only called when a valid value is available.
-
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_dplacement);
 	assert(context);
+
+	// Messy hack to store the acceleration and orientation values into our telemetry struct
+	// It is neccesary that these are put together, otherwise it may overwrite over values.
 	*(static_cast<float *>(context)+0) = (float)value->value_dplacement.position.x;
 	*(static_cast<float *>(context)+1) = (float)value->value_dplacement.position.y;
 	*(static_cast<float *>(context)+2) = (float)value->value_dplacement.position.z;
@@ -453,87 +178,41 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	}
 
 	const scs_telemetry_init_params_v100_t *const version_params = static_cast<const scs_telemetry_init_params_v100_t *>(params);
-	if (! init_log()) {
-		version_params->common.log(SCS_LOG_TYPE_error, "Unable to initialize the log file");
-		return SCS_RESULT_generic_error;
-	}
 	
+	/*** ACQUIRE SHARED MEMORY BUFFER ***/
 	telemMem = new SharedMemory(ets2MmfName, ETS2_PLUGIN_MMF_SIZE);
 
 	if (telemMem->Hooked() == false)
 	{
-		version_params->common.log(SCS_LOG_TYPE_error, "Unable to initialize shared memory file");
 		return SCS_RESULT_generic_error;
 	}
-	telemPtr = (ets2TelemetryMap_t*) (telemMem->GetBuffer());
 
+	telemPtr = (ets2TelemetryMap_t*) (telemMem->GetBuffer());
 	memset(telemPtr, 0, ETS2_PLUGIN_MMF_SIZE);
 
+	/*** INITIALIZE TELEMETRY MAP TO DEFAULT ***/
 	telemPtr->paused = 1;
 	telemPtr->time = 0;
 
 	telemPtr->tel_revId.ets2_telemetry_plugin_revision = ETS2_PLUGIN_REVID;
 	telemPtr->tel_revId.ets2_version_major = SCS_GET_MAJOR_VERSION(version_params->common.game_version);
 	telemPtr->tel_revId.ets2_version_minor = SCS_GET_MINOR_VERSION(version_params->common.game_version);
-
-	// Check application version. Note that this example uses fairly basic channels which are likely to be supported
-	// by any future SCS trucking game however more advanced application might want to at least warn the user if there
-	// is game or version they do not support.
-
-	log_line("Game '%s' %u.%u", version_params->common.game_id, SCS_GET_MAJOR_VERSION(version_params->common.game_version), SCS_GET_MINOR_VERSION(version_params->common.game_version));
-
-	if (strcmp(version_params->common.game_id, SCS_GAME_ID_EUT2) != 0) {
-		log_line("WARNING: Unsupported game, some features or values might behave incorrectly");
-	}
-	else {
-
-		// Bellow the minimum version there might be some missing features (only minor change) or
-		// incompatible values (major change).
-
-		const scs_u32_t MINIMAL_VERSION = SCS_TELEMETRY_EUT2_GAME_VERSION_1_00;
-		if (version_params->common.game_version < MINIMAL_VERSION) {
-			log_line("WARNING: Too old version of the game, some features might behave incorrectly");
-		}
-
-		// Future versions are fine as long the major version is not changed.
-
-		const scs_u32_t IMPLEMENTED_VERSION = SCS_TELEMETRY_EUT2_GAME_VERSION_CURRENT;
-		if (SCS_GET_MAJOR_VERSION(version_params->common.game_version) > SCS_GET_MAJOR_VERSION(IMPLEMENTED_VERSION)) {
-			log_line("WARNING: Too new major version of the game, some features might behave incorrectly");
-		}
-	}
-
-	// Register for events. Note that failure to register those basic events
-	// likely indicates invalid usage of the api or some critical problem. As the
-	// example requires all of them, we can not continue if the registration fails.
-
+	
+	/*** REGISTER GAME EVENTS (Pause/Unpause/Start/Time) ***/
 	const bool events_registered =
 		(version_params->register_for_event(SCS_TELEMETRY_EVENT_frame_start, telemetry_frame_start, NULL) == SCS_RESULT_ok) &&
-		(version_params->register_for_event(SCS_TELEMETRY_EVENT_frame_end, telemetry_frame_end, NULL) == SCS_RESULT_ok) &&
 		(version_params->register_for_event(SCS_TELEMETRY_EVENT_paused, telemetry_pause, NULL) == SCS_RESULT_ok) &&
-		(version_params->register_for_event(SCS_TELEMETRY_EVENT_started, telemetry_pause, NULL) == SCS_RESULT_ok)
-	;
-	if (! events_registered) {
+		(version_params->register_for_event(SCS_TELEMETRY_EVENT_started, telemetry_pause, NULL) == SCS_RESULT_ok);
+	
+	// TODO: What is this?
+	//version_params->register_for_event(SCS_TELEMETRY_EVENT_configuration, telemetry_configuration, NULL);
 
-		// Registrations created by unsuccessfull initialization are
-		// cleared automatically so we can simply exit.
-
-		version_params->common.log(SCS_LOG_TYPE_error, "Unable to register event callbacks");
+	if (!events_registered)
+	{
 		return SCS_RESULT_generic_error;
 	}
-
-	// Register for the configuration info. As this example only prints the retrieved
-	// data, it can operate even if that fails.
-
-	version_params->register_for_event(SCS_TELEMETRY_EVENT_configuration, telemetry_configuration, NULL);
-
-	// Register for channels. The channel might be missing if the game does not support
-	// it (SCS_RESULT_not_found) or if does not support the requested type
-	// (SCS_RESULT_unsupported_type). For purpose of this example we ignore the failues
-	// so the unsupported channels will remain at theirs default value.
-#define registerChannel(name, type, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_##type, &( to ));
-#define registerSpecificChannel(name, type, handler, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_none, handler, &( to ));
 	
+	/*** REGISTER ALL TELEMETRY CHANNELS TO OUR SHARED MEMORY MAP ***/
 	registerChannel(TRUCK_CHANNEL_engine_enabled, bool, telemPtr->tel_rev1.engine_enabled);
 	registerChannel(TRAILER_CHANNEL_connected, bool, telemPtr->tel_rev1.trailer_attached);
 
@@ -542,6 +221,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	registerChannel(TRUCK_CHANNEL_world_placement, dplacement, telemPtr->tel_rev1.coordinateX);
 	
 	// TODO: Add truck position (world placement)
+	//version_params->register_for_channel(SCS_TELEMETRY_TRUCK_CHANNEL_world_placement, SCS_U32_NIL, SCS_VALUE_TYPE_euler, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_orientation, &telemetry);
 	// TODO: Add truck rotation (hills)
 
 	registerChannel(TRUCK_CHANNEL_engine_gear, s32, telemPtr->tel_rev1.gear);
@@ -573,24 +253,11 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	// TODO: Add brand/model id's
 	// TODO: Add cargo accessory ID
 
-	//version_params->register_for_channel(SCS_TELEMETRY_TRUCK_CHANNEL_world_placement, SCS_U32_NIL, SCS_VALUE_TYPE_euler, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_orientation, &telemetry);
-	
-	
-	// Remember the function we will use for logging.
-#ifdef ETS2_TELEM_LOG
-	game_log = version_params->common.log;
-	game_log(SCS_LOG_TYPE_message, "Initializing telemetry log example");
-#endif
-
 	// Set the structure with defaults.
 
-	memset(&telemetry, 0, sizeof(telemetry));
-	print_header = true;
+	timestamp = static_cast<scs_timestamp_t>(0);
 	last_timestamp = static_cast<scs_timestamp_t>(-1);
 
-	// Initially the game is paused.
-
-	output_paused = true;
 	return SCS_RESULT_ok;
 }
 
@@ -606,14 +273,6 @@ SCSAPI_VOID scs_telemetry_shutdown(void)
 	{
 		telemMem->Close();
 	}
-
-	// Any cleanup needed. The registrations will be removed automatically
-	// so there is no need to do that manually.
-	
-#ifdef ETS2_TELEM_LOG
-	game_log = NULL;
-	finish_log();
-#endif
 }
 
 // Telemetry api.
@@ -631,10 +290,6 @@ BOOL APIENTRY DllMain(
 		{
 			telemMem->Close();
 		}
-		
-#ifdef ETS2_TELEM_LOG
-		finish_log();
-#endif
 
 	}
 	return TRUE;
