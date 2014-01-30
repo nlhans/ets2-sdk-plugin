@@ -544,7 +544,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	// TODO: Add truck position (world placement)
 	// TODO: Add truck rotation (hills)
 
-	registerChannel(TRUCK_CHANNEL_engine_gear, float, telemPtr->tel_rev1.gear);
+	registerChannel(TRUCK_CHANNEL_engine_gear, s32, telemPtr->tel_rev1.gear);
 	registerChannel(CONFIG_ATTRIBUTE_forward_gear_count, float, telemPtr->tel_rev1.gears);
 	registerChannel(CONFIG_ATTRIBUTE_selector_count, u32, telemPtr->tel_rev1.gearRanges);
 	registerChannel(CONFIG_ATTRIBUTE_slot_gear, s32, telemPtr->tel_rev1.gearActive);
