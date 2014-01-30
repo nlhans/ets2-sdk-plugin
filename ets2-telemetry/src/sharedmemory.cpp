@@ -20,7 +20,9 @@ SharedMemory::SharedMemory(LPCWSTR namePtr, unsigned int size)
     this->mapsize = size;
     this->namePtr = namePtr;
 	this->isSharedMemoryHooked = false;
+#ifdef SHAREDMEM_LOGGING
 	this->logFilePtr = NULL;
+#endif
 
     hMapFile = CreateFileMapping(
             INVALID_HANDLE_VALUE, // use paging file
