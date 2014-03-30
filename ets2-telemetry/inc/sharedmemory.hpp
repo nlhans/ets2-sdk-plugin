@@ -41,6 +41,8 @@ public:
         SharedMemory(LPCWSTR mapPtr, unsigned int size);
         void Close();
 
+		void* getPtrAt(int offset) { return (void*) &(((unsigned char*)pBufferPtr)[offset]); }
+
 
 };
 

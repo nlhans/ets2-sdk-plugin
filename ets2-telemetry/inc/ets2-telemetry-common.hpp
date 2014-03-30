@@ -16,6 +16,9 @@
 #define ETS2_PLUGIN_MMF_NAME TEXT("Local\\SimTelemetryETS2")
 #define ETS2_PLUGIN_MMF_SIZE (16*1024)
 
+#define TRUCK_STRING_OFFSET 512
+#define TRAILER_STRING_OFFSET TRUCK_STRING_OFFSET+64
+
 typedef struct ets2TelemetryMap_s
 {
 	unsigned int time;
@@ -80,6 +83,11 @@ typedef struct ets2TelemetryMap_s
 		// truck & trailer
 		float truckWeight;
 		float trailerWeight;
+		
+		int modelType[2];
+		int trailerType[2];
+
+		int gearRangeActive;
 
 	} tel_rev1;
 	

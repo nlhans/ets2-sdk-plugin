@@ -48,6 +48,9 @@ scs_timestamp_t last_timestamp = static_cast<scs_timestamp_t>(-1);
 scs_timestamp_t timestamp;
 
 
+FILE *log_file = NULL;
+
+
 SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *const event_info, const scs_context_t UNUSED(context))
 {
 	const struct scs_telemetry_frame_start_t *const info = static_cast<const scs_telemetry_frame_start_t *>(event_info);
@@ -90,11 +93,52 @@ SCSAPI_VOID telemetry_pause(const scs_event_t event, const void *const UNUSED(ev
 	}
 }
 
+
 SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void *const event_info, const scs_context_t UNUSED(context))
 {
-	const struct scs_telemetry_configuration_t *const info = static_cast<const scs_telemetry_configuration_t *>(event_info);
+	char * strPtr;
+	// This method prints all available attributes of the truck.
+	// On configuration change, this function is called.
+    const struct scs_telemetry_configuration_t *const info = static_cast<const scs_telemetry_configuration_t *>(event_info);
+   
+	fprintf(log_file,"----\n");
 
-	/*** TODO: Figure out what this method does when called ***/
+    for (const scs_named_value_t *current = info->attributes; current->name; ++current)
+	{
+		if (current->value.type == SCS_VALUE_TYPE_string)
+		{
+			fprintf(log_file, "Name: %s / Val: %s\n", current->name, current->value.value_string.value);
+			fflush(log_file);
+		}
+
+		// This loops through all attributes of the truck.
+		// Because the identifiers are strings, we must use strcmp.
+		// ID is shared between vehicle & chassis.
+		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_id, current->name) == 0)
+		{
+			if (current->value.value_string.value != NULL)
+			{
+				// vehicle.scania_r
+				if (current->value.value_string.value[0] == 'v')
+				{
+					// Vehicle ID
+					strPtr = static_cast<char*>(telemMem->getPtrAt(telemPtr->tel_rev1.modelType[0]));
+					strcpy(strPtr, current->value.value_string.value);
+					telemPtr->tel_rev1.modelType[1] = strlen(current->value.value_string.value);
+				}
+				
+				// chassis.trailer.
+				if (current->value.value_string.value[0] == 'c')
+				{
+					// Chassis ID
+					strPtr = static_cast<char*>(telemMem->getPtrAt(telemPtr->tel_rev1.trailerType[0]));
+					strcpy(strPtr, current->value.value_string.value);
+					telemPtr->tel_rev1.trailerType[1] = strlen(current->value.value_string.value);
+				}
+			}
+		}
+
+	}
 }
 
 /******* STORING OF SEVERAL SCS DATA TYPES *******/
@@ -164,6 +208,7 @@ SCSAPI_VOID telemetry_store_dplacement(const scs_string_t name, const scs_u32_t 
 	*(static_cast<float *>(context)+5) = value->value_dplacement.orientation.roll;
 }
 
+
 /**
  * @brief Telemetry API initialization function.
  *
@@ -186,7 +231,8 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	{
 		return SCS_RESULT_generic_error;
 	}
-
+	
+    log_file = fopen("telemetry.log", "wt");
 	telemPtr = (ets2TelemetryMap_t*) (telemMem->GetBuffer());
 	memset(telemPtr, 0, ETS2_PLUGIN_MMF_SIZE);
 
@@ -198,14 +244,20 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	telemPtr->tel_revId.ets2_version_major = SCS_GET_MAJOR_VERSION(version_params->common.game_version);
 	telemPtr->tel_revId.ets2_version_minor = SCS_GET_MINOR_VERSION(version_params->common.game_version);
 	
+	// Model & trailer type are stored in configuration event.
+	telemPtr->tel_rev1.modelType[0] = TRUCK_STRING_OFFSET;
+	telemPtr->tel_rev1.trailerType[0] = TRAILER_STRING_OFFSET;
+	telemPtr->tel_rev1.modelType[1] = 0;
+	telemPtr->tel_rev1.trailerType[1] = 0;
+
 	/*** REGISTER GAME EVENTS (Pause/Unpause/Start/Time) ***/
 	const bool events_registered =
 		(version_params->register_for_event(SCS_TELEMETRY_EVENT_frame_start, telemetry_frame_start, NULL) == SCS_RESULT_ok) &&
 		(version_params->register_for_event(SCS_TELEMETRY_EVENT_paused, telemetry_pause, NULL) == SCS_RESULT_ok) &&
 		(version_params->register_for_event(SCS_TELEMETRY_EVENT_started, telemetry_pause, NULL) == SCS_RESULT_ok);
 	
-	// TODO: What is this?
-	//version_params->register_for_event(SCS_TELEMETRY_EVENT_configuration, telemetry_configuration, NULL);
+	// Register configuration event, because it sends data like truck make, etc.
+	version_params->register_for_event(SCS_TELEMETRY_EVENT_configuration, telemetry_configuration, NULL);
 
 	if (!events_registered)
 	{
@@ -225,6 +277,8 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	// TODO: Add truck rotation (hills)
 
 	registerChannel(TRUCK_CHANNEL_engine_gear, s32, telemPtr->tel_rev1.gear);
+
+	/*** TODO: Move to attribute parser ***/
 	registerChannel(CONFIG_ATTRIBUTE_forward_gear_count, float, telemPtr->tel_rev1.gears);
 	registerChannel(CONFIG_ATTRIBUTE_selector_count, u32, telemPtr->tel_rev1.gearRanges);
 	registerChannel(CONFIG_ATTRIBUTE_slot_gear, s32, telemPtr->tel_rev1.gearActive);
@@ -273,6 +327,7 @@ SCSAPI_VOID scs_telemetry_shutdown(void)
 	{
 		telemMem->Close();
 	}
+    fclose(log_file);
 }
 
 // Telemetry api.
