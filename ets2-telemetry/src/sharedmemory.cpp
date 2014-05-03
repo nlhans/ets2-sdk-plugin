@@ -56,7 +56,6 @@ SharedMemory::SharedMemory(LPCWSTR namePtr, unsigned int size)
 	}
 
     this->pBufferPtr = (void*) MapViewOfFile(hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, size);
-
     if (this->pBufferPtr == NULL)
     {
         LogError("Could not reserve buffer for shared memory");
@@ -64,6 +63,7 @@ SharedMemory::SharedMemory(LPCWSTR namePtr, unsigned int size)
     }
 	else
 	{
+		memset(this->pBufferPtr, 0, size);
 		this->isSharedMemoryHooked = true;
 		LogError("Opened MMF");
 	}

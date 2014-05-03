@@ -47,8 +47,10 @@ LPWSTR ets2MmfName = ETS2_PLUGIN_MMF_NAME;
 scs_timestamp_t last_timestamp = static_cast<scs_timestamp_t>(-1);
 scs_timestamp_t timestamp;
 
+#ifdef SDK_ENABLE_LOGGING
 
 FILE *log_file = NULL;
+#endif
 
 
 SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *const event_info, const scs_context_t UNUSED(context))
@@ -101,42 +103,163 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void *const e
 	// On configuration change, this function is called.
     const struct scs_telemetry_configuration_t *const info = static_cast<const scs_telemetry_configuration_t *>(event_info);
    
+#ifdef SDK_ENABLE_LOGGING
 	fprintf(log_file,"----\n");
+#endif
 
     for (const scs_named_value_t *current = info->attributes; current->name; ++current)
 	{
-		if (current->value.type == SCS_VALUE_TYPE_string)
+#ifdef SDK_ENABLE_LOGGING
+		fprintf(log_file, "Name: %s / Val: ", current->name);
+		switch(current->value.type)
 		{
-			fprintf(log_file, "Name: %s / Val: %s\n", current->name, current->value.value_string.value);
-			fflush(log_file);
+			case SCS_VALUE_TYPE_bool:
+				fprintf(log_file, "%c (bool)", ((current->value.value_bool.value) ? '1':'0'));
+				break;
+
+			case SCS_VALUE_TYPE_s32:
+				fprintf(log_file, "%l (s32)", current->value.value_s32.value);
+				break;
+
+			case SCS_VALUE_TYPE_u32:
+				fprintf(log_file, "%lu (u32)", current->value.value_u32.value);
+				break;
+
+			case SCS_VALUE_TYPE_u64:
+				fprintf(log_file, "%lu (u64)", current->value.value_u64.value);
+				break;
+
+			case SCS_VALUE_TYPE_float:
+				fprintf(log_file, "%f (float)", current->value.value_float.value);
+				break;
+
+			case SCS_VALUE_TYPE_double:
+				fprintf(log_file, "%f (double)", current->value.value_double.value);
+				break;
+
+				/*
+			case SCS_VALUE_TYPE_fvector:
+				fprintf(log_file, "%s (string)", current->value.value_string.value);
+				break;
+
+			case SCS_VALUE_TYPE_dvector:
+				fprintf(log_file, "%s (string)", current->value.value_string.value);
+				break;
+
+			case SCS_VALUE_TYPE_euler:
+				fprintf(log_file, "%s (string)", current->value.value_string.value);
+				break;
+
+			case SCS_VALUE_TYPE_fplacement:
+				fprintf(log_file, "%s (string)", current->value.value_string.value);
+				break;
+
+			case SCS_VALUE_TYPE_dplacement:
+				fprintf(log_file, "%s (string)", current->value.value_string.value);
+				break;*/
+
+			case SCS_VALUE_TYPE_string:
+				fprintf(log_file, "%s (string)", current->value.value_string.value);
+				break;
+
+			default:
+				fprintf(log_file, "???? (%d)", current->value.type);
+				break;
 		}
 
-		// This loops through all attributes of the truck.
-		// Because the identifiers are strings, we must use strcmp.
-		// ID is shared between vehicle & chassis.
-		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_id, current->name) == 0)
+		fprintf(log_file, "\r\n");
+		
+		fflush(log_file);
+#endif
+
+		// Parse attributes
+		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_id, current->name) == 0 && current->value.value_string.value != NULL)
 		{
-			if (current->value.value_string.value != NULL)
+			// ID is shared between vehicle & chassis.
+			// So examples could be: vehicle.scania_r and chassis.trailer.overweighl_w
+			if (current->value.value_string.value[0] == 'v')
 			{
+				// Vehicle ID
 				// vehicle.scania_r
-				if (current->value.value_string.value[0] == 'v')
-				{
-					// Vehicle ID
-					strPtr = static_cast<char*>(telemMem->getPtrAt(telemPtr->tel_rev1.modelType[0]));
-					strcpy(strPtr, current->value.value_string.value);
-					telemPtr->tel_rev1.modelType[1] = strlen(current->value.value_string.value);
-				}
+				strPtr = static_cast<char*>(telemMem->getPtrAt(telemPtr->tel_rev1.modelType[0]));
+				strcpy(strPtr, current->value.value_string.value);
+				telemPtr->tel_rev1.modelType[1] = strlen(current->value.value_string.value);
 				
-				// chassis.trailer.
-				if (current->value.value_string.value[0] == 'c')
-				{
-					// Chassis ID
-					strPtr = static_cast<char*>(telemMem->getPtrAt(telemPtr->tel_rev1.trailerType[0]));
-					strcpy(strPtr, current->value.value_string.value);
-					telemPtr->tel_rev1.trailerType[1] = strlen(current->value.value_string.value);
-				}
 			}
 		}
+
+		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_accessory_id, current->name) == 0 && current->value.value_string.value != NULL)
+		{
+			// Cargo ID
+			// Example: cargo.overweighl_w.kvn
+			// Cargo type overweighl_w.kvn can be found in def/cargo/
+			strPtr = static_cast<char*>(telemMem->getPtrAt(telemPtr->tel_rev1.trailerType[0]));
+			strcpy(strPtr, current->value.value_string.value);
+			telemPtr->tel_rev1.trailerType[1] = strlen(current->value.value_string.value);
+		}
+		
+		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand_id, current->name) == 0)
+		{
+			// Brand ID (like scania, volvo, etc., C limited chars)
+			// TODO: Add field to struct to store this value.
+		}
+		
+
+		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand, current->name) == 0)
+		{
+			// Brand Name (like Scania, Volvo, etc)
+			// TODO: Add field to struct to store this value.
+		}
+		
+
+		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_name, current->name) == 0)
+		{
+			// Model Name (like R, FH16 2012, etc)
+			// TODO: Add field to struct to store this value.
+		}
+
+		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_fuel_capacity, current->name) == 0)
+		{
+			// Fuel capacity
+			// Float
+			telemPtr->tel_rev1.fuelCapacity = current->value.value_float.value;
+		}
+		
+		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_fuel_warning_factor, current->name) == 0)
+		{
+			// Fuel warning factor (percentage 0..1)
+			// Float
+			// TODO: Add field to struct to store this value.
+		}
+
+		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_rpm_limit, current->name) == 0)
+		{
+			// RPM Limit (2500)
+			// Float
+			telemPtr->tel_rev1.engineRpmMax = current->value.value_float.value;
+		}
+
+		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_forward_gear_count, current->name) == 0)
+		{
+			// No. of drive gears
+			// u32
+			telemPtr->tel_rev1.gears = current->value.value_u32.value;
+		}
+
+		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_reverse_gear_count, current->name) == 0)
+		{
+			// No. of reverse gears
+			// u32
+			// TODO: Add field to struct to store this value.
+		}
+
+		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_retarder_step_count, current->name) == 0)
+		{
+			// No. of retarder steps
+			// u32
+			// TODO: Add field to struct to store this value.
+		}
+
 
 	}
 }
@@ -231,8 +354,10 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	{
 		return SCS_RESULT_generic_error;
 	}
-	
+
+#ifdef SDK_ENABLE_LOGGING
     log_file = fopen("telemetry.log", "wt");
+#endif
 	telemPtr = (ets2TelemetryMap_t*) (telemMem->GetBuffer());
 	memset(telemPtr, 0, ETS2_PLUGIN_MMF_SIZE);
 
@@ -245,6 +370,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	telemPtr->tel_revId.ets2_version_minor = SCS_GET_MINOR_VERSION(version_params->common.game_version);
 	
 	// Model & trailer type are stored in configuration event.
+	// TODO: Invent a better way of sharing strings between plug-in and client application.
 	telemPtr->tel_rev1.modelType[0] = TRUCK_STRING_OFFSET;
 	telemPtr->tel_rev1.trailerType[0] = TRAILER_STRING_OFFSET;
 	telemPtr->tel_rev1.modelType[1] = 0;
@@ -265,29 +391,18 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	}
 	
 	/*** REGISTER ALL TELEMETRY CHANNELS TO OUR SHARED MEMORY MAP ***/
-	registerChannel(TRUCK_CHANNEL_engine_enabled, bool, telemPtr->tel_rev1.engine_enabled);
+	registerChannel(TRUCK_CHANNEL_electric_enabled, bool, telemPtr->tel_rev1.engine_enabled);
 	registerChannel(TRAILER_CHANNEL_connected, bool, telemPtr->tel_rev1.trailer_attached);
 
 	registerChannel(TRUCK_CHANNEL_speed, float, telemPtr->tel_rev1.speed);
 	registerChannel(TRUCK_CHANNEL_local_linear_acceleration, fvector, telemPtr->tel_rev1.accelerationX);
 	registerChannel(TRUCK_CHANNEL_world_placement, dplacement, telemPtr->tel_rev1.coordinateX);
-	
-	// TODO: Add truck position (world placement)
-	//version_params->register_for_channel(SCS_TELEMETRY_TRUCK_CHANNEL_world_placement, SCS_U32_NIL, SCS_VALUE_TYPE_euler, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_orientation, &telemetry);
-	// TODO: Add truck rotation (hills)
 
 	registerChannel(TRUCK_CHANNEL_engine_gear, s32, telemPtr->tel_rev1.gear);
 
-	/*** TODO: Move to attribute parser ***/
-	registerChannel(CONFIG_ATTRIBUTE_forward_gear_count, float, telemPtr->tel_rev1.gears);
-	registerChannel(CONFIG_ATTRIBUTE_selector_count, u32, telemPtr->tel_rev1.gearRanges);
-	registerChannel(CONFIG_ATTRIBUTE_slot_gear, s32, telemPtr->tel_rev1.gearActive);
-
 	registerChannel(TRUCK_CHANNEL_engine_rpm, float, telemPtr->tel_rev1.engineRpm);
-	registerChannel(CONFIG_ATTRIBUTE_rpm_limit, float, telemPtr->tel_rev1.engineRpmMax);
 
 	registerChannel(TRUCK_CHANNEL_fuel, float, telemPtr->tel_rev1.fuel);
-	registerChannel(CONFIG_ATTRIBUTE_fuel_capacity, float, telemPtr->tel_rev1.fuelCapacity);
 	// TODO: Calculate fuel rate
 	registerChannel(TRUCK_CHANNEL_fuel_average_consumption, float, telemPtr->tel_rev1.fuelAvgConsumption);
 
@@ -300,12 +415,6 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	registerChannel(TRUCK_CHANNEL_effective_throttle, float, telemPtr->tel_rev1.gameThrottle);
 	registerChannel(TRUCK_CHANNEL_effective_brake, float, telemPtr->tel_rev1.gameBrake);
 	registerChannel(TRUCK_CHANNEL_effective_clutch, float, telemPtr->tel_rev1.gameClutch);
-
-	// TODO: Add shifter type detection (auto warnings?)
-	// TODO: Add wheel speed (Traction Control for in snow)
-	
-	// TODO: Add brand/model id's
-	// TODO: Add cargo accessory ID
 
 	// Set the structure with defaults.
 
@@ -327,7 +436,9 @@ SCSAPI_VOID scs_telemetry_shutdown(void)
 	{
 		telemMem->Close();
 	}
+#ifdef SDK_ENABLE_LOGGING
     fclose(log_file);
+#endif
 }
 
 // Telemetry api.

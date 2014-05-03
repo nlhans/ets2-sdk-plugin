@@ -9,9 +9,13 @@
 
 #define ETS2_PLUGIN_REVID					0
 
-#define ETS2_PLUGIN_LOGGING_ON				0
+#define ETS2_PLUGIN_LOGGING_ON				1
 #define ETS2_PLUGIN_LOGGING_SHAREDMEMORY	1
 #define ETS2_PLUGIN_FILENAME_PREFIX "C:\ets2telem_"
+
+#if ETS2_PLUGIN_LOGGING_ON == 1
+#define SDK_ENABLE_LOGGING
+#endif
 
 #define ETS2_PLUGIN_MMF_NAME TEXT("Local\\SimTelemetryETS2")
 #define ETS2_PLUGIN_MMF_SIZE (16*1024)
@@ -59,7 +63,7 @@ typedef struct ets2TelemetryMap_s
 		int gear;
 		int gears;
 		int gearRanges;
-		int gearActive;
+		int gearRangeActive;
 
 		float engineRpm;
 		float engineRpmMax;
@@ -86,8 +90,6 @@ typedef struct ets2TelemetryMap_s
 		
 		int modelType[2];
 		int trailerType[2];
-
-		int gearRangeActive;
 
 	} tel_rev1;
 	

@@ -8,6 +8,8 @@ This SDK plug-in transports the telemetry stream via a Memory Mapped File. This 
 
 Installation is easy inside Euro Truck Simulator 2. Place the acquired DLL inside bin/win_x86/plugins/ of your ETS2 installation. It is possible the plugins directory doesn't exists yet (as with every default installation). In that case you need to create the plugins folder. Place the DLL inside the plugins folder. 
 
+At this moment the plug-in has not reached it's final release state, and as of yet there are no release builds found. To try out the plug-in you will need to compile it yourself using Visual Studio. 
+
 You will now notice that each time ETS2 now starts it prompts the SDK has been activated. Unfortunately you have to press OK to this message every time, but it's a small price to pay for the added features that are possible via the SDK. 
 
 ##Developers Information
@@ -21,24 +23,37 @@ Currently when writing this readme document, the DLL is in an alpha stage (revis
 
 The following telemetry fields, however, are fully functional:
 
+ * Truck model ID
+ * Cargo model ID
+ 
+ * Pause indication
+ * Timestamp
+ 
  * Engine RPM (float; rpm)
+ * Maximum Engine RPM (float)
  * Speed (float; m/s)
  * Gear (-1 = R, 0 = N, 1=1st, etc.) (signed integer)
+ * No. of gears	(int)
  * Fuel (float; litres)
+ * Fuel capacity
+ 
+ * Acceleration
+ * Rotation
+ * Coordinate (X/Y & Height)
+ 
+ * User Driving inputs
+ * Effective game inputs (in-game cruise control).
+ 
+The following fields are not completely functional due to SDK problems:
+
+ * Engine Running flag (SDK "engine enabled" is bugged, "electric enabled" works, but is only valid with automatic engine/electric start option turned ON)
+ * Trailer Attached status (SDK always reports True when on mission, in free roam it's False)
  
 Other fields may require testing or implementing:
-
- * Trailer Attached status
- * Acceleration
- * Coordinate & rotation
- * No. of gears
- * Gear range
- * Maximum Engine RPM
- * Fuel capacity
+ 
+ * Truck & trailer weight (not available from SDK)
+ * Gear range (requires storage of gear selector map)
  * Fuel average consumption (as by on-board truck computer)
- * User Driving inputs
- * Effective game inputs (after rev limiter and cruise control have taken place).
- * Truck/trailer weight (however, these require extension of SCS SDK)
  
 The fields are updated as fast as ETS2 can and will do, as this is how the SDK has been designed by SCS. When a telemetry value has changed the SDK will immediately call a handler. This plug-in implements this handler which stores the data to the right field inside the data structure.
 There is no "sample ticker" yet. This must be done at the client side, by regularly checking if the timestamp has been updated.
