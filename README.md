@@ -6,9 +6,9 @@ This SDK plug-in transports the telemetry stream via a Memory Mapped File. This 
 
 ##Installation
 
-Installation is easy inside Euro Truck Simulator 2. Place the acquired DLL inside bin/win_x86/plugins/ of your ETS2 installation. It is possible the plugins directory doesn't exists yet (as with every default installation). In that case you need to create the plugins folder. Place the DLL inside the plugins folder. 
+Grab the latest release from the Github Release page: https://github.com/nlhans/ets2-sdk-plugin/releases 
 
-At this moment the plug-in has not reached it's final release state, and as of yet there are no release builds found. To try out the plug-in you will need to compile it yourself using Visual Studio. 
+Installation is easy inside Euro Truck Simulator 2. Place the acquired DLL inside bin/win_x86/plugins/ of your ETS2 installation. It is possible the plugins directory doesn't exists yet (as with every default installation). In that case you need to create the plugins folder. Place the DLL inside the plugins folder. 
 
 You will now notice that each time ETS2 now starts it prompts the SDK has been activated. Unfortunately you have to press OK to this message every time, but it's a small price to pay for the added features that are possible via the SDK. 
 
