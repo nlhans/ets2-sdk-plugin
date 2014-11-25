@@ -23,6 +23,7 @@
 // Plug-in
 #include "ets2-telemetry-common.hpp"
 #include "sharedmemory.hpp"
+#include "scs_config_handlers.hpp"
 
 #define UNUSED(x)
 
@@ -95,10 +96,8 @@ SCSAPI_VOID telemetry_pause(const scs_event_t event, const void *const UNUSED(ev
 	}
 }
 
-
 SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void *const event_info, const scs_context_t UNUSED(context))
 {
-	char * strPtr;
 	// This method prints all available attributes of the truck.
 	// On configuration change, this function is called.
     const struct scs_telemetry_configuration_t *const info = static_cast<const scs_telemetry_configuration_t *>(event_info);
@@ -171,96 +170,7 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void *const e
 		
 		fflush(log_file);
 #endif
-
-		// Parse attributes
-		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_id, current->name) == 0 && current->value.value_string.value != NULL)
-		{
-			// ID is shared between vehicle & chassis.
-			// So examples could be: vehicle.scania_r and chassis.trailer.overweighl_w
-			if (current->value.value_string.value[0] == 'v')
-			{
-				// Vehicle ID
-				// vehicle.scania_r
-				strPtr = static_cast<char*>(telemMem->getPtrAt(telemPtr->tel_rev1.modelType[0]));
-				strcpy(strPtr, current->value.value_string.value);
-				telemPtr->tel_rev1.modelType[1] = strlen(current->value.value_string.value);
-				
-			}
-		}
-
-		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_accessory_id, current->name) == 0 && current->value.value_string.value != NULL)
-		{
-			// Cargo ID
-			// Example: cargo.overweighl_w.kvn
-			// Cargo type overweighl_w.kvn can be found in def/cargo/
-			strPtr = static_cast<char*>(telemMem->getPtrAt(telemPtr->tel_rev1.trailerType[0]));
-			strcpy(strPtr, current->value.value_string.value);
-			telemPtr->tel_rev1.trailerType[1] = strlen(current->value.value_string.value);
-		}
-		
-		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand_id, current->name) == 0)
-		{
-			// Brand ID (like scania, volvo, etc., C limited chars)
-			// TODO: Add field to struct to store this value.
-		}
-		
-
-		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand, current->name) == 0)
-		{
-			// Brand Name (like Scania, Volvo, etc)
-			// TODO: Add field to struct to store this value.
-		}
-		
-
-		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_name, current->name) == 0)
-		{
-			// Model Name (like R, FH16 2012, etc)
-			// TODO: Add field to struct to store this value.
-		}
-
-		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_fuel_capacity, current->name) == 0)
-		{
-			// Fuel capacity
-			// Float
-			telemPtr->tel_rev1.fuelCapacity = current->value.value_float.value;
-		}
-		
-		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_fuel_warning_factor, current->name) == 0)
-		{
-			// Fuel warning factor (percentage 0..1)
-			// Float
-			// TODO: Add field to struct to store this value.
-		}
-
-		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_rpm_limit, current->name) == 0)
-		{
-			// RPM Limit (2500)
-			// Float
-			telemPtr->tel_rev1.engineRpmMax = current->value.value_float.value;
-		}
-
-		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_forward_gear_count, current->name) == 0)
-		{
-			// No. of drive gears
-			// u32
-			telemPtr->tel_rev1.gears = current->value.value_u32.value;
-		}
-
-		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_reverse_gear_count, current->name) == 0)
-		{
-			// No. of reverse gears
-			// u32
-			// TODO: Add field to struct to store this value.
-		}
-
-		if (strcmp(SCS_TELEMETRY_CONFIG_ATTRIBUTE_retarder_step_count, current->name) == 0)
-		{
-			// No. of retarder steps
-			// u32
-			// TODO: Add field to struct to store this value.
-		}
-
-
+		handleCfg(current);
 	}
 }
 
@@ -392,6 +302,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	
 	/*** REGISTER ALL TELEMETRY CHANNELS TO OUR SHARED MEMORY MAP ***/
 	registerChannel(TRUCK_CHANNEL_electric_enabled, bool, telemPtr->tel_rev1.engine_enabled);
+	registerChannel(CHANNEL_game_time, u32, telemPtr->tel_rev2.time_abs);
 	registerChannel(TRAILER_CHANNEL_connected, bool, telemPtr->tel_rev1.trailer_attached);
 
 	registerChannel(TRUCK_CHANNEL_speed, float, telemPtr->tel_rev1.speed);

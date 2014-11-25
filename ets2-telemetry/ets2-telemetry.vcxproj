@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ets2-telemetry.cpp" />
+    <ClCompile Include="src\scs_config_handlers.cpp" />
     <ClCompile Include="src\sharedmemory.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -27,6 +28,7 @@
     <ClInclude Include="..\scs_sdk_1_2\include\scssdk_telemetry_event.h" />
     <ClInclude Include="..\scs_sdk_1_2\include\scssdk_value.h" />
     <ClInclude Include="inc\ets2-telemetry-common.hpp" />
+    <ClInclude Include="inc\scs_config_handlers.hpp" />
     <ClInclude Include="inc\sharedmemory.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -100,7 +102,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\scs_sdk_1_2\include;inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\scs_sdk_1_4\include;inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TELEMETRY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>

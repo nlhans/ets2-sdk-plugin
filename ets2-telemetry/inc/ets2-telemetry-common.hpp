@@ -9,7 +9,7 @@
 
 #define ETS2_PLUGIN_REVID					1
 
-#define ETS2_PLUGIN_LOGGING_ON				0
+#define ETS2_PLUGIN_LOGGING_ON				1
 #define ETS2_PLUGIN_LOGGING_SHAREDMEMORY	1
 #define ETS2_PLUGIN_FILENAME_PREFIX "C:\ets2telem_"
 
@@ -20,7 +20,7 @@
 #define ETS2_PLUGIN_MMF_NAME TEXT("Local\\SimTelemetryETS2")
 #define ETS2_PLUGIN_MMF_SIZE (16*1024)
 
-#define TRUCK_STRING_OFFSET 512
+#define TRUCK_STRING_OFFSET 15*1024
 #define TRAILER_STRING_OFFSET TRUCK_STRING_OFFSET+64
 
 typedef struct ets2TelemetryMap_s
@@ -70,7 +70,7 @@ typedef struct ets2TelemetryMap_s
 		
 		float fuel;
 		float fuelCapacity;
-		float fuelRate;
+		float fuelRate;				// ! Not working
 		float fuelAvgConsumption;
 		
 		// user input
@@ -89,10 +89,29 @@ typedef struct ets2TelemetryMap_s
 		float trailerWeight;
 		
 		int modelType[2];
-		int trailerType[2];
+		int trailerType[2];			// ! deprecated
 
 	} tel_rev1;
-	
+
+	struct
+	{
+		long time_abs;
+		int gears_reverse;
+
+		// Trailer ID & display name
+		float trailerMass;
+		char trailerId[64];
+		char trailerName[64];
+		
+		// Job information
+		int jobIncome;
+		int time_abs_delivery;
+		char citySrc[64];
+		char cityDst[64];
+		char compSrc[64];
+		char compDst[64];
+
+	} tel_rev2;	
 
 } ets2TelemetryMap_t;
 

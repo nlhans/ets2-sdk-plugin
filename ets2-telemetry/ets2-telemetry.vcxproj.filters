@@ -7,6 +7,9 @@
     <ClCompile Include="src\sharedmemory.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\scs_config_handlers.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\sharedmemory.hpp">
@@ -47,6 +50,9 @@
     </ClInclude>
     <ClInclude Include="..\scs_sdk_1_2\include\scssdk_value.h">
       <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\scs_config_handlers.hpp">
+      <Filter>plugin</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
