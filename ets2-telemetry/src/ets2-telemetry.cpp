@@ -35,8 +35,8 @@
  *
  * RegisterSpecificChannel allows for your own handler name, without the telemetry_store_ prefix.
  */
-#define registerChannel(name, type, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_##type, &( to ));
-#define registerSpecificChannel(name, type, handler, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_none, handler, &( to ));
+#define registerChannel(name, type, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ));
+#define registerSpecificChannel(name, type, handler, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, handler, &( to ));
 
 SharedMemory *telemMem;
 ets2TelemetryMap_t *telemPtr;
@@ -177,6 +177,7 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void *const e
 /******* STORING OF SEVERAL SCS DATA TYPES *******/
 SCSAPI_VOID telemetry_store_float(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
 {
+	if(!value) return;
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_float);
 	assert(context);
@@ -185,6 +186,7 @@ SCSAPI_VOID telemetry_store_float(const scs_string_t name, const scs_u32_t index
 
 SCSAPI_VOID telemetry_store_s32(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
 {
+	if(!value) return;
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_s32);
 	assert(context);
@@ -193,6 +195,7 @@ SCSAPI_VOID telemetry_store_s32(const scs_string_t name, const scs_u32_t index, 
 
 SCSAPI_VOID telemetry_store_u32(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
 {
+	if(!value) return;
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_u32);
 	assert(context);
@@ -201,21 +204,30 @@ SCSAPI_VOID telemetry_store_u32(const scs_string_t name, const scs_u32_t index, 
 
 SCSAPI_VOID telemetry_store_bool(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
 {
-	assert(value);
-	assert(value->type == SCS_VALUE_TYPE_bool);
-	assert(context);
-	if (value->value_bool.value == 0)
+	if(!context) return;
+	/*assert(value);
+	assert(value->type == SCS_VALUE_TYPE_bool);*/
+	//assert(context);
+	if (value)
 	{
-		*static_cast<bool *>(context) = false;
+		if (value->value_bool.value == 0)
+		{
+			*static_cast<bool *>(context) = false;
+		}
+		else
+		{
+			*static_cast<bool *>(context) = true;
+		}
 	}
 	else
 	{
-		*static_cast<bool *>(context) = true;
+		*static_cast<bool *>(context) = false;
 	}
 }
 
 SCSAPI_VOID telemetry_store_fvector(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
 {
+	if(!value) return;
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_fvector);
 	assert(context);
@@ -226,6 +238,7 @@ SCSAPI_VOID telemetry_store_fvector(const scs_string_t name, const scs_u32_t ind
 
 SCSAPI_VOID telemetry_store_dplacement(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
 {
+	if(!value) return;
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_dplacement);
 	assert(context);
