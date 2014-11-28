@@ -24,10 +24,13 @@ Currently when writing this readme document, the DLL is in an alpha stage (revis
 The following telemetry fields, however, are fully functional:
 
  * Truck model ID
- * Cargo model ID
+ * Trailer model ID
  
  * Pause indication
  * Timestamp
+ 
+ * Engine Running flag
+ * Trailer Attached status
  
  * Engine RPM (float; rpm)
  * Maximum Engine RPM (float)
@@ -44,14 +47,18 @@ The following telemetry fields, however, are fully functional:
  * User Driving inputs
  * Effective game inputs (in-game cruise control).
  
-The following fields are not completely functional due to SDK problems:
-
- * Engine Running flag (SDK "engine enabled" is bugged, "electric enabled" works, but is only valid with automatic engine/electric start option turned ON)
- * Trailer Attached status (SDK always reports True when on mission, in free roam it's False)
+ * Job information including:
+	- City Source
+	- City Destination
+	- Cargo company Source 
+	- Cargo company Destinatoin
+	- Cargo model ID
+	- Cargo name
+	- Cargo weight (kg)
+	All strings are encoded in UTF8 instead of ASCII.
  
 Other fields may require testing or implementing:
  
- * Truck & trailer weight (not available from SDK)
  * Gear range (requires storage of gear selector map)
  * Fuel average consumption (as by on-board truck computer)
  
