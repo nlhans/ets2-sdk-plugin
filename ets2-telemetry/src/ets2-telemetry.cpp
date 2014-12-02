@@ -339,6 +339,57 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	registerChannel(TRUCK_CHANNEL_effective_throttle, float, telemPtr->tel_rev1.gameThrottle);
 	registerChannel(TRUCK_CHANNEL_effective_brake, float, telemPtr->tel_rev1.gameBrake);
 	registerChannel(TRUCK_CHANNEL_effective_clutch, float, telemPtr->tel_rev1.gameClutch);
+	
+	// Auxilliary stuff:
+	registerChannel(TRUCK_CHANNEL_retarder_level, u32, telemPtr->tel_rev3.retarderBrake);
+	registerChannel(TRUCK_CHANNEL_hshifter_slot, u32, telemPtr->tel_rev3.shifterSlot);
+	registerChannel(TRUCK_CHANNEL_hshifter_selector, bool, telemPtr->tel_rev3.shifterToggle);
+	
+	// Booleans
+	registerChannel(TRUCK_CHANNEL_cruise_control, bool, telemPtr->tel_rev3.cruiseControl);
+	registerChannel(TRUCK_CHANNEL_wipers, bool, telemPtr->tel_rev3.wipers);
+	registerChannel(TRUCK_CHANNEL_parking_brake, bool, telemPtr->tel_rev3.parkBrake);
+	registerChannel(TRUCK_CHANNEL_motor_brake, bool, telemPtr->tel_rev3.motorBrake);
+	registerChannel(TRUCK_CHANNEL_electric_enabled, bool, telemPtr->tel_rev3.electricEnabled);
+	registerChannel(TRUCK_CHANNEL_engine_enabled, bool, telemPtr->tel_rev3.engineEnabled);
+	registerChannel(TRUCK_CHANNEL_lblinker, bool, telemPtr->tel_rev3.blinkerLeftActive);
+	registerChannel(TRUCK_CHANNEL_rblinker, bool, telemPtr->tel_rev3.blinkerRightActive);
+	registerChannel(TRUCK_CHANNEL_light_lblinker, bool, telemPtr->tel_rev3.blinkerLeftOn);
+	registerChannel(TRUCK_CHANNEL_light_rblinker, bool, telemPtr->tel_rev3.blinkerRightOn);
+	registerChannel(TRUCK_CHANNEL_light_parking, bool, telemPtr->tel_rev3.lightsParking);
+	registerChannel(TRUCK_CHANNEL_light_low_beam, bool, telemPtr->tel_rev3.lightsBeamLow);
+	registerChannel(TRUCK_CHANNEL_light_high_beam, bool, telemPtr->tel_rev3.lightsBeamHigh);
+	registerChannel(TRUCK_CHANNEL_light_aux_front, bool, telemPtr->tel_rev3.lightsAuxFront);
+	registerChannel(TRUCK_CHANNEL_light_aux_roof, bool, telemPtr->tel_rev3.lightsAuxRoof);
+	registerChannel(TRUCK_CHANNEL_light_beacon, bool, telemPtr->tel_rev3.lightsBeacon);
+	registerChannel(TRUCK_CHANNEL_light_brake, bool, telemPtr->tel_rev3.lightsBrake);
+	registerChannel(TRUCK_CHANNEL_light_reverse, bool, telemPtr->tel_rev3.lightsReverse);
+	registerChannel(TRUCK_CHANNEL_battery_voltage_warning, bool, telemPtr->tel_rev3.batteryVoltageWarning);
+	registerChannel(TRUCK_CHANNEL_brake_air_pressure_warning, bool, telemPtr->tel_rev3.airPressureWarning);
+	registerChannel(TRUCK_CHANNEL_brake_air_pressure_emergency, bool, telemPtr->tel_rev3.airPressureEmergency);
+	registerChannel(TRUCK_CHANNEL_adblue_warning, bool, telemPtr->tel_rev3.adblueWarning);
+	registerChannel(TRUCK_CHANNEL_oil_pressure_warning, bool, telemPtr->tel_rev3.oilPressureWarning);
+	registerChannel(TRUCK_CHANNEL_water_temperature_warning, bool, telemPtr->tel_rev3.waterTemperatureWarning);
+
+	// Floats
+	registerChannel(TRUCK_CHANNEL_brake_air_pressure, float, telemPtr->tel_rev3.airPressure);
+	registerChannel(TRUCK_CHANNEL_brake_temperature, float, telemPtr->tel_rev3.brakeTemperature);
+	registerChannel(TRUCK_CHANNEL_fuel_warning, float, telemPtr->tel_rev3.fuelWarning);
+	registerChannel(TRUCK_CHANNEL_adblue, float, telemPtr->tel_rev3.adblue);
+	registerChannel(TRUCK_CHANNEL_adblue_average_consumption, float, telemPtr->tel_rev3.adblueConsumption);
+	registerChannel(TRUCK_CHANNEL_oil_pressure, float, telemPtr->tel_rev3.oilPressure);
+	registerChannel(TRUCK_CHANNEL_oil_temperature, float, telemPtr->tel_rev3.oilTemperature);
+	registerChannel(TRUCK_CHANNEL_water_temperature, float, telemPtr->tel_rev3.waterTemperature);
+	registerChannel(TRUCK_CHANNEL_battery_voltage, float, telemPtr->tel_rev3.batteryVoltage);
+	registerChannel(TRUCK_CHANNEL_dashboard_backlight, float, telemPtr->tel_rev3.lightsDashboard);
+	registerChannel(TRUCK_CHANNEL_wear_engine, float, telemPtr->tel_rev3.wearEngine);
+	registerChannel(TRUCK_CHANNEL_wear_transmission, float, telemPtr->tel_rev3.wearTransmission);
+	registerChannel(TRUCK_CHANNEL_wear_cabin, float, telemPtr->tel_rev3.wearCabin);
+	registerChannel(TRUCK_CHANNEL_wear_chassis, float, telemPtr->tel_rev3.wearChassis);
+	registerChannel(TRUCK_CHANNEL_wear_wheels, float, telemPtr->tel_rev3.wearWheels);
+	registerChannel(TRAILER_CHANNEL_wear_chassis, float, telemPtr->tel_rev3.wearTrailer);
+	registerChannel(TRUCK_CHANNEL_odometer, float, telemPtr->tel_rev3.truckOdometer);
+
 
 	// Set the structure with defaults.
 

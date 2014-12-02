@@ -113,6 +113,63 @@ typedef struct ets2TelemetryMap_s
 
 	} tel_rev2;	
 
+	struct
+	{
+		int retarderBrake;
+		int shifterSlot;
+		int shifterToggle;
+		int fill;
+
+		bool cruiseControl;
+		bool wipers;
+
+		bool parkBrake;
+		bool motorBrake;
+
+		bool electricEnabled;
+		bool engineEnabled;
+
+		bool blinkerLeftActive;
+		bool blinkerRightActive;
+		bool blinkerLeftOn;
+		bool blinkerRightOn;
+
+		bool lightsParking;
+		bool lightsBeamLow;
+		bool lightsBeamHigh;
+		bool lightsAuxFront;
+		bool lightsAuxRoof;
+		bool lightsBeacon;
+		bool lightsBrake;
+		bool lightsReverse;
+
+		bool batteryVoltageWarning;
+		bool airPressureWarning;
+		bool airPressureEmergency;
+		bool adblueWarning;
+		bool oilPressureWarning;
+		bool waterTemperatureWarning;
+
+		float airPressure;
+		float brakeTemperature;
+		float fuelWarning;
+		float adblue;
+		float adblueConsumption;
+		float oilPressure;
+		float oilTemperature;
+		float waterTemperature;
+		float batteryVoltage;
+		float lightsDashboard;
+		float wearEngine;
+		float wearTransmission;
+		float wearCabin;
+		float wearChassis;
+		float wearWheels;
+		float wearTrailer;
+		float truckOdometer;
+
+	} tel_rev3;
+
 } ets2TelemetryMap_t;
 
 #endif
