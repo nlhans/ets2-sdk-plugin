@@ -15,8 +15,14 @@ typedef struct scsConfigHandler_s
 #define scsConfigHandle(n) void handle##n (const scs_named_value_t* current)
 
 // Define prototypes for all the various handlers
+
+// Truck info etc.
 scsConfigHandle(Id);
 scsConfigHandle(CargoId);
+
+scsConfigHandle(TruckMake);
+scsConfigHandle(TruckMakeId);
+scsConfigHandle(TruckModel);
 
 // Technical vehicle info
 scsConfigHandle(FuelCapacity);
@@ -34,7 +40,6 @@ scsConfigHandle(CitySrc);
 scsConfigHandle(CityDst);
 scsConfigHandle(CompSrc);
 scsConfigHandle(CompDst);
-
 
 bool handleCfg(const scs_named_value_t* info);
 

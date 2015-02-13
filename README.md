@@ -15,19 +15,15 @@ You will now notice that each time ETS2 now starts it prompts the SDK has been a
 ##Developers Information
 
 ###Overview
-This plug-in stores it's data inside a Memory Mapped File, or "Shared Memory". It reserves a file inside memory, and overwrites the current telemetry to this piece of memory. The values are stored in a binary fashion.
+This plug-in stores it's data inside a Memory Mapped File, or "Shared Memory". This allows it to operate without any access to harddrive, or configuration hassle by the user to locate the memory map.
 
-The exact binary layout of the data can be found inside "ets2-telemetry/inc/ets2-telemetry-common.hpp". The data structure ets2TelemetryMap_t contains all the fields that are planned to be supported in revision 1. Additional revisions will be added after the revision 1 struct, where it is remained intact. This should allow for maximum backwards compatibility.
+The following telemetry fields are supported:
 
-Currently when writing this readme document, the DLL is in an alpha stage (revision 0). Some fields are still being tested and some are not implemented yet. 
-
-The following telemetry fields, however, are fully functional:
-
- * Truck model ID
- * Trailer model ID
+ * Truck model name & ID
+ * Trailer model name & ID
  
- * Pause indication
- * Timestamp
+ * Pause indicator
+ * In game timestamp
  
  * Engine Running flag
  * Trailer Attached status
@@ -36,7 +32,7 @@ The following telemetry fields, however, are fully functional:
  * Maximum Engine RPM (float)
  * Speed (float; m/s)
  * Gear (-1 = R, 0 = N, 1=1st, etc.) (signed integer)
- * No. of gears	(int)
+ * No. of forward and reverse gears
  * Fuel (float; litres)
  * Fuel capacity
  
@@ -44,8 +40,20 @@ The following telemetry fields, however, are fully functional:
  * Rotation
  * Coordinate (X/Y & Height)
  
- * User Driving inputs
- * Effective game inputs (in-game cruise control).
+ * User inputs
+ * Game inputs (e.g. with in-game cruise control).
+ 
+ * In-game cruise control read out
+ * Various other truck readouts like:
+    - air pressure
+    - brake temperature
+    - truck odometer
+    - water temperature
+	- wipers
+	- damage info
+    - indicators
+	- light information (low/high beam, beacon)
+	- brake information (e.g. parking brake or retarder)
  
  * Job information including:
 	- City Source
@@ -65,7 +73,10 @@ Other fields may require testing or implementing:
 The fields are updated as fast as ETS2 can and will do, as this is how the SDK has been designed by SCS. When a telemetry value has changed the SDK will immediately call a handler. This plug-in implements this handler which stores the data to the right field inside the data structure.
 There is no "sample ticker" yet. This must be done at the client side, by regularly checking if the timestamp has been updated.
 
-###Telemetry Client Implementations
-A simple C# implementation can be found in one closely related project of mine; inside SimShift: https://github.com/nlhans/SimShift/tree/master/SimShift/SimShift/Data
+## Client Implementations
 
-For other languages you may need to create/find a library that can open and read MemoryMapped files. As found in "ets2-telemetry/inc/ets2-telemetry-common.hpp", the low-level Windows path is "Local\SimTelemetryETS2". The data structure of the file can also be found in this header file.
+### C#
+A C# 4.0 demo application is provided inside the ets2-client folder. The demo application includes a Ets2SdkClient DLL and a Windows GUI application for viewing the output of the DLL. 
+
+### Other
+For other languages you need to create/find a library that can open and read MemoryMapped files. The data storage format is binary and can be found in "ets2-telemetry/inc/ets2-telemetry-common.hpp". The shared memory map name is "Local\SimTelemetryETS2".

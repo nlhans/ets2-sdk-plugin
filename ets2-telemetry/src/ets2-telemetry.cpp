@@ -84,6 +84,10 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *c
 	if (telemPtr != NULL)
 	{
 		telemPtr->time = timestamp;
+
+		// Do a non-convential periodic update of this field:
+		telemPtr->tel_rev3.cruiseControl = (telemPtr->tel_rev3.cruiseControlSpeed > 0) ? true : false;
+
 	}
 
 }
@@ -346,7 +350,6 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	registerChannel(TRUCK_CHANNEL_hshifter_selector, bool, telemPtr->tel_rev3.shifterToggle);
 	
 	// Booleans
-	registerChannel(TRUCK_CHANNEL_cruise_control, bool, telemPtr->tel_rev3.cruiseControl);
 	registerChannel(TRUCK_CHANNEL_wipers, bool, telemPtr->tel_rev3.wipers);
 	registerChannel(TRUCK_CHANNEL_parking_brake, bool, telemPtr->tel_rev3.parkBrake);
 	registerChannel(TRUCK_CHANNEL_motor_brake, bool, telemPtr->tel_rev3.motorBrake);
@@ -389,7 +392,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	registerChannel(TRUCK_CHANNEL_wear_wheels, float, telemPtr->tel_rev3.wearWheels);
 	registerChannel(TRAILER_CHANNEL_wear_chassis, float, telemPtr->tel_rev3.wearTrailer);
 	registerChannel(TRUCK_CHANNEL_odometer, float, telemPtr->tel_rev3.truckOdometer);
-
+	registerChannel(TRUCK_CHANNEL_cruise_control, float, telemPtr->tel_rev3.cruiseControlSpeed);
 
 	// Set the structure with defaults.
 

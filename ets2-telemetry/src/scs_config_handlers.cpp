@@ -11,6 +11,9 @@ extern ets2TelemetryMap_t *telemPtr;
 
 const scsConfigHandler_t scsConfigTable[] = {
 	
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand, handleTruckMake },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand_id, handleTruckMakeId },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_name, handleTruckModel },
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_id, handleId },
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_accessory_id, handleCargoId },
 
@@ -66,6 +69,28 @@ scsConfigHandle(Id)
 		strcpy(strPtr, current->value.value_string.value);
 		telemPtr->tel_rev1.modelType[1] = strlen(current->value.value_string.value);
 				
+	}
+}
+
+scsConfigHandle(TruckMake)
+{
+	if (telemPtr)
+	{
+		strncpy(telemPtr->tel_rev3.truckMake, current->value.value_string.value, 64);
+	}
+}
+scsConfigHandle(TruckMakeId)
+{
+	if (telemPtr)
+	{
+		strncpy(telemPtr->tel_rev3.truckMakeId, current->value.value_string.value, 64);
+	}
+}
+scsConfigHandle(TruckModel)
+{
+	if (telemPtr)
+	{
+		strncpy(telemPtr->tel_rev3.truckModel, current->value.value_string.value, 64);
 	}
 }
 
