@@ -75,7 +75,7 @@ There is no "sample ticker" yet. This must be done at the client side, by regula
 
 ## Client Implementations
 
-### C#
+### C Sharp / .NET
 A C# 4.0 demo application is provided inside the ets2-client folder. The demo application includes a Ets2SdkClient DLL and a Windows GUI application for viewing the output of the DLL. 
 
 ### Other
