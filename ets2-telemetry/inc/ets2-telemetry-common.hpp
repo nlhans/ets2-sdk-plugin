@@ -152,7 +152,7 @@ typedef struct ets2TelemetryMap_s
 
 		float airPressure;
 		float brakeTemperature;
-		float fuelWarning;
+		int fuelWarning;
 		float adblue;
 		float adblueConsumption;
 		float oilPressure;

@@ -166,7 +166,7 @@ namespace Ets2SdkClient
         [FieldOffset(608)]
         public float brakeTemperature;
         [FieldOffset(612)]
-        public float fuelWarning;
+        public int fuelWarning;
         [FieldOffset(616)]
         public float adblue;
         [FieldOffset(620)]

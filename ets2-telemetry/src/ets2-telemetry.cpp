@@ -377,7 +377,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	// Floats
 	registerChannel(TRUCK_CHANNEL_brake_air_pressure, float, telemPtr->tel_rev3.airPressure);
 	registerChannel(TRUCK_CHANNEL_brake_temperature, float, telemPtr->tel_rev3.brakeTemperature);
-	registerChannel(TRUCK_CHANNEL_fuel_warning, float, telemPtr->tel_rev3.fuelWarning);
+	registerChannel(TRUCK_CHANNEL_fuel_warning, bool, telemPtr->tel_rev3.fuelWarning);
 	registerChannel(TRUCK_CHANNEL_adblue, float, telemPtr->tel_rev3.adblue);
 	registerChannel(TRUCK_CHANNEL_adblue_average_consumption, float, telemPtr->tel_rev3.adblueConsumption);
 	registerChannel(TRUCK_CHANNEL_oil_pressure, float, telemPtr->tel_rev3.oilPressure);

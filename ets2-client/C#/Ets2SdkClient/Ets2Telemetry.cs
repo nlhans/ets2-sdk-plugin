@@ -58,7 +58,10 @@ namespace Ets2SdkClient
 
             public float Fuel { get; internal set; }
             public float FuelMax { get; internal set; }
+
+            // Deprecated: was never actually functional
             public float FuelWarning { get; internal set; }
+            public bool FuelWarningLight { get; internal set; }
             public float FuelRate { get; internal set; }
             public float FuelAvgConsumption { get; internal set; }
 
@@ -244,7 +247,7 @@ namespace Ets2SdkClient
             Drivetrain.FuelAvgConsumption = raw.fuelAvgConsumption;
             Drivetrain.FuelMax = raw.fuelCapacity;
             Drivetrain.FuelRate = raw.fuelRate;
-            Drivetrain.FuelWarning = raw.fuelWarning; 
+            Drivetrain.FuelWarningLight = raw.fuelWarning == 0 ? false : true; 
 
             Drivetrain.Gear = raw.gear;
             Drivetrain.GearRange = raw.gearRangeActive;
