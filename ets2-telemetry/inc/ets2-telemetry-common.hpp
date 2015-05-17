@@ -7,7 +7,7 @@
 // - Shared memory map struct layout
 // - [..]
 
-#define ETS2_PLUGIN_REVID					3
+#define ETS2_PLUGIN_REVID					4
 
 #define ETS2_PLUGIN_LOGGING_ON				0
 #define ETS2_PLUGIN_LOGGING_SHAREDMEMORY	1
@@ -176,6 +176,18 @@ typedef struct ets2TelemetryMap_s
 
 
 	} tel_rev3;
+
+	struct
+	{
+		float speedLimit;
+		float routeDistance;
+		float routeTime;
+		float fuelRange;
+		float gearRatiosForward[24];
+		float gearRatiosReverse[8];
+		float gearDifferential;
+		int gearDashboard;
+	} tel_rev4; // added in sdk1.5
 
 } ets2TelemetryMap_t;
 

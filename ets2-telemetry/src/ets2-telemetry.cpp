@@ -28,7 +28,7 @@
 #define UNUSED(x)
 
 /**
-/* These macro's are a shortcut to register channels inside the scs_telemetry_init function
+ * These macro's are a shortcut to register channels inside the scs_telemetry_init function
  * They require the channel definition name (without prefix SCS_TELEMETRY_), type and destination.
  * Not all channel types are implemented; the handler function for a type should be created like so:
  * telemetry_store_[Type](const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
@@ -40,7 +40,7 @@
 
 SharedMemory *telemMem;
 ets2TelemetryMap_t *telemPtr;
-LPWSTR ets2MmfName = ETS2_PLUGIN_MMF_NAME;
+const wchar_t* ets2MmfName = ETS2_PLUGIN_MMF_NAME;
 
 /**
  * @brief Last timestamp we received.
@@ -79,11 +79,11 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *c
 
 	timestamp += (info->paused_simulation_time - last_timestamp);
 	last_timestamp = info->paused_simulation_time;
-	
+
 	/* Copy over the game timestamp to our telemetry memory */
 	if (telemPtr != NULL)
 	{
-		telemPtr->time = timestamp;
+		telemPtr->time = (unsigned int) timestamp;
 
 		// Do a non-convential periodic update of this field:
 		telemPtr->tel_rev3.cruiseControl = (telemPtr->tel_rev3.cruiseControlSpeed > 0) ? true : false;
@@ -105,7 +105,7 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void *const e
 	// This method prints all available attributes of the truck.
 	// On configuration change, this function is called.
     const struct scs_telemetry_configuration_t *const info = static_cast<const scs_telemetry_configuration_t *>(event_info);
-   
+
 #ifdef SDK_ENABLE_LOGGING
 	fprintf(log_file,"----\n");
 #endif
@@ -171,7 +171,7 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void *const e
 		}
 
 		fprintf(log_file, "\r\n");
-		
+
 		fflush(log_file);
 #endif
 		handleCfg(current);
@@ -252,7 +252,7 @@ SCSAPI_VOID telemetry_store_dplacement(const scs_string_t name, const scs_u32_t 
 	*(static_cast<float *>(context)+0) = (float)value->value_dplacement.position.x;
 	*(static_cast<float *>(context)+1) = (float)value->value_dplacement.position.y;
 	*(static_cast<float *>(context)+2) = (float)value->value_dplacement.position.z;
-	
+
 	*(static_cast<float *>(context)+3) = value->value_dplacement.orientation.heading;
 	*(static_cast<float *>(context)+4) = value->value_dplacement.orientation.pitch;
 	*(static_cast<float *>(context)+5) = value->value_dplacement.orientation.roll;
@@ -264,18 +264,28 @@ SCSAPI_VOID telemetry_store_dplacement(const scs_string_t name, const scs_u32_t 
  *
  * See scssdk_telemetry.h
  */
+
 SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_init_params_t *const params)
 {
 	// We currently support only one version.
-
 	if (version != SCS_TELEMETRY_VERSION_1_00) {
 		return SCS_RESULT_unsupported;
 	}
 
 	const scs_telemetry_init_params_v100_t *const version_params = static_cast<const scs_telemetry_init_params_v100_t *>(params);
-	
+
+    if (version_params == NULL)
+    {
+        return SCS_RESULT_generic_error;
+    }
+
 	/*** ACQUIRE SHARED MEMORY BUFFER ***/
 	telemMem = new SharedMemory(ets2MmfName, ETS2_PLUGIN_MMF_SIZE);
+
+    if (telemMem == NULL)
+    {
+        return SCS_RESULT_generic_error;
+    }
 
 	if (telemMem->Hooked() == false)
 	{
@@ -286,6 +296,12 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
     log_file = fopen("telemetry.log", "wt");
 #endif
 	telemPtr = (ets2TelemetryMap_t*) (telemMem->GetBuffer());
+
+	if (telemPtr == NULL)
+    {
+        return SCS_RESULT_generic_error;
+	}
+
 	memset(telemPtr, 0, ETS2_PLUGIN_MMF_SIZE);
 
 	/*** INITIALIZE TELEMETRY MAP TO DEFAULT ***/
@@ -295,7 +311,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	telemPtr->tel_revId.ets2_telemetry_plugin_revision = ETS2_PLUGIN_REVID;
 	telemPtr->tel_revId.ets2_version_major = SCS_GET_MAJOR_VERSION(version_params->common.game_version);
 	telemPtr->tel_revId.ets2_version_minor = SCS_GET_MINOR_VERSION(version_params->common.game_version);
-	
+
 	// Model & trailer type are stored in configuration event.
 	// TODO: Invent a better way of sharing strings between plug-in and client application.
 	telemPtr->tel_rev1.modelType[0] = TRUCK_STRING_OFFSET;
@@ -308,7 +324,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 		(version_params->register_for_event(SCS_TELEMETRY_EVENT_frame_start, telemetry_frame_start, NULL) == SCS_RESULT_ok) &&
 		(version_params->register_for_event(SCS_TELEMETRY_EVENT_paused, telemetry_pause, NULL) == SCS_RESULT_ok) &&
 		(version_params->register_for_event(SCS_TELEMETRY_EVENT_started, telemetry_pause, NULL) == SCS_RESULT_ok);
-	
+
 	// Register configuration event, because it sends data like truck make, etc.
 	version_params->register_for_event(SCS_TELEMETRY_EVENT_configuration, telemetry_configuration, NULL);
 
@@ -316,7 +332,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	{
 		return SCS_RESULT_generic_error;
 	}
-	
+
 	/*** REGISTER ALL TELEMETRY CHANNELS TO OUR SHARED MEMORY MAP ***/
 	registerChannel(TRUCK_CHANNEL_electric_enabled, bool, telemPtr->tel_rev1.engine_enabled);
 	registerChannel(CHANNEL_game_time, u32, telemPtr->tel_rev2.time_abs);
@@ -325,8 +341,9 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	registerChannel(TRUCK_CHANNEL_speed, float, telemPtr->tel_rev1.speed);
 	registerChannel(TRUCK_CHANNEL_local_linear_acceleration, fvector, telemPtr->tel_rev1.accelerationX);
 	registerChannel(TRUCK_CHANNEL_world_placement, dplacement, telemPtr->tel_rev1.coordinateX);
-
+	
 	registerChannel(TRUCK_CHANNEL_engine_gear, s32, telemPtr->tel_rev1.gear);
+	registerChannel(TRUCK_CHANNEL_displayed_gear, s32, telemPtr->tel_rev4.gearDashboard);
 
 	registerChannel(TRUCK_CHANNEL_engine_rpm, float, telemPtr->tel_rev1.engineRpm);
 
@@ -343,12 +360,12 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	registerChannel(TRUCK_CHANNEL_effective_throttle, float, telemPtr->tel_rev1.gameThrottle);
 	registerChannel(TRUCK_CHANNEL_effective_brake, float, telemPtr->tel_rev1.gameBrake);
 	registerChannel(TRUCK_CHANNEL_effective_clutch, float, telemPtr->tel_rev1.gameClutch);
-	
+
 	// Auxilliary stuff:
 	registerChannel(TRUCK_CHANNEL_retarder_level, u32, telemPtr->tel_rev3.retarderBrake);
 	registerChannel(TRUCK_CHANNEL_hshifter_slot, u32, telemPtr->tel_rev3.shifterSlot);
 	registerChannel(TRUCK_CHANNEL_hshifter_selector, bool, telemPtr->tel_rev3.shifterToggle);
-	
+
 	// Booleans
 	registerChannel(TRUCK_CHANNEL_wipers, bool, telemPtr->tel_rev3.wipers);
 	registerChannel(TRUCK_CHANNEL_parking_brake, bool, telemPtr->tel_rev3.parkBrake);
@@ -393,6 +410,10 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	registerChannel(TRAILER_CHANNEL_wear_chassis, float, telemPtr->tel_rev3.wearTrailer);
 	registerChannel(TRUCK_CHANNEL_odometer, float, telemPtr->tel_rev3.truckOdometer);
 	registerChannel(TRUCK_CHANNEL_cruise_control, float, telemPtr->tel_rev3.cruiseControlSpeed);
+	registerChannel(TRUCK_CHANNEL_navigation_speed_limit, float, telemPtr->tel_rev4.speedLimit);
+	registerChannel(TRUCK_CHANNEL_navigation_distance, float, telemPtr->tel_rev4.routeDistance);
+	registerChannel(TRUCK_CHANNEL_navigation_time, float, telemPtr->tel_rev4.routeTime);
+	registerChannel(TRUCK_CHANNEL_fuel_range, float, telemPtr->tel_rev4.fuelRange);
 
 	// Set the structure with defaults.
 

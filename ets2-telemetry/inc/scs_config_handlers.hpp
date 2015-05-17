@@ -30,6 +30,10 @@ scsConfigHandle(RpmLimit);
 scsConfigHandle(FGearCount);
 scsConfigHandle(RGearCount);
 
+scsConfigHandle(GearDifferential);
+scsConfigHandle(GearForwardRatio);
+scsConfigHandle(GearReverseRatio);
+
 // Job info
 scsConfigHandle(JobIncome);
 scsConfigHandle(JobDeadline);

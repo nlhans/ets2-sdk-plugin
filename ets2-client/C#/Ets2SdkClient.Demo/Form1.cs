@@ -28,63 +28,78 @@ namespace Ets2SdkClient.Demo
 
         private void Telemetry_Data(Ets2Telemetry data, bool updated)
         {
-            if (this.InvokeRequired)
+            try
             {
-                this.Invoke(new TelemetryData(Telemetry_Data), new object[2] {data, updated});
-                return;
-            }
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new TelemetryData(Telemetry_Data), new object[2] { data, updated });
+                    return;
+                }
 
-            lbGeneral.Text = "General info:\r\n SDK Version: " + data.Version.SdkPlugin + "\r\n Reported game Version: " +
-                             data.Version.Ets2Major + "." + data.Version.Ets2Minor + "\r\n\r\nTruck: " + data.Truck + " ("+data.TruckId +")\r\nManufacturer: " + data.Manufacturer + "("+data.ManufacturerId+")" +
-                             "\r\nGame Timestamp: " + data.Time + "\r\nPaused? " + data.Paused;
-            
-            // Do some magic trickery to display ALL info:
-            var grps = new object[]
+                lbGeneral.Text = "General info:\r\n SDK Version: " + data.Version.SdkPlugin + "\r\n Reported game Version: " +
+                                 data.Version.Ets2Major + "." + data.Version.Ets2Minor + "\r\n\r\nTruck: " + data.Truck + " (" + data.TruckId + ")\r\nManufacturer: " + data.Manufacturer + "(" + data.ManufacturerId + ")" +
+                                 "\r\nGame Timestamp: " + data.Time + "\r\nPaused? " + data.Paused;
+
+                // Do some magic trickery to display ALL info:
+                var grps = new object[]
                        {
                            data.Drivetrain, data.Physics, data.Controls, data.Axilliary, data.Damage, data.Lights, data.Job
                        };
 
-            foreach (var grp in grps)
-            {
-                // Find the right tab page:
-                var grpName = grp.GetType().Name;
-                if (grpName.StartsWith("_"))
-                    grpName = grpName.Substring(1);
-
-                var tabPage = default(TabPage);
-                var tabFound = false;
-
-                for (int k = 0; k < telemetryInfo.TabCount; k++)
+                foreach (var grp in grps)
                 {
-                    if (telemetryInfo.TabPages[k].Text == grpName)
+                    // Find the right tab page:
+                    var grpName = grp.GetType().Name;
+                    if (grpName.StartsWith("_"))
+                        grpName = grpName.Substring(1);
+
+                    var tabPage = default(TabPage);
+                    var tabFound = false;
+
+                    for (int k = 0; k < telemetryInfo.TabCount; k++)
                     {
-                        tabPage = telemetryInfo.TabPages[k];
-                        tabFound = true;
+                        if (telemetryInfo.TabPages[k].Text == grpName)
+                        {
+                            tabPage = telemetryInfo.TabPages[k];
+                            tabFound = true;
+                        }
                     }
-                }
-                if (!tabFound)
-                {
-                    tabPage = new CustomTabPage(grpName);
-                    telemetryInfo.TabPages.Add(tabPage);
-                }
+                    if (!tabFound)
+                    {
+                        tabPage = new CustomTabPage(grpName);
+                        telemetryInfo.TabPages.Add(tabPage);
+                    }
 
-                // All properties;
-                var props = grp.GetType().GetProperties().OrderBy(x=>x.Name);
-                var labels = new StringBuilder();
-                var vals = new StringBuilder();
-                foreach (var prop in props)
-                {
-                    labels.AppendLine(prop.Name + ":");
-                    vals.AppendLine(prop.GetValue(grp, null).ToString());
-                }
+                    // All properties;
+                    var props = grp.GetType().GetProperties().OrderBy(x => x.Name);
+                    var labels = new StringBuilder();
+                    var vals = new StringBuilder();
+                    foreach (var prop in props)
+                    {
+                        labels.AppendLine(prop.Name + ":");
+                        object val = prop.GetValue(grp, null);
+                        if (val is float[])
+                        {
+                            vals.AppendLine(string.Join(", ", (val as float[]).Select(x=> x.ToString("0.000"))));
+                        }
+                        else
+                        {
+                            vals.AppendLine(val.ToString());
+                        }
+                    }
 
-                tabPage.Controls.Clear();
-                var lbl1 = new Label { Location = new Point(3, 3), Size = new Size(200, tabPage.Height-6) };
-                var lbl2 = new Label { Location = new Point(203, 3), Size = new Size(200, tabPage.Height-6) };
-                lbl1.Text = labels.ToString();
-                lbl2.Text = vals.ToString();
-                tabPage. Controls.Add(lbl1);
-                tabPage.Controls.Add(lbl2);
+                    tabPage.Controls.Clear();
+                    var lbl1 = new Label { Location = new Point(3, 3), Size = new Size(200, tabPage.Height - 6) };
+                    var lbl2 = new Label { Location = new Point(203, 3), Size = new Size(1000, tabPage.Height - 6) };
+                    lbl1.Text = labels.ToString();
+                    lbl2.Text = vals.ToString();
+                    lbl2.AutoSize = false;
+                    tabPage.Controls.Add(lbl1);
+                    tabPage.Controls.Add(lbl2);
+                }
+            }
+            catch
+            {
             }
         }
     }

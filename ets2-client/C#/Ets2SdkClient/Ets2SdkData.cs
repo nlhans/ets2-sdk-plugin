@@ -208,6 +208,34 @@ namespace Ets2SdkClient
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
         public byte[] truckModel;
 
+        // ***** REVISION 4 ****** //
+        [FieldOffset(868)]
+        public float speedLimit;
+
+        [FieldOffset(872)]
+        public float routeDistance;
+
+        [FieldOffset(876)]
+        public float routeTime;
+
+        [FieldOffset(880)]
+        public float fuelRange;
+
+        [FieldOffset(884)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 24)]
+        public float[] gearRatioForward;
+
+        [FieldOffset(980)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+        public float[] gearRatioReverse;
+
+        [FieldOffset(1012)]
+        public float gearRatioDifferential;
+
+        [FieldOffset(1016)]
+        public int gearDashboard;
+        
+
         public bool GetBool(Ets2SdkBoolean i)
         {
             if (i == Ets2SdkBoolean.TrailerAttached)

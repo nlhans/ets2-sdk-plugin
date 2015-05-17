@@ -15,10 +15,10 @@ void SharedMemory::LogError(const char *logPtr)
 #endif
 }
 
-SharedMemory::SharedMemory(LPCWSTR namePtr, unsigned int size)
+SharedMemory::SharedMemory(LPCWSTR newNamePtr, unsigned int size)
 {
     this->mapsize = size;
-    this->namePtr = namePtr;
+    this->namePtr = newNamePtr;
 	this->isSharedMemoryHooked = false;
 #ifdef SHAREDMEM_LOGGING
 	this->logFilePtr = NULL;
@@ -30,14 +30,14 @@ SharedMemory::SharedMemory(LPCWSTR namePtr, unsigned int size)
             PAGE_READWRITE, // read/write access
             0, // maximum object size (high-order DWORD)
             size, // maximum object size (low-order DWORD)
-            namePtr); // name of mapping object
+            this->namePtr); // name of mapping object
 	LogError("Created file map");
     if (hMapFile == NULL)
     {
 		LogError("but it's NULL!");
         if(GetLastError() == (DWORD)183) // already exists
         {
-                hMapFile = OpenFileMapping(FILE_MAP_ALL_ACCESS, false, namePtr);
+                hMapFile = OpenFileMapping(FILE_MAP_ALL_ACCESS, false, this->namePtr);
                 if (hMapFile == NULL)
                 {
                         LogError("Could not open existing file mapping");
@@ -67,7 +67,7 @@ SharedMemory::SharedMemory(LPCWSTR namePtr, unsigned int size)
 		this->isSharedMemoryHooked = true;
 		LogError("Opened MMF");
 	}
-		
+
 }
 
 

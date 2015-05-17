@@ -33,6 +33,11 @@ const scsConfigHandler_t scsConfigTable[] = {
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_city, handleCityDst },
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_company, handleCompSrc },
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_company, handleCompDst },
+
+	// Revision 4 / ETS 1.17:
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_forward_ratio, handleGearForwardRatio },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_reverse_ratio, handleGearReverseRatio },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_differential_ratio, handleGearDifferential },
 };
 
 #define NO_OF_CFGS ( sizeof(scsConfigTable)/sizeof(scsConfigHandler_t) )
@@ -203,5 +208,41 @@ scsConfigHandle(CompDst)
 	if (telemPtr)
 	{
 		strncpy(telemPtr->tel_rev2.compDst, current->value.value_string.value, 64);
+	}
+}
+
+scsConfigHandle(GearDifferential)
+{
+	if (telemPtr)
+	{
+		telemPtr->tel_rev4.gearDifferential = current->value.value_float.value;
+	}
+}
+
+scsConfigHandle(GearForwardRatio)
+{
+	if (telemPtr)
+	{
+		int gear = current->index;
+		float ratio = current->value.value_float.value;
+
+		if (gear < 24)
+		{
+			telemPtr->tel_rev4.gearRatiosForward[gear] = ratio;
+		}
+	}
+}
+
+scsConfigHandle(GearReverseRatio)
+{
+	if (telemPtr)
+	{
+		int gear = current->index;
+		float ratio = current->value.value_float.value;
+
+		if (gear < 24)
+		{
+			telemPtr->tel_rev4.gearRatiosReverse[gear] = ratio;
+		}
 	}
 }

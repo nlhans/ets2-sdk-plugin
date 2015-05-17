@@ -44,6 +44,10 @@ namespace Ets2SdkClient
             public bool ElectricEnabled { get; internal set; }
 
             public int Gear { get; internal set; }
+            public float[] GearRatiosForward { get; internal set; }
+            public float[] GearRatiosReverse { get; internal set; }
+            public float GearRatioDifferential { get; internal set; }
+            public int GearDashboard { get; internal set; }
             public int GearsForward { get; internal set; }
             public int GearsReverse { get; internal set; }
             public int GearRange { get; internal set; }
@@ -57,6 +61,7 @@ namespace Ets2SdkClient
             public float SpeedMph { get; internal set; }
 
             public float Fuel { get; internal set; }
+            public float FuelRange { get; internal set; }
             public float FuelMax { get; internal set; }
 
             // Deprecated: was never actually functional
@@ -114,6 +119,9 @@ namespace Ets2SdkClient
             public string CityDestination { get; internal set; }
             public string CompanySource { get; internal set; }
             public string CompanyDestination { get; internal set; }
+            public float NavigationDistanceLeft { get; internal set; } // meter
+            public float NavigationTimeLeft { get; internal set; }
+            public float SpeedLimit { get; internal set; } // meter/second
         }
 
         public class _Axilliary
@@ -244,6 +252,7 @@ namespace Ets2SdkClient
             Drivetrain.SpeedMph = Physics.SpeedKmh / 1.6f;
 
             Drivetrain.Fuel = raw.fuel;
+            Drivetrain.FuelRange = raw.fuelRange;
             Drivetrain.FuelAvgConsumption = raw.fuelAvgConsumption;
             Drivetrain.FuelMax = raw.fuelCapacity;
             Drivetrain.FuelRate = raw.fuelRate;
@@ -254,6 +263,19 @@ namespace Ets2SdkClient
             Drivetrain.GearRanges = raw.gearRanges;
             Drivetrain.GearsForward = raw.gears;
             Drivetrain.GearsReverse = raw.gearsReverse;
+
+            // Note all gears
+            var gearFw = raw.gearRatioForward;
+            var gearRw = raw.gearRatioReverse;
+
+            Array.Resize<float>(ref gearFw, Drivetrain.GearsForward);
+            Array.Resize<float>(ref gearRw, Drivetrain.GearsReverse);
+
+            Drivetrain.GearRatiosForward = gearFw;
+            Drivetrain.GearRatiosReverse = gearRw;
+            Drivetrain.GearRatioDifferential = raw.gearRatioDifferential;
+
+            Drivetrain.GearDashboard =raw.gearDashboard;
 
             Drivetrain.MotorBrake = raw.GetBool(Ets2SdkBoolean.MotorBrake);
             Drivetrain.OilPressure = raw.oilPressure;
@@ -277,6 +299,10 @@ namespace Ets2SdkClient
             Job.TrailerId = Encoding.UTF8.GetString(raw.trailerId).Replace('\0', ' ').Trim();
             Job.TrailerName = Encoding.UTF8.GetString(raw.trailerName).Replace('\0', ' ').Trim();
             Job.Cargo = rawUnmanaged.TrailerModel.Replace('\0', ' ').Trim();
+
+            Job.NavigationDistanceLeft = raw.routeDistance;
+            Job.NavigationTimeLeft = raw.routeTime;
+            Job.SpeedLimit = raw.speedLimit;
 
             // Axilliary flags
             Axilliary.AdblueWarning = raw.GetBool(Ets2SdkBoolean.AdblueWarning);

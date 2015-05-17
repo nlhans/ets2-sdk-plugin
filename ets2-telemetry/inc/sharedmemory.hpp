@@ -38,7 +38,7 @@ public:
         bool Hooked() { return isSharedMemoryHooked; }
         void* GetBuffer() { return pBufferPtr; }
 
-        SharedMemory(LPCWSTR mapPtr, unsigned int size);
+        SharedMemory(LPCWSTR newNamePtr, unsigned int size);
         void Close();
 
 		void* getPtrAt(int offset) { return (void*) &(((unsigned char*)pBufferPtr)[offset]); }
