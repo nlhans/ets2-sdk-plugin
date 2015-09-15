@@ -1,6 +1,6 @@
 ﻿namespace Ets2SdkClient.Demo
 {
-    partial class Form1
+    partial class Ets2SdkClientDemo
     {
         /// <summary>
         /// Required designer variable.
@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ets2SdkClientDemo));
             this.telemetryInfo = new System.Windows.Forms.TabControl();
             this.tabAbout = new System.Windows.Forms.TabPage();
-            this.lblDemo = new System.Windows.Forms.Label();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.lbGeneral = new System.Windows.Forms.RichTextBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.lblDemo = new System.Windows.Forms.Label();
             this.telemetryInfo.SuspendLayout();
             this.tabAbout.SuspendLayout();
             this.SuspendLayout();
@@ -61,6 +61,22 @@
             this.tabAbout.Text = "About";
             this.tabAbout.UseVisualStyleBackColor = true;
             // 
+            // lbGeneral
+            // 
+            this.lbGeneral.Location = new System.Drawing.Point(20, 210);
+            this.lbGeneral.Name = "lbGeneral";
+            this.lbGeneral.Size = new System.Drawing.Size(549, 243);
+            this.lbGeneral.TabIndex = 2;
+            this.lbGeneral.Text = "";
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(20, 61);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(549, 122);
+            this.richTextBox1.TabIndex = 1;
+            this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
+            // 
             // lblDemo
             // 
             this.lblDemo.AutoSize = true;
@@ -71,30 +87,14 @@
             this.lblDemo.TabIndex = 0;
             this.lblDemo.Text = "ETS2 SDK Telemetry C# Demo";
             // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Location = new System.Drawing.Point(20, 61);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(549, 122);
-            this.richTextBox1.TabIndex = 1;
-            this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
-            // 
-            // lbGeneral
-            // 
-            this.lbGeneral.Location = new System.Drawing.Point(20, 210);
-            this.lbGeneral.Name = "lbGeneral";
-            this.lbGeneral.Size = new System.Drawing.Size(549, 243);
-            this.lbGeneral.TabIndex = 2;
-            this.lbGeneral.Text = "";
-            // 
-            // Form1
+            // Ets2SdkClientDemo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(595, 621);
             this.Controls.Add(this.telemetryInfo);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Ets2SdkClientDemo";
+            this.Text = "Ets2SdkClientDemo 1.4.0";
             this.telemetryInfo.ResumeLayout(false);
             this.tabAbout.ResumeLayout(false);
             this.tabAbout.PerformLayout();

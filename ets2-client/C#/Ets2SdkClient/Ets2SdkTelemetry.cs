@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Timers;
 
@@ -26,6 +21,12 @@ namespace Ets2SdkClient
         private uint lastTime = 0xFFFFFFFF;
 
         public event TelemetryData Data;
+
+        public event EventHandler JobStarted;
+        public event EventHandler JobFinished;
+
+        private bool wasOnJob;
+        private bool wasFinishingJob;
 
         public Ets2SdkTelemetry()
         {
@@ -84,6 +85,22 @@ namespace Ets2SdkClient
 
             if (Data != null)
                 Data(ets2telemetry, ets2RawData.time != lastTime);
+
+            // Job close & start events
+            if (wasFinishingJob != ets2telemetry.Job.JobFinished)
+            {
+                wasFinishingJob = ets2telemetry.Job.JobFinished;
+                if (ets2telemetry.Job.JobFinished)
+                    JobFinished(this, new EventArgs());
+
+            }
+            if (wasOnJob != ets2telemetry.Job.OnJob)
+            {
+                wasOnJob = ets2telemetry.Job.OnJob;
+                if (ets2telemetry.Job.OnJob)
+                    JobStarted(this, new EventArgs());
+
+            }
 
             lastTime = ets2RawData.time;
 

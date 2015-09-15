@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Dynamic;
 using System.Text;
 
 namespace Ets2SdkClient
@@ -108,6 +106,9 @@ namespace Ets2SdkClient
 
         public class _Job
         {
+            public bool OnJob { get; internal set; }
+            public bool JobFinished { get; internal set; }
+
             public bool TrailerAttached { get; internal set; }
             public float Mass { get; internal set; }
             public string TrailerId { get; internal set; }
@@ -298,11 +299,14 @@ namespace Ets2SdkClient
             Job.TrailerAttached = raw.GetBool(Ets2SdkBoolean.TrailerAttached);//TODO
             Job.TrailerId = Encoding.UTF8.GetString(raw.trailerId).Replace('\0', ' ').Trim();
             Job.TrailerName = Encoding.UTF8.GetString(raw.trailerName).Replace('\0', ' ').Trim();
-            Job.Cargo = rawUnmanaged.TrailerModel.Replace('\0', ' ').Trim();
+            Job.Cargo = Job.TrailerName; // trailerModel is actually deprecated
 
             Job.NavigationDistanceLeft = raw.routeDistance;
             Job.NavigationTimeLeft = raw.routeTime;
             Job.SpeedLimit = raw.speedLimit;
+
+            Job.OnJob = raw.onJob != 0;
+            Job.JobFinished = raw.jobFinished != 0;
 
             // Axilliary flags
             Axilliary.AdblueWarning = raw.GetBool(Ets2SdkBoolean.AdblueWarning);

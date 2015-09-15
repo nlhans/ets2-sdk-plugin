@@ -234,7 +234,9 @@ namespace Ets2SdkClient
 
         [FieldOffset(1016)]
         public int gearDashboard;
-        
+
+        [FieldOffset(1020)] public byte onJob;
+        [FieldOffset(1021)] public byte jobFinished;
 
         public bool GetBool(Ets2SdkBoolean i)
         {

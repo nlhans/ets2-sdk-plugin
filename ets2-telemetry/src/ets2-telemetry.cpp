@@ -42,6 +42,8 @@ SharedMemory *telemMem;
 ets2TelemetryMap_t *telemPtr;
 const wchar_t* ets2MmfName = ETS2_PLUGIN_MMF_NAME;
 
+static bool onJob;
+
 /**
  * @brief Last timestamp we received.
  */
@@ -56,6 +58,7 @@ FILE *log_file = NULL;
 
 SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *const event_info, const scs_context_t UNUSED(context))
 {
+	static int clearJobTicker = 0;
 	const struct scs_telemetry_frame_start_t *const info = static_cast<const scs_telemetry_frame_start_t *>(event_info);
 
 	// The following processing of the timestamps is done so the output
@@ -87,6 +90,46 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *c
 
 		// Do a non-convential periodic update of this field:
 		telemPtr->tel_rev3.cruiseControl = (telemPtr->tel_rev3.cruiseControlSpeed > 0) ? true : false;
+
+		// Check if job could be finished ; if so empty the job field info
+		if (telemPtr->tel_rev5.onJob == true && telemPtr->tel_rev1.trailer_attached == false && telemPtr->tel_rev4.routeDistance <= 0.1f && telemPtr->tel_rev4.routeDistance >= 0.0f)
+		{
+			// if was carrying cargo and not anymore with navigation distance close to zero; 
+			// then we assume the job has finished
+			// we allow some frames (see ticker) for the client to retrieve data
+			telemPtr->tel_rev5.onJob = false;
+
+			telemPtr->tel_rev5.jobFinished = true;
+			clearJobTicker = 0;
+		}
+		else if (telemPtr->tel_rev5.jobFinished)
+		{
+			clearJobTicker ++;
+
+			if (clearJobTicker > 10)
+			{
+				telemPtr->tel_rev2.jobIncome = 0;
+				telemPtr->tel_rev2.time_abs_delivery = 0;
+				telemPtr->tel_rev2.trailerMass = 0;
+			
+				memset(telemPtr->tel_rev2.trailerId, 0, 64);
+				memset(telemPtr->tel_rev2.trailerName, 0, 64);
+
+				memset(telemPtr->tel_rev2.citySrc, 0, 64); // TODO: put 64-byte into global define
+				memset(telemPtr->tel_rev2.cityDst, 0, 64);
+				memset(telemPtr->tel_rev2.compSrc, 0, 64);
+				memset(telemPtr->tel_rev2.compDst, 0, 64);
+
+				telemPtr->tel_rev5.jobFinished = false;
+			}
+		}
+		else
+		{
+			if (telemPtr->tel_rev2.jobIncome != 0 && telemPtr->tel_rev1.trailer_attached)
+			{
+				telemPtr->tel_rev5.onJob = true;
+			}
+		}
 
 	}
 

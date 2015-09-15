@@ -6,16 +6,19 @@ using System.Windows.Forms;
 
 namespace Ets2SdkClient.Demo
 {
-    public partial class Form1 : Form
+    public partial class Ets2SdkClientDemo : Form
     {
         public Ets2SdkTelemetry Telemetry;
 
-        public Form1()
+        public Ets2SdkClientDemo()
         {
             InitializeComponent();
 
             Telemetry = new Ets2SdkTelemetry();
             Telemetry.Data += Telemetry_Data;
+
+            Telemetry.JobFinished += TelemetryOnJobFinished;
+            Telemetry.JobStarted += TelemetryOnJobStarted;
 
             if (Telemetry.Error != null)
             {
@@ -24,6 +27,16 @@ namespace Ets2SdkClient.Demo
                         " - on some systems you need to run the client (this app) with elevated permissions, because e.g. you're running Steam/ETS2 with elevated permissions as well. .NET reported the following Exception:\r\n" +
                         Telemetry.Error.Message + "\r\n\r\nStacktrace:\r\n" + Telemetry.Error.StackTrace;
             }
+        }
+
+        private void TelemetryOnJobFinished(object sender, EventArgs args)
+        {
+            MessageBox.Show("Job finished, or at least unloaded nearby cargo destination.");
+        }
+
+        private void TelemetryOnJobStarted(object sender, EventArgs e)
+        {
+            MessageBox.Show("Just started job OR loaded game with active.");
         }
 
         private void Telemetry_Data(Ets2Telemetry data, bool updated)

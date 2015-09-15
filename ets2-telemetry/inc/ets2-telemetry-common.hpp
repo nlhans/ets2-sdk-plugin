@@ -7,10 +7,10 @@
 // - Shared memory map struct layout
 // - [..]
 
-#define ETS2_PLUGIN_REVID					4
+#define ETS2_PLUGIN_REVID					5
 
 #define ETS2_PLUGIN_LOGGING_ON				0
-#define ETS2_PLUGIN_LOGGING_SHAREDMEMORY	1
+#define ETS2_PLUGIN_LOGGING_SHAREDMEMORY	0
 #define ETS2_PLUGIN_FILENAME_PREFIX "C:\ets2telem_"
 
 #if ETS2_PLUGIN_LOGGING_ON == 1
@@ -188,6 +188,12 @@ typedef struct ets2TelemetryMap_s
 		float gearDifferential;
 		int gearDashboard;
 	} tel_rev4; // added in sdk1.5
+
+	struct
+	{
+		bool onJob;
+		bool jobFinished;
+	} tel_rev5;
 
 } ets2TelemetryMap_t;
 

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Data.Common;
 using System.IO.MemoryMappedFiles;
-using System.Net.Mail;
 using System.Runtime.InteropServices;
 
 namespace Ets2SdkClient
