@@ -1,10 +1,10 @@
 #include <string.h>
 
-#include "scs_config_handlers.hpp"
+#include "scs_config_handlers.h"
 
 // Plug-in
-#include "ets2-telemetry-common.hpp"
-#include "sharedmemory.hpp"
+#include "ets2-telemetry-common.h"
+#include "mem.h"
 
 extern SharedMemory *telemMem;
 extern ets2TelemetryMap_t *telemPtr;

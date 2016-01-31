@@ -4,15 +4,11 @@
  * Writes the output into file inside the current directory.
  */
 
-// Windows stuff.
-
-#define WINVER 0x0500
-#define _WIN32_WINNT 0x0500
-#include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <stdarg.h>
+#include <string.h>
 
 // SDK
 
@@ -21,9 +17,9 @@
 #include "eurotrucks2/scssdk_telemetry_eut2.h"
 
 // Plug-in
-#include "ets2-telemetry-common.hpp"
-#include "sharedmemory.hpp"
-#include "scs_config_handlers.hpp"
+#include "ets2-telemetry-common.h"
+#include "mem.h"
+#include "scs_config_handlers.h"
 
 #define UNUSED(x)
 
@@ -40,9 +36,6 @@
 
 SharedMemory *telemMem;
 ets2TelemetryMap_t *telemPtr;
-const wchar_t* ets2MmfName = ETS2_PLUGIN_MMF_NAME;
-
-static bool onJob;
 
 /**
  * @brief Last timestamp we received.
@@ -51,10 +44,14 @@ scs_timestamp_t last_timestamp = static_cast<scs_timestamp_t>(-1);
 scs_timestamp_t timestamp;
 
 #ifdef SDK_ENABLE_LOGGING
-
 FILE *log_file = NULL;
 #endif
 
+#ifdef WINVER
+extern const wchar_t* ets2MmfName;
+#else
+//
+#endif
 
 SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *const event_info, const scs_context_t UNUSED(context))
 {
@@ -323,7 +320,14 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
     }
 
 	/*** ACQUIRE SHARED MEMORY BUFFER ***/
-	telemMem = new SharedMemory(ets2MmfName, ETS2_PLUGIN_MMF_SIZE);
+#ifdef WINVER
+	telemMem = new SharedMemoryWin();
+	telemMem->Open(ets2MmfName, ETS2_PLUGIN_MMF_SIZE);
+#else
+const char* boe = "boe";
+	telemMem = new SharedMemoryGnu();
+	telemMem->Open(boe, ETS2_PLUGIN_MMF_SIZE);
+#endif
 
     if (telemMem == NULL)
     {
@@ -481,24 +485,4 @@ SCSAPI_VOID scs_telemetry_shutdown(void)
 #ifdef SDK_ENABLE_LOGGING
     fclose(log_file);
 #endif
-}
-
-// Telemetry api.
-
-BOOL APIENTRY DllMain(
-	HMODULE module,
-	DWORD  reason_for_call,
-	LPVOID reseved
-)
-{
-	if (reason_for_call == DLL_PROCESS_DETACH) {
-
-		// Close MemoryMap
-		if (telemMem != NULL)
-		{
-			telemMem->Close();
-		}
-
-	}
-	return TRUE;
 }

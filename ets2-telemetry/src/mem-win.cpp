@@ -1,24 +1,14 @@
-#include "SharedMemory.hpp"
+#include "mem.h"
+#if WINVER
 
-void SharedMemory::LogError(const char *logPtr)
-{
-#ifdef SHAREDMEM_LOGGING
-	if (this->logFilePtr == NULL)
-	{
-		this->logFilePtr = fopen(SHAREDMEM_FILENAME, "a");
-	}
-	if (this->logFilePtr != NULL)
-	{
-		fprintf(this->logFilePtr, "%s\r\n", logPtr);
-		fprintf(this->logFilePtr, "Windows Error code: %d\r\n\r\n", GetLastError());
-	}
-#endif
-}
+const wchar_t* ets2MmfName = ETS2_PLUGIN_MMF_NAME;
 
-SharedMemory::SharedMemory(LPCWSTR newNamePtr, unsigned int size)
+SharedMemoryWin::SharedMemoryWin(const char* namePtr, unsigned int size)
 {
-    this->mapsize = size;
-    this->namePtr = newNamePtr;
+	wchat_t winStr[256];
+	// TODO: needs fixing:
+	mbstowcs_s(winStr, namePtr, strlen(namePtr)+1);
+	
 	this->isSharedMemoryHooked = false;
 #ifdef SHAREDMEM_LOGGING
 	this->logFilePtr = NULL;
@@ -64,28 +54,27 @@ SharedMemory::SharedMemory(LPCWSTR newNamePtr, unsigned int size)
 	else
 	{
 		memset(this->pBufferPtr, 0, size);
-		this->isSharedMemoryHooked = true;
+		this->hooked = true;
 		LogError("Opened MMF");
 	}
 
 }
 
-
-void SharedMemory::Close(void)
+void SharedMemoryWin::Close(void)
 {
 #ifdef SHAREDMEM_LOGGING
-		if (logFilePtr != NULL)
-		{
-			fclose(logFilePtr);
-			// TODO: Is this closed properly?
-		}
+    if (logFilePtr != NULL)
+    {
+        fclose(logFilePtr);
+        // TODO: Is this closed properly?
+    }
 #endif
-        if (isSharedMemoryHooked)
-        {
-                if (pBufferPtr != NULL) UnmapViewOfFile(pBufferPtr);
-                if (hMapFile != NULL) CloseHandle(hMapFile);
-        }
-
-        isSharedMemoryHooked = false;
-
+    if (this->hooked)
+    {
+        if (pBufferPtr != NULL) UnmapViewOfFile(pBufferPtr);
+        if (hMapFile != NULL) CloseHandle((HANDLE)hMapFile);
+    }
+    
+    this->hooked = false;
 }
+#endif

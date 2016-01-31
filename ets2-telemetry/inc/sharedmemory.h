@@ -1,9 +1,9 @@
 #ifndef SHAREDMEMORY_HPP
 #define SHAREDMEMORY_HPP
-#include <windows.h>
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "ets2-telemetry-common.hpp"
+#include "ets2-telemetry-common.h"
 
 #undef SHAREDMEM_LOGGING
 #if ETS2_PLUGIN_LOGGING_ON == 1
