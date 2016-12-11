@@ -1,5 +1,7 @@
 #Euro Truck Simulator 2 Telemetry
 
+[![Join the chat at https://gitter.im/nlhans/ets2-sdk-plugin](https://badges.gitter.im/nlhans/ets2-sdk-plugin.svg)](https://gitter.im/nlhans/ets2-sdk-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 SCS has kindly released a SDK that allows developers and users to stream telemetry data from the game to any 3rd party applications. An example program was provided (and often used) which enabled streaming data by using text files stored on the users harddisk. This puts unnecessary stress on the users harddrive (not the mention the number of re-writes that would hurt SSDs), and moreover requires the user to manually configure the telemetry data source.
 
 This SDK plug-in transports the telemetry stream via a Memory Mapped File. This is a special Windows (file)stream which resides completely in RAM and can be read from multiple applications. 
