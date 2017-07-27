@@ -139,7 +139,7 @@ namespace Ets2SdkClient
 
         public class _Damage
         {
-            public float WearEnigne { get; internal set; }
+            public float WearEngine { get; internal set; }
             public float WearTransmission { get; internal set; }
             public float WearCabin { get; internal set; }
             public float WearChassis { get; internal set; }
@@ -320,7 +320,7 @@ namespace Ets2SdkClient
             // Damage
             Damage.WearCabin = raw.wearCabin;
             Damage.WearChassis = raw.wearChassis;
-            Damage.WearEnigne = raw.wearEngine;
+            Damage.WearEngine = raw.wearEngine;
             Damage.WearTrailer = raw.wearTrailer;
             Damage.WearTransmission = raw.wearTransmission;
             Damage.WearWheels = raw.wearWheels;
