@@ -6,6 +6,8 @@ namespace Ets2SdkClient
     public class Ets2Telemetry
     {
         public uint Time { get; internal set; }
+        public int AbsolutTime { get; internal set; }
+        public DateTime GameTime { get; internal set; }
         public bool Paused { get; internal set; }
 
         public string Truck { get; private set; }
@@ -182,10 +184,18 @@ namespace Ets2SdkClient
         public _Damage Damage { get; protected set; }
         public _Lights Lights { get; protected set; }
 
+        internal static DateTime SecondsToDate(int seconds)
+        {
+            if (seconds < 0) seconds = 0;
+            return new DateTime((long)seconds * 10000000, DateTimeKind.Utc);
+        }
         public Ets2Telemetry(Ets2SdkData raw, Ets2SdkUnmanaged rawUnmanaged)
         {
             Time = raw.time;
             Paused = (raw.paused > 0);
+            AbsolutTime = raw.timeAbsolute;
+            GameTime = SecondsToDate(AbsolutTime);
+
 
             TruckId = rawUnmanaged.TruckModel;
             Truck = Encoding.UTF8.GetString(raw.truckModel).Replace('\0', ' ').Trim();

@@ -51,7 +51,7 @@ namespace Ets2SdkClient.Demo
 
                 lbGeneral.Text = "General info:\r\n SDK Version: " + data.Version.SdkPlugin + "\r\n Reported game Version: " +
                                  data.Version.Ets2Major + "." + data.Version.Ets2Minor + "\r\n\r\nTruck: " + data.Truck + " (" + data.TruckId + ")\r\nManufacturer: " + data.Manufacturer + "(" + data.ManufacturerId + ")" +
-                                 "\r\nGame Timestamp: " + data.Time + "\r\nPaused? " + data.Paused;
+                                 "\r\nGame Timestamp: " + data.Time + "\r\nPaused? " + data.Paused +"\r\n\r\n"+data.AbsolutTime +" (seconds)"+"\r\n"+data.GameTime;
 
                 // Do some magic trickery to display ALL info:
                 var grps = new object[]
