@@ -2,9 +2,8 @@
 using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 
-namespace Ets2SdkClient
-{
-    public class SharedMemory
+namespace Ets2SdkClient {
+   public class SharedMemory
     {
         private const uint defaultMapSize = 16*1024;
         
@@ -15,6 +14,7 @@ namespace Ets2SdkClient
 
         private MemoryMappedFile memoryMappedHandle;
         private MemoryMappedViewAccessor memoryMappedView;
+        private Ets2SdkDataAlt alt = new Ets2SdkDataAlt();
 
         public void Connect(string map)
         {
@@ -59,7 +59,7 @@ namespace Ets2SdkClient
             memoryMappedHandle.Dispose();
         }
 
-        public T Update<T>()
+        public Ets2Telemetry Update<T>()
         {
             Update();
 
@@ -84,9 +84,9 @@ namespace Ets2SdkClient
         /// <typeparam name="T">Managed C# object type</typeparam>
         /// <param name="structureDataBytes">Bytes array</param>
         /// <returns>Managed object from given bytes</returns>
-        protected T ToObject<T>(byte[] structureDataBytes)
+        protected Ets2Telemetry ToObject<T>(byte[] structureDataBytes)
         {
-            T createdObject = default(T);
+           /* T createdObject = default(T);
 
             var memoryObjectSize = Marshal.SizeOf(typeof(T));
 
@@ -104,7 +104,8 @@ namespace Ets2SdkClient
 
             Marshal.FreeHGlobal(reservedMemPtr);
             
-            return createdObject;
+            return createdObject;*/
+            return alt.Convert(structureDataBytes);
         }
 
 

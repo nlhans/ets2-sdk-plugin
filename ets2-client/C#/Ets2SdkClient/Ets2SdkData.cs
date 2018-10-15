@@ -1,7 +1,6 @@
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace Ets2SdkClient
-{
+namespace Ets2SdkClient {
     [StructLayout(LayoutKind.Explicit)]
     public struct Ets2SdkData
     {

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using System.Timers;
 
-namespace Ets2SdkClient
-{
+using Timer = System.Threading.Timer;
+
+namespace Ets2SdkClient {
     public delegate void TelemetryData(Ets2Telemetry data, bool newTimestamp);
 
     public class Ets2SdkTelemetry
@@ -16,7 +18,7 @@ namespace Ets2SdkClient
 
         public string Map { get; private set; }
         public int UpdateInterval { get; private set; }
-        public Exception Error { get; private set; }
+        public Exception Error { get; private set; } 
 
         private uint lastTime = 0xFFFFFFFF;
 
@@ -67,24 +69,25 @@ namespace Ets2SdkClient
                 Error = SharedMemory.HookException;
                 return;
             }
+            var tsInterval = new TimeSpan(0, 0, 0,0,interval);
 
-            _updateTimer = new Timer { Interval = interval };
-            _updateTimer.Elapsed += _updateTimer_Elapsed;
-            _updateTimer.Start();
+            _updateTimer = new Timer( _updateTimer_Elapsed, null,tsInterval,tsInterval);
+             
         }
 
-        void _updateTimer_Elapsed(object sender, ElapsedEventArgs e)
+        void _updateTimer_Elapsed(object sender)
         {
-            var ets2RawData = SharedMemory.Update<Ets2SdkData>();
+            /*var ets2RawData = SharedMemory.Update<Ets2SdkData>();
 
             var ets2RawUnmanaged = new Ets2SdkUnmanaged();
             ets2RawUnmanaged.TrailerModel = Encoding.UTF8.GetString(SharedMemory.RawData, ets2RawData.trailerOffset, ets2RawData.trailerLength);
             ets2RawUnmanaged.TruckModel = Encoding.UTF8.GetString(SharedMemory.RawData, ets2RawData.modelOffset, ets2RawData.modelLength);
 
-            var ets2telemetry = new Ets2Telemetry(ets2RawData, ets2RawUnmanaged);
-
+            var ets2telemetry = new Ets2Telemetry(ets2RawData, ets2RawUnmanaged);*/
+            var ets2telemetry = SharedMemory.Update<Ets2Telemetry>();
+            var time = ets2telemetry.Time;
             if (Data != null)
-                Data(ets2telemetry, ets2RawData.time != lastTime);
+                Data(ets2telemetry, time != lastTime);
 
             // Job close & start events
             if (wasFinishingJob != ets2telemetry.Job.JobFinished)
@@ -102,7 +105,7 @@ namespace Ets2SdkClient
 
             }
 
-            lastTime = ets2RawData.time;
+            lastTime = time;
 
         }
     }

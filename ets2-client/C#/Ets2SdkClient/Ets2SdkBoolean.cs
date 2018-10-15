@@ -1,7 +1,5 @@
-namespace Ets2SdkClient
-{
-    public enum Ets2SdkBoolean
-    {
+﻿namespace Ets2SdkClient {
+    public enum Ets2SdkBoolean {
         CruiseControl,
         Wipers,
         ParkBrake,

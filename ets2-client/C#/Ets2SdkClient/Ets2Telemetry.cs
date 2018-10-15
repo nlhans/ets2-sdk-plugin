@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Text;
 
-namespace Ets2SdkClient
-{
-    public class Ets2Telemetry
+namespace Ets2SdkClient {
+     public class Ets2Telemetry
     {
         public uint Time { get; internal set; }
+        public int AbsolutTime { get; internal set; }
+        public DateTime GameTime => SecondsToDate(AbsolutTime);
+
         public bool Paused { get; internal set; }
 
-        public string Truck { get; private set; }
-        public string TruckId { get; private set; }
+        public string Truck { get; internal set; }
+        public string TruckId { get; internal set; }
 
-        public string Manufacturer { get; private set; }
-        public string ManufacturerId { get; private set; }
+        public string Manufacturer { get; internal set; }
+        public string ManufacturerId { get; internal set; }
 
         public class _Physics
         {
@@ -89,6 +91,9 @@ namespace Ets2SdkClient
             public float AirPressure { get; internal set; }
             public float BrakeTemperature { get; internal set; }
 
+            public float Weight { get; internal set; }
+            public float BatteryVoltage { get; internal set; }
+
         }
 
         public class _Controls
@@ -123,6 +128,9 @@ namespace Ets2SdkClient
             public float NavigationDistanceLeft { get; internal set; } // meter
             public float NavigationTimeLeft { get; internal set; }
             public float SpeedLimit { get; internal set; } // meter/second
+            public float TrailerWeight { get; internal set; }
+
+            public string TrailerModel { get; internal set; }
         }
 
         public class _Axilliary
@@ -182,10 +190,19 @@ namespace Ets2SdkClient
         public _Damage Damage { get; protected set; }
         public _Lights Lights { get; protected set; }
 
+        internal static DateTime SecondsToDate(int seconds)
+        {
+            if (seconds < 0) {
+                seconds = 0;
+            }
+            return new DateTime((long)seconds * 10000000, DateTimeKind.Utc);
+        }
         public Ets2Telemetry(Ets2SdkData raw, Ets2SdkUnmanaged rawUnmanaged)
         {
             Time = raw.time;
             Paused = (raw.paused > 0);
+            AbsolutTime = raw.timeAbsolute; 
+
 
             TruckId = rawUnmanaged.TruckModel;
             Truck = Encoding.UTF8.GetString(raw.truckModel).Replace('\0', ' ').Trim();
@@ -257,7 +274,7 @@ namespace Ets2SdkClient
             Drivetrain.FuelAvgConsumption = raw.fuelAvgConsumption;
             Drivetrain.FuelMax = raw.fuelCapacity;
             Drivetrain.FuelRate = raw.fuelRate;
-            Drivetrain.FuelWarningLight = raw.fuelWarning == 0 ? false : true; 
+            Drivetrain.FuelWarningLight = raw.fuelWarning != 0; 
 
             Drivetrain.Gear = raw.gear;
             Drivetrain.GearRange = raw.gearRangeActive;
@@ -339,6 +356,18 @@ namespace Ets2SdkClient
             Lights.ParkingLights = raw.GetBool(Ets2SdkBoolean.LightsParking);// TODO
             Lights.ReverseLight = raw.GetBool(Ets2SdkBoolean.LightsReverse);// TODO
             Lights.RoofAux = raw.GetBool(Ets2SdkBoolean.LightsAuxRoof);// TODO
+        }
+
+        public Ets2Telemetry()
+        {
+            Version = new _Version();
+            Physics = new _Physics();
+            Drivetrain = new _Drivetrain();
+            Job = new _Job();
+            Controls = new _Controls();
+            Axilliary = new _Axilliary();
+            Lights = new _Lights();
+            Damage = new _Damage();
         }
     }
 

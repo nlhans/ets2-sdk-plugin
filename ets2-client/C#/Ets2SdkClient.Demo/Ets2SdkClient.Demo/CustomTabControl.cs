@@ -1,7 +1,10 @@
-﻿using System.Windows.Forms;
+﻿// 
+// Ets2SdkClient.Demo
+// CustomTabControl.cs
+// 10:52
+using System.Windows.Forms;
 
-namespace Ets2SdkClient.Demo
-{
+namespace Ets2SdkClient.Demo {
     public class CustomTabPage : TabPage
     {
         public CustomTabPage(string txt) : base(txt)

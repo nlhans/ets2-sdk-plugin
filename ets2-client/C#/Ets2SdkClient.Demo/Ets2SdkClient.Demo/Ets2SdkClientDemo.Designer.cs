@@ -1,6 +1,6 @@
 ﻿namespace Ets2SdkClient.Demo
 {
-    partial class Ets2SdkClientDemo
+   partial class Ets2SdkClientDemo
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ets2SdkClientDemo));
             this.telemetryInfo = new System.Windows.Forms.TabControl();
             this.tabAbout = new System.Windows.Forms.TabPage();
             this.lbGeneral = new System.Windows.Forms.RichTextBox();
@@ -75,7 +74,8 @@
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(549, 122);
             this.richTextBox1.TabIndex = 1;
-            this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
+            this.richTextBox1.Text =
+                "This application serves as a demo for this fan-made ETS2 SDK telemetry plug in. The demo serves up all available readouts from the plugin and displays them in the tabs of this window. The demo also includes a DLL for integrating into any .NET application to start working with the ETS2 telemetry on your project.";
             // 
             // lblDemo
             // 

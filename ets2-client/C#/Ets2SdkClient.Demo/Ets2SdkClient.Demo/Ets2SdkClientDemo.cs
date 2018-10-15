@@ -1,32 +1,40 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Ets2SdkClient.Demo
 {
     public partial class Ets2SdkClientDemo : Form
     {
-        public Ets2SdkTelemetry Telemetry;
+    public Ets2SdkTelemetry Telemetry;
 
         public Ets2SdkClientDemo()
         {
             InitializeComponent();
-
+            Console.WriteLine("SOMEMEOMEO");
             Telemetry = new Ets2SdkTelemetry();
+            Console.WriteLine("SOMEMEOMEO2");
             Telemetry.Data += Telemetry_Data;
-
+            Console.WriteLine("SOMEMEOMEO3");
             Telemetry.JobFinished += TelemetryOnJobFinished;
+            Console.WriteLine("SOMEMEOMEO4");
             Telemetry.JobStarted += TelemetryOnJobStarted;
-
+            Console.WriteLine("SOMEMEOMEO5");
             if (Telemetry.Error != null)
             {
+                Console.WriteLine("SOMEMEOMEOError");
                 lbGeneral.Text =
                     "General info:\r\nFailed to open memory map " + Telemetry.Map +
                         " - on some systems you need to run the client (this app) with elevated permissions, because e.g. you're running Steam/ETS2 with elevated permissions as well. .NET reported the following Exception:\r\n" +
                         Telemetry.Error.Message + "\r\n\r\nStacktrace:\r\n" + Telemetry.Error.StackTrace;
             }
+            Console.WriteLine("SOMEMEOMEO6");
         }
 
         private void TelemetryOnJobFinished(object sender, EventArgs args)
@@ -41,17 +49,19 @@ namespace Ets2SdkClient.Demo
 
         private void Telemetry_Data(Ets2Telemetry data, bool updated)
         {
+            Console.WriteLine("Does we come here?");
             try
             {
                 if (this.InvokeRequired)
                 {
+                    Console.WriteLine("SOMEMEOMEO");
                     this.Invoke(new TelemetryData(Telemetry_Data), new object[2] { data, updated });
                     return;
                 }
 
                 lbGeneral.Text = "General info:\r\n SDK Version: " + data.Version.SdkPlugin + "\r\n Reported game Version: " +
                                  data.Version.Ets2Major + "." + data.Version.Ets2Minor + "\r\n\r\nTruck: " + data.Truck + " (" + data.TruckId + ")\r\nManufacturer: " + data.Manufacturer + "(" + data.ManufacturerId + ")" +
-                                 "\r\nGame Timestamp: " + data.Time + "\r\nPaused? " + data.Paused;
+                                 "\r\nGame Timestamp: " + data.Time + "\r\nPaused? " + data.Paused +"\r\n\r\n"+data.AbsolutTime +" (seconds)"+"\r\n"+data.GameTime;
 
                 // Do some magic trickery to display ALL info:
                 var grps = new object[]
@@ -90,10 +100,11 @@ namespace Ets2SdkClient.Demo
                     foreach (var prop in props)
                     {
                         labels.AppendLine(prop.Name + ":");
-                        object val = prop.GetValue(grp, null);
-                        if (val is float[])
+                        var val = prop.GetValue(grp, null);
+                        if (val is float[] floats)
                         {
-                            vals.AppendLine(string.Join(", ", (val as float[]).Select(x=> x.ToString("0.000"))));
+                      
+                            vals.AppendLine(string.Join(", ", floats.Select(x=> x>0f?x.ToString("0.000"):"")));
                         }
                         else
                         {
