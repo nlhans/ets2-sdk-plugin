@@ -1,3 +1,6 @@
+In development rework to allow 32bit and 64 bit, make it a bit better modifiable and add a few Wishes and game detection
+
+
 # Euro Truck Simulator 2 Telemetry
 
 [![Join the chat at https://gitter.im/nlhans/ets2-sdk-plugin](https://badges.gitter.im/nlhans/ets2-sdk-plugin.svg)](https://gitter.im/nlhans/ets2-sdk-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
