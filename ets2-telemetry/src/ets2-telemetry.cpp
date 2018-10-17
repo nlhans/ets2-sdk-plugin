@@ -36,6 +36,7 @@
  * RegisterSpecificChannel allows for your own handler name, without the telemetry_store_ prefix.
  */
 #define registerChannel(name, type, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ));
+#define registerChannel2(name, type, to, test) version_params->register_for_channel(SCS_TELEMETRY_##name, test, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ));
 #define registerSpecificChannel(name, type, handler, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, handler, &( to ));
 
 SharedMemory *telemMem;
@@ -407,7 +408,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	// Auxilliary stuff:
 	registerChannel(TRUCK_CHANNEL_retarder_level, u32, telemPtr->tel_rev3.retarderBrake);
 	registerChannel(TRUCK_CHANNEL_hshifter_slot, u32, telemPtr->tel_rev3.shifterSlot);
-	registerChannel(TRUCK_CHANNEL_hshifter_selector, bool, telemPtr->tel_rev3.shifterToggle);
+	registerChannel2(TRUCK_CHANNEL_hshifter_selector, bool, telemPtr->tel_rev3.shifterToggle,0);
 
 	// Booleans
 	registerChannel(TRUCK_CHANNEL_wipers, bool, telemPtr->tel_rev3.wipers);
