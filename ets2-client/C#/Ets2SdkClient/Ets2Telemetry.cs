@@ -164,8 +164,8 @@ namespace Ets2SdkClient {
             public bool ParkingLights { get; internal set; }
             public bool LowBeams { get; internal set; }
             public bool HighBeams { get; internal set; }
-            public bool FrontAux { get; internal set; }
-            public bool RoofAux { get; internal set; }
+            public int FrontAux { get; internal set; }
+            public int RoofAux { get; internal set; }
             public bool BrakeLight { get; internal set; }
             public bool ReverseLight { get; internal set; }
             public float LightsDashboard { get; internal set; }
@@ -349,13 +349,13 @@ namespace Ets2SdkClient {
             Lights.BlinkerRightActive = raw.GetBool(Ets2SdkBoolean.BlinkerRightActive);// TODO
             Lights.BlinkerRightOn = raw.GetBool(Ets2SdkBoolean.BlinkerRightOn);// TODO
             Lights.BrakeLight = raw.GetBool(Ets2SdkBoolean.LightsBrake);// TODO
-            Lights.FrontAux = raw.GetBool(Ets2SdkBoolean.LightsAuxFront);// TODO
+          //  Lights.FrontAux = raw.GetBool(Ets2SdkBoolean.LightsAuxFront);// TODO
             Lights.HighBeams = raw.GetBool(Ets2SdkBoolean.LightsBeamHigh);// TODO
             Lights.LightsDashboard = raw.lightsDashboard;
             Lights.LowBeams = raw.GetBool(Ets2SdkBoolean.LightsBeamLow);// TODO
             Lights.ParkingLights = raw.GetBool(Ets2SdkBoolean.LightsParking);// TODO
             Lights.ReverseLight = raw.GetBool(Ets2SdkBoolean.LightsReverse);// TODO
-            Lights.RoofAux = raw.GetBool(Ets2SdkBoolean.LightsAuxRoof);// TODO
+            //Lights.RoofAux = raw.GetBool(Ets2SdkBoolean.LightsAuxRoof);// TODO
         }
 
         public Ets2Telemetry()

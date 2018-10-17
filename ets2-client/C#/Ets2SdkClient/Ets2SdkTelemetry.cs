@@ -10,7 +10,7 @@ namespace Ets2SdkClient {
 
     public class Ets2SdkTelemetry
     {
-        private const string DefaultSharedMemoryMap = "Local\\SimTelemetryETS2";
+        private const string DefaultSharedMemoryMap = "Local\\SimTelemetryETS22";
         private const int DefaultUpdateInterval = 25;
 
         private Timer _updateTimer;

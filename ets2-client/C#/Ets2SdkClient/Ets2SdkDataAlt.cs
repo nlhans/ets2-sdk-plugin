@@ -107,63 +107,63 @@ namespace Ets2SdkClient {
             retData.Lights.ParkingLights  = data[590] == 1;
             retData.Lights.LowBeams  = data[591] == 1;
             retData.Lights.HighBeams  = data[592] == 1;
-            retData.Lights.FrontAux  = data[593] == 1;
-            retData.Lights.RoofAux  = data[594] == 1;
-            retData.Lights.Beacon  = data[595] == 1;
-            retData.Lights.BrakeLight  = data[596] == 1;
-            retData.Lights.ReverseLight  = data[597] == 1;
-            retData.Axilliary.BatteryVoltageWarning  = data[598] == 1;
-            retData.Axilliary.AirPressureWarning  = data[599] == 1;
-            retData.Axilliary.AirPressureEmergency  = data[600] == 1;
-            retData.Axilliary.AdblueWarning  = data[601] == 1;
-            retData.Axilliary.OilPressureWarning  = data[602] == 1;
-            retData.Axilliary.WaterTemperatureWarning  = data[603] == 1;
+            retData.Lights.FrontAux = GetInt(596);
+            retData.Lights.RoofAux  = GetInt(600);
+            retData.Lights.Beacon  = data[604] == 1;
+            retData.Lights.BrakeLight  = data[605] == 1;
+            retData.Lights.ReverseLight  = data[606] == 1;
+            retData.Axilliary.BatteryVoltageWarning  = data[607] == 1;
+            retData.Axilliary.AirPressureWarning  = data[608] == 1;
+            retData.Axilliary.AirPressureEmergency  = data[609] == 1;
+            retData.Axilliary.AdblueWarning  = data[610] == 1;
+            retData.Axilliary.OilPressureWarning  = data[611] == 1;
+            retData.Axilliary.WaterTemperatureWarning  = data[612] == 1;
 
-            retData.Drivetrain.AirPressure = GetFloat(604);
-            retData.Drivetrain.BrakeTemperature = GetFloat(608);
-            retData.Drivetrain.FuelWarning = GetInt(612);
-            retData.Drivetrain.Adblue = GetFloat(616);
-            retData.Drivetrain.AdblueConsumption = GetFloat(620);
-            retData.Drivetrain.OilPressure = GetFloat(624);
-            retData.Drivetrain.OilTemperature = GetFloat(628);
-            retData.Drivetrain.WaterTemperature = GetFloat(632);
-            retData.Drivetrain.BatteryVoltage = GetFloat(636);
-            retData.Lights.LightsDashboard = GetFloat(640);
-            retData.Damage.WearEnigne = GetFloat(644);
-            retData.Damage.WearTransmission = GetFloat(648);
-            retData.Damage.WearCabin = GetFloat(652);
-            retData.Damage.WearChassis = GetFloat(656);
-            retData.Damage.WearWheels = GetFloat(660);
-            retData.Damage.WearTrailer = GetFloat(664);
-            retData.Drivetrain.TruckOdometer = GetFloat(668);
-            retData.Drivetrain.CruiseControlSpeed = GetFloat(672);
+            retData.Drivetrain.AirPressure = GetFloat(616);
+            retData.Drivetrain.BrakeTemperature = GetFloat(620);
+            retData.Drivetrain.FuelWarning = GetInt(624);
+            retData.Drivetrain.Adblue = GetFloat(628);
+            retData.Drivetrain.AdblueConsumption = GetFloat(632); // Seems not to exists but exists in header
+            retData.Drivetrain.OilPressure = GetFloat(636);
+            retData.Drivetrain.OilTemperature = GetFloat(640);
+            retData.Drivetrain.WaterTemperature = GetFloat(644);
+            retData.Drivetrain.BatteryVoltage = GetFloat(648);
+            retData.Lights.LightsDashboard = GetFloat(652);
+            retData.Damage.WearEnigne = GetFloat(656);
+            retData.Damage.WearTransmission = GetFloat(660);
+            retData.Damage.WearCabin = GetFloat(664);
+            retData.Damage.WearChassis = GetFloat(668);
+            retData.Damage.WearWheels = GetFloat(672);
+            retData.Damage.WearTrailer = GetFloat(676);
+            retData.Drivetrain.TruckOdometer = GetFloat(680);
+            retData.Drivetrain.CruiseControlSpeed = GetFloat(684);
 
-            retData.Manufacturer = Encoding.UTF8.GetString(GetSubArray(676,64)).Replace('\0', ' ').Trim();
-            retData .ManufacturerId  = Encoding.UTF8.GetString(GetSubArray(740,64)).Replace('\0', ' ').Trim();
+            retData.Manufacturer = Encoding.UTF8.GetString(GetSubArray(688,64)).Replace('\0', ' ').Trim();
+            retData .ManufacturerId  = Encoding.UTF8.GetString(GetSubArray(752,64)).Replace('\0', ' ').Trim();
             retData.TruckId = Encoding.UTF8.GetString(GetSubArray(modelOffset,modelLength));
             retData.Job.TrailerModel =  Encoding.UTF8.GetString(GetSubArray(trailerOffset,trailerLength));
-            retData.Truck  = Encoding.UTF8.GetString(GetSubArray(804,64)).Replace('\0', ' ').Trim();
+            retData.Truck  = Encoding.UTF8.GetString(GetSubArray(816,64)).Replace('\0', ' ').Trim();
 
-            retData.Job.SpeedLimit = GetFloat(868);
-            retData.Job.NavigationDistanceLeft = GetFloat(872);
-            retData.Job.NavigationTimeLeft = GetFloat(876);
-            retData.Drivetrain.FuelRate = GetFloat(880);
+            retData.Job.SpeedLimit = GetFloat(880);
+            retData.Job.NavigationDistanceLeft = GetFloat(884);
+            retData.Job.NavigationTimeLeft = GetFloat(888);
+            retData.Drivetrain.FuelRate = GetFloat(892);
 
             retData.Drivetrain.GearRatiosForward = new float[24];
             for (var i = 0; i < 24; i++) {
-                retData.Drivetrain.GearRatiosForward[i] = GetFloat(884 + (i * 4));
+                retData.Drivetrain.GearRatiosForward[i] = GetFloat(896 + (i * 4));
             }
 
             retData.Drivetrain.GearRatiosReverse = new float[8];
             for (var i = 0; i < 8; i++) {
-                retData.Drivetrain.GearRatiosReverse[i] = GetFloat(980 + (i * 4));
+                retData.Drivetrain.GearRatiosReverse[i] = GetFloat(992 + (i * 4));
             }
 
-            retData.Drivetrain.GearRatioDifferential = GetFloat(1012);
-            retData.Drivetrain.GearDashboard = GetInt(1016);
+            retData.Drivetrain.GearRatioDifferential = GetFloat(1024);
+            retData.Drivetrain.GearDashboard = GetInt(1028);
 
-            retData.Job.OnJob = data[1020] == 1;
-            retData.Job.JobFinished = data[1021] == 1;
+            retData.Job.OnJob = data[1032] == 1;
+            retData.Job.JobFinished = data[1033] == 1;
 
             return retData;
         }
@@ -178,7 +178,7 @@ namespace Ets2SdkClient {
         } 
         //TODO: Check if this is also correct
         private int GetInt(int index) {
-            return -(data[index+3] << 24) | (data[index+2] << 16) | (data[index+1] << 8) | (data[index]);
+            return (data[index+3] << 24) | (data[index+2] << 16) | (data[index+1] << 8) | (data[index]);
         }
 
         private byte[] GetSubArray(int startIndex, int length) {

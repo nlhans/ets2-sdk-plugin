@@ -378,7 +378,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	}
 
 	/*** REGISTER ALL TELEMETRY CHANNELS TO OUR SHARED MEMORY MAP ***/
-	registerChannel(TRUCK_CHANNEL_electric_enabled, bool, telemPtr->tel_rev1.engine_enabled);
+	//registerChannel(TRUCK_CHANNEL_electric_enabled, bool, telemPtr->tel_rev1.engine_enabled);
 	registerChannel(CHANNEL_game_time, u32, telemPtr->tel_rev2.time_abs);
 	registerChannel(TRAILER_CHANNEL_connected, bool, telemPtr->tel_rev1.trailer_attached);
 
@@ -423,8 +423,8 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	registerChannel(TRUCK_CHANNEL_light_parking, bool, telemPtr->tel_rev3.lightsParking);
 	registerChannel(TRUCK_CHANNEL_light_low_beam, bool, telemPtr->tel_rev3.lightsBeamLow);
 	registerChannel(TRUCK_CHANNEL_light_high_beam, bool, telemPtr->tel_rev3.lightsBeamHigh);
-	registerChannel(TRUCK_CHANNEL_light_aux_front, bool, telemPtr->tel_rev3.lightsAuxFront);
-	registerChannel(TRUCK_CHANNEL_light_aux_roof, bool, telemPtr->tel_rev3.lightsAuxRoof);
+	registerChannel(TRUCK_CHANNEL_light_aux_front, u32, telemPtr->tel_rev3.lightsAuxFront);
+	registerChannel(TRUCK_CHANNEL_light_aux_roof, u32, telemPtr->tel_rev3.lightsAuxRoof);
 	registerChannel(TRUCK_CHANNEL_light_beacon, bool, telemPtr->tel_rev3.lightsBeacon);
 	registerChannel(TRUCK_CHANNEL_light_brake, bool, telemPtr->tel_rev3.lightsBrake);
 	registerChannel(TRUCK_CHANNEL_light_reverse, bool, telemPtr->tel_rev3.lightsReverse);

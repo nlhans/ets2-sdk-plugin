@@ -104,7 +104,7 @@ namespace Ets2SdkClient.Demo
                         if (val is float[] floats)
                         {
                       
-                            vals.AppendLine(string.Join(", ", floats.Select(x=> x>0f?x.ToString("0.000"):"")));
+                            vals.AppendLine(string.Join(", ", floats.Select(x=> Math.Abs(x) > 0.01?x.ToString("0.000"):"")));
                         }
                         else
                         {

@@ -17,7 +17,7 @@
 #define SDK_ENABLE_LOGGING
 #endif
 
-#define ETS2_PLUGIN_MMF_NAME TEXT("Local\\SimTelemetryETS2")
+#define ETS2_PLUGIN_MMF_NAME TEXT("Local\\SimTelemetryETS22")
 #define ETS2_PLUGIN_MMF_SIZE (16*1024)
 
 #define TRUCK_STRING_OFFSET 15*1024
@@ -137,8 +137,8 @@ typedef struct ets2TelemetryMap_s
 		bool lightsParking;
 		bool lightsBeamLow;
 		bool lightsBeamHigh;
-		bool lightsAuxFront;
-		bool lightsAuxRoof;
+		int lightsAuxFront;
+		int lightsAuxRoof;
 		bool lightsBeacon;
 		bool lightsBrake;
 		bool lightsReverse;
