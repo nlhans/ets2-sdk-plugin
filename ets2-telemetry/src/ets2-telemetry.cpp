@@ -9,16 +9,16 @@
 #define WINVER 0x0500
 #define _WIN32_WINNT 0x0500
 #include <windows.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <stdarg.h>
+#include <cassert>
+#include <cstdarg>
 
 // SDK
 
 #include "scssdk_telemetry.h"
 #include "eurotrucks2/scssdk_eut2.h"
 #include "eurotrucks2/scssdk_telemetry_eut2.h"
+#include "amtrucks/scssdk_ats.h"
+#include "amtrucks/scssdk_telemetry_ats.h"
 
 // Plug-in
 #include "ets2-telemetry-common.hpp"
@@ -39,8 +39,8 @@
 #define registerChannel2(name, type, to, test) version_params->register_for_channel(SCS_TELEMETRY_##name, test, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ));
 #define registerSpecificChannel(name, type, handler, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, handler, &( to ));
 
-SharedMemory *telemMem;
-ets2TelemetryMap_t *telemPtr;
+SharedMemory* telemMem;
+ets2TelemetryMap_t* telemPtr;
 const wchar_t* ets2MmfName = ETS2_PLUGIN_MMF_NAME;
 
 static bool onJob;
@@ -57,10 +57,10 @@ FILE *log_file = NULL;
 #endif
 
 
-SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *const event_info, const scs_context_t UNUSED(context))
-{
-	static int clearJobTicker = 0;
-	const struct scs_telemetry_frame_start_t *const info = static_cast<const scs_telemetry_frame_start_t *>(event_info);
+SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*const event_info,
+                                  const scs_context_t UNUSED(context)) {
+	static auto clearJobTicker = 0;
+	const auto info = static_cast<const scs_telemetry_frame_start_t *>(event_info);
 
 	// The following processing of the timestamps is done so the output
 	// from this plugin has continuous time, it is not necessary otherwise.
@@ -85,16 +85,16 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *c
 	last_timestamp = info->paused_simulation_time;
 
 	/* Copy over the game timestamp to our telemetry memory */
-	if (telemPtr != NULL)
-	{
-		telemPtr->time = (unsigned int) timestamp;
+	if (telemPtr != nullptr) {
+		telemPtr->time = static_cast<unsigned int>(timestamp);
 
 		// Do a non-convential periodic update of this field:
-		telemPtr->tel_rev3.cruiseControl = (telemPtr->tel_rev3.cruiseControlSpeed > 0) ? true : false;
+		telemPtr->tel_rev3.cruiseControl = telemPtr->tel_rev3.cruiseControlSpeed > 0;
 
 		// Check if job could be finished ; if so empty the job field info
-		if (telemPtr->tel_rev5.onJob == true && telemPtr->tel_rev1.trailer_attached == false && telemPtr->tel_rev4.routeDistance <= 0.1f && telemPtr->tel_rev4.routeDistance >= 0.0f)
-		{
+		if (telemPtr->tel_rev5.onJob && !telemPtr->tel_rev1.trailer_attached && telemPtr
+		                                                                                        ->tel_rev4.routeDistance
+			<= 0.1f && telemPtr->tel_rev4.routeDistance >= 0.0f) {
 			// if was carrying cargo and not anymore with navigation distance close to zero; 
 			// then we assume the job has finished
 			// we allow some frames (see ticker) for the client to retrieve data
@@ -103,16 +103,14 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *c
 			telemPtr->tel_rev5.jobFinished = true;
 			clearJobTicker = 0;
 		}
-		else if (telemPtr->tel_rev5.jobFinished)
-		{
+		else if (telemPtr->tel_rev5.jobFinished) {
 			clearJobTicker ++;
 
-			if (clearJobTicker > 10)
-			{
+			if (clearJobTicker > 10) {
 				telemPtr->tel_rev2.jobIncome = 0;
 				telemPtr->tel_rev2.time_abs_delivery = 0;
 				telemPtr->tel_rev2.trailerMass = 0;
-			
+
 				memset(telemPtr->tel_rev2.trailerId, 0, 64);
 				memset(telemPtr->tel_rev2.trailerName, 0, 64);
 
@@ -124,10 +122,8 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *c
 				telemPtr->tel_rev5.jobFinished = false;
 			}
 		}
-		else
-		{
-			if (telemPtr->tel_rev2.jobIncome != 0 && telemPtr->tel_rev1.trailer_attached)
-			{
+		else {
+			if (telemPtr->tel_rev2.jobIncome != 0 && telemPtr->tel_rev1.trailer_attached) {
 				telemPtr->tel_rev5.onJob = true;
 			}
 		}
@@ -136,26 +132,25 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void *c
 
 }
 
-SCSAPI_VOID telemetry_pause(const scs_event_t event, const void *const UNUSED(event_info), const scs_context_t UNUSED(context))
-{
-	if (telemPtr != NULL)
-	{
+SCSAPI_VOID telemetry_pause(const scs_event_t event, const void*const UNUSED(event_info),
+                            const scs_context_t UNUSED(context)) {
+	if (telemPtr != nullptr) {
 		telemPtr->paused = (event == SCS_TELEMETRY_EVENT_paused) ? 1 : 0;
 	}
 }
 
-SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void *const event_info, const scs_context_t UNUSED(context))
-{
+SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const event_info,
+                                    const scs_context_t UNUSED(context)) {
 	// This method prints all available attributes of the truck.
 	// On configuration change, this function is called.
-    const struct scs_telemetry_configuration_t *const info = static_cast<const scs_telemetry_configuration_t *>(event_info);
+	const auto info = static_cast<const scs_telemetry_configuration_t *>(
+		event_info);
 
 #ifdef SDK_ENABLE_LOGGING
 	fprintf(log_file,"----\n");
 #endif
 
-    for (const scs_named_value_t *current = info->attributes; current->name; ++current)
-	{
+	for (const scs_named_value_t* current = info->attributes; current->name; ++current) {
 #ifdef SDK_ENABLE_LOGGING
 		fprintf(log_file, "Name: %s / Val: ", current->name);
 		switch(current->value.type)
@@ -223,83 +218,79 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void *const e
 }
 
 /******* STORING OF SEVERAL SCS DATA TYPES *******/
-SCSAPI_VOID telemetry_store_float(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
-{
-	if(!value) return;
+SCSAPI_VOID telemetry_store_float(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
+                                  const scs_context_t context) {
+	if (!value) return;
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_float);
 	assert(context);
 	*static_cast<float *>(context) = value->value_float.value;
 }
 
-SCSAPI_VOID telemetry_store_s32(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
-{
-	if(!value) return;
+SCSAPI_VOID telemetry_store_s32(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
+                                const scs_context_t context) {
+	if (!value) return;
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_s32);
 	assert(context);
 	*static_cast<int *>(context) = value->value_s32.value;
 }
 
-SCSAPI_VOID telemetry_store_u32(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
-{
-	if(!value) return;
+SCSAPI_VOID telemetry_store_u32(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
+                                const scs_context_t context) {
+	if (!value) return;
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_u32);
 	assert(context);
 	*static_cast<unsigned int *>(context) = value->value_u32.value;
 }
 
-SCSAPI_VOID telemetry_store_bool(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
-{
-	if(!context) return;
+SCSAPI_VOID telemetry_store_bool(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
+                                 const scs_context_t context) {
+	if (!context) return;
 	/*assert(value);
 	assert(value->type == SCS_VALUE_TYPE_bool);*/
 	//assert(context);
-	if (value)
-	{
-		if (value->value_bool.value == 0)
-		{
+	if (value) {
+		if (value->value_bool.value == 0) {
 			*static_cast<bool *>(context) = false;
 		}
-		else
-		{
+		else {
 			*static_cast<bool *>(context) = true;
 		}
 	}
-	else
-	{
+	else {
 		*static_cast<bool *>(context) = false;
 	}
 }
 
-SCSAPI_VOID telemetry_store_fvector(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
-{
-	if(!value) return;
+SCSAPI_VOID telemetry_store_fvector(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
+                                    const scs_context_t context) {
+	if (!value) return;
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_fvector);
 	assert(context);
-	*(static_cast<float *>(context)+0) = value->value_fvector.x;
-	*(static_cast<float *>(context)+1) = value->value_fvector.y;
-	*(static_cast<float *>(context)+2) = value->value_fvector.z;
+	*(static_cast<float *>(context) + 0) = value->value_fvector.x;
+	*(static_cast<float *>(context) + 1) = value->value_fvector.y;
+	*(static_cast<float *>(context) + 2) = value->value_fvector.z;
 }
 
-SCSAPI_VOID telemetry_store_dplacement(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
-{
-	if(!value) return;
+SCSAPI_VOID telemetry_store_dplacement(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
+                                       const scs_context_t context) {
+	if (!value) return;
 	assert(value);
 	assert(value->type == SCS_VALUE_TYPE_dplacement);
 	assert(context);
 
 	// Messy hack to store the acceleration and orientation values into our telemetry struct
 	// It is neccesary that these are put together, otherwise it may overwrite over values.
-	*(static_cast<float *>(context)+0) = (float)value->value_dplacement.position.x;
-	*(static_cast<float *>(context)+1) = (float)value->value_dplacement.position.y;
-	*(static_cast<float *>(context)+2) = (float)value->value_dplacement.position.z;
+	*(static_cast<float *>(context) + 0) = static_cast<float>(value->value_dplacement.position.x);
+	*(static_cast<float *>(context) + 1) = static_cast<float>(value->value_dplacement.position.y);
+	*(static_cast<float *>(context) + 2) = static_cast<float>(value->value_dplacement.position.z);
 
-	*(static_cast<float *>(context)+3) = value->value_dplacement.orientation.heading;
-	*(static_cast<float *>(context)+4) = value->value_dplacement.orientation.pitch;
-	*(static_cast<float *>(context)+5) = value->value_dplacement.orientation.roll;
+	*(static_cast<float *>(context) + 3) = value->value_dplacement.orientation.heading;
+	*(static_cast<float *>(context) + 4) = value->value_dplacement.orientation.pitch;
+	*(static_cast<float *>(context) + 5) = value->value_dplacement.orientation.roll;
 }
 
 
@@ -309,41 +300,37 @@ SCSAPI_VOID telemetry_store_dplacement(const scs_string_t name, const scs_u32_t 
  * See scssdk_telemetry.h
  */
 
-SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_init_params_t *const params)
-{
+SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_init_params_t*const params) {
 	// We currently support only one version.
 	if (version != SCS_TELEMETRY_VERSION_1_00) {
 		return SCS_RESULT_unsupported;
 	}
 
-	const scs_telemetry_init_params_v100_t *const version_params = static_cast<const scs_telemetry_init_params_v100_t *>(params);
+	const auto version_params = static_cast<const scs_telemetry_init_params_v100_t *>(
+		params);
 
-    if (version_params == NULL)
-    {
-        return SCS_RESULT_generic_error;
-    }
+	if (version_params == nullptr) {
+		return SCS_RESULT_generic_error;
+	}
 
 	/*** ACQUIRE SHARED MEMORY BUFFER ***/
 	telemMem = new SharedMemory(ets2MmfName, ETS2_PLUGIN_MMF_SIZE);
 
-    if (telemMem == NULL)
-    {
-        return SCS_RESULT_generic_error;
-    }
+	if (telemMem == nullptr) {
+		return SCS_RESULT_generic_error;
+	}
 
-	if (telemMem->Hooked() == false)
-	{
+	if (!telemMem->Hooked()) {
 		return SCS_RESULT_generic_error;
 	}
 
 #ifdef SDK_ENABLE_LOGGING
     log_file = fopen("telemetry.log", "wt");
 #endif
-	telemPtr = (ets2TelemetryMap_t*) (telemMem->GetBuffer());
+	telemPtr = static_cast<ets2TelemetryMap_t*>(telemMem->GetBuffer());
 
-	if (telemPtr == NULL)
-    {
-        return SCS_RESULT_generic_error;
+	if (telemPtr == nullptr) {
+		return SCS_RESULT_generic_error;
 	}
 
 	memset(telemPtr, 0, ETS2_PLUGIN_MMF_SIZE);
@@ -352,10 +339,24 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	telemPtr->paused = 1;
 	telemPtr->time = 0;
 
-	telemPtr->tel_revId.ets2_telemetry_plugin_revision = ETS2_PLUGIN_REVID;
-	telemPtr->tel_revId.ets2_version_major = SCS_GET_MAJOR_VERSION(version_params->common.game_version);
-	telemPtr->tel_revId.ets2_version_minor = SCS_GET_MINOR_VERSION(version_params->common.game_version);
+	telemPtr->tel_revId.telemetry_plugin_revision = PLUGIN_REVID;
+	telemPtr->tel_revId.version_major = SCS_GET_MAJOR_VERSION(version_params->common.game_version);
+	telemPtr->tel_revId.version_minor = SCS_GET_MINOR_VERSION(version_params->common.game_version);
+	if(strcmp(version_params->common.game_id, SCS_GAME_ID_EUT2) ==0) {
+		telemPtr->tel_revId.game = 1;
+		telemPtr->tel_revId.telemetry_version_game_major = SCS_GET_MAJOR_VERSION(SCS_TELEMETRY_EUT2_GAME_VERSION_CURRENT);
+		telemPtr->tel_revId.telemetry_version_game_major = SCS_GET_MINOR_VERSION(SCS_TELEMETRY_EUT2_GAME_VERSION_CURRENT);
+	}else if (strcmp(version_params->common.game_id, SCS_GAME_ID_ATS) == 0) {
+		telemPtr->tel_revId.game = 2;
+		telemPtr->tel_revId.telemetry_version_game_major = SCS_GET_MAJOR_VERSION(SCS_TELEMETRY_ATS_GAME_VERSION_CURRENT);
+		telemPtr->tel_revId.telemetry_version_game_major = SCS_GET_MINOR_VERSION(SCS_TELEMETRY_ATS_GAME_VERSION_CURRENT);
+	}else {
+		telemPtr->tel_revId.game = 0;
+		telemPtr->tel_revId.telemetry_version_game_major = 0;
+		telemPtr->tel_revId.telemetry_version_game_major =0;
+	}
 
+	
 	// Model & trailer type are stored in configuration event.
 	// TODO: Invent a better way of sharing strings between plug-in and client application.
 	telemPtr->tel_rev1.modelType[0] = TRUCK_STRING_OFFSET;
@@ -365,15 +366,15 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 
 	/*** REGISTER GAME EVENTS (Pause/Unpause/Start/Time) ***/
 	const bool events_registered =
-		(version_params->register_for_event(SCS_TELEMETRY_EVENT_frame_start, telemetry_frame_start, NULL) == SCS_RESULT_ok) &&
-		(version_params->register_for_event(SCS_TELEMETRY_EVENT_paused, telemetry_pause, NULL) == SCS_RESULT_ok) &&
-		(version_params->register_for_event(SCS_TELEMETRY_EVENT_started, telemetry_pause, NULL) == SCS_RESULT_ok);
+		(version_params->register_for_event(SCS_TELEMETRY_EVENT_frame_start, telemetry_frame_start, nullptr) ==
+			SCS_RESULT_ok) &&
+		(version_params->register_for_event(SCS_TELEMETRY_EVENT_paused, telemetry_pause, nullptr) == SCS_RESULT_ok) &&
+		(version_params->register_for_event(SCS_TELEMETRY_EVENT_started, telemetry_pause, nullptr) == SCS_RESULT_ok);
 
 	// Register configuration event, because it sends data like truck make, etc.
-	version_params->register_for_event(SCS_TELEMETRY_EVENT_configuration, telemetry_configuration, NULL);
+	version_params->register_for_event(SCS_TELEMETRY_EVENT_configuration, telemetry_configuration, nullptr);
 
-	if (!events_registered)
-	{
+	if (!events_registered) {
 		return SCS_RESULT_generic_error;
 	}
 
@@ -385,7 +386,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	registerChannel(TRUCK_CHANNEL_speed, float, telemPtr->tel_rev1.speed);
 	registerChannel(TRUCK_CHANNEL_local_linear_acceleration, fvector, telemPtr->tel_rev1.accelerationX);
 	registerChannel(TRUCK_CHANNEL_world_placement, dplacement, telemPtr->tel_rev1.coordinateX);
-	
+
 	registerChannel(TRUCK_CHANNEL_engine_gear, s32, telemPtr->tel_rev1.gear);
 	registerChannel(TRUCK_CHANNEL_displayed_gear, s32, telemPtr->tel_rev4.gearDashboard);
 
@@ -472,11 +473,9 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
  *
  * See scssdk_telemetry.h
  */
-SCSAPI_VOID scs_telemetry_shutdown(void)
-{
+SCSAPI_VOID scs_telemetry_shutdown(void) {
 	// Close MemoryMap
-	if (telemMem != NULL)
-	{
+	if (telemMem != nullptr) {
 		telemMem->Close();
 	}
 #ifdef SDK_ENABLE_LOGGING
@@ -488,15 +487,13 @@ SCSAPI_VOID scs_telemetry_shutdown(void)
 
 BOOL APIENTRY DllMain(
 	HMODULE module,
-	DWORD  reason_for_call,
+	DWORD reason_for_call,
 	LPVOID reseved
-)
-{
+) {
 	if (reason_for_call == DLL_PROCESS_DETACH) {
 
 		// Close MemoryMap
-		if (telemMem != NULL)
-		{
+		if (telemMem != nullptr) {
 			telemMem->Close();
 		}
 

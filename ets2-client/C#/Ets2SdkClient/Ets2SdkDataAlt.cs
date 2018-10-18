@@ -17,11 +17,14 @@ namespace Ets2SdkClient {
             retData.Paused = GetUint(4)>0;
 
             retData.Version.SdkPlugin = GetUint(8);
-            retData.Version.Ets2Major = GetUint(12);
-            retData.Version.Ets2Minor = GetUint(16);
+            retData.Version.GameMajor = GetUint(12);
+            retData.Version.GameMinor = GetUint(16);
+            retData.Version.Game = GetUint(20);
+            retData.Version.GameTelemetryMajor = GetUint(24);
+            retData.Version.GameTelemetryMinor = GetUint(28);
             
             // Original a byte array with 4 cells(20-23). check function check if flag[1]>0 same we do here, may check later what else we can do here
-            retData.Job.TrailerAttached = GetUint(21)>0;
+            retData.Job.TrailerAttached = data[21]>0;
 
             var speed = GetFloat(24);
             retData.Physics.Speed = retData.Drivetrain.Speed = speed;

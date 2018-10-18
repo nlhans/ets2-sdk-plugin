@@ -7,7 +7,7 @@
 // - Shared memory map struct layout
 // - [..]
 
-#define ETS2_PLUGIN_REVID					5
+#define PLUGIN_REVID					6
 
 #define ETS2_PLUGIN_LOGGING_ON				0
 #define ETS2_PLUGIN_LOGGING_SHAREDMEMORY	0
@@ -31,9 +31,12 @@ typedef struct ets2TelemetryMap_s
 
 	struct
 	{
-		unsigned int ets2_telemetry_plugin_revision;
-		unsigned int ets2_version_major;
-		unsigned int ets2_version_minor;
+		unsigned int telemetry_plugin_revision;
+		unsigned int version_major;
+		unsigned int version_minor;
+		unsigned int game; // actually 0 for unknown,1 for ets2 and 2 for ats
+		unsigned int telemetry_version_game_major;
+		unsigned int telemetry_version_game_minor;
 	} tel_revId;
 
 	// All variables per revision are packed into 1 struct.

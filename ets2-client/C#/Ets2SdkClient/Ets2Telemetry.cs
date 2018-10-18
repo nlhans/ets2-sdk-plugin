@@ -15,6 +15,7 @@ namespace Ets2SdkClient {
 
         public string Manufacturer { get; internal set; }
         public string ManufacturerId { get; internal set; }
+       
 
         public class _Physics
         {
@@ -175,8 +176,11 @@ namespace Ets2SdkClient {
         public class _Version
         {
             public uint SdkPlugin { get; internal set; }
-            public uint Ets2Major { get; internal set; }
-            public uint Ets2Minor { get; internal set; }
+            public uint GameMajor { get; internal set; }
+            public uint GameMinor { get; internal set; }
+            public uint Game { get; internal set; }
+            public uint GameTelemetryMajor { get; internal set; }
+            public uint GameTelemetryMinor { get; internal set; }
         }
 
         public _Version Version { get; protected set; }
@@ -219,8 +223,8 @@ namespace Ets2SdkClient {
             Lights = new _Lights();
 
             // Version
-            Version.Ets2Major = raw.ets2_version_major;
-            Version.Ets2Minor = raw.ets2_version_minor;
+            Version.GameMajor = raw.ets2_version_major;
+            Version.GameMinor = raw.ets2_version_minor;
             Version.SdkPlugin = raw.ets2_telemetry_plugin_revision;
             
             // Controls
