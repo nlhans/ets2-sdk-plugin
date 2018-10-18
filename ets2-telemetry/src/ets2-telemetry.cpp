@@ -365,7 +365,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	telemPtr->tel_rev1.trailerType[1] = 0;
 
 	/*** REGISTER GAME EVENTS (Pause/Unpause/Start/Time) ***/
-	const bool events_registered =
+	const auto events_registered =
 		(version_params->register_for_event(SCS_TELEMETRY_EVENT_frame_start, telemetry_frame_start, nullptr) ==
 			SCS_RESULT_ok) &&
 		(version_params->register_for_event(SCS_TELEMETRY_EVENT_paused, telemetry_pause, nullptr) == SCS_RESULT_ok) &&

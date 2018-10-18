@@ -61,6 +61,10 @@ TestResult.xml
 *.pidb
 *.svclog
 *.scc
+*.db*
+*.opendb
+*.gitlab
+*.dll
 
 # Chutzpah Test files
 _Chutzpah*
