@@ -1,9 +1,7 @@
 In development rework to allow 32bit and 64 bit, make it a bit better modifiable and add a few Wishes and game detection
 
-
-# Euro Truck Simulator 2 Telemetry
-
-[![Join the chat at https://gitter.im/nlhans/ets2-sdk-plugin](https://badges.gitter.im/nlhans/ets2-sdk-plugin.svg)](https://gitter.im/nlhans/ets2-sdk-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+fork of nlhans work
+# Euro Truck Simulator 2 Telemetry And American Truck Simulator (not tested but should work?)
 
 SCS has kindly released a SDK that allows developers and users to stream telemetry data from the game to any 3rd party applications. An example program was provided (and often used) which enabled streaming data by using text files stored on the users harddisk. This puts unnecessary stress on the users harddrive (not the mention the number of re-writes that would hurt SSDs), and moreover requires the user to manually configure the telemetry data source.
 
@@ -11,7 +9,7 @@ This SDK plug-in transports the telemetry stream via a Memory Mapped File. This 
 
 ## Installation
 
-Grab the latest release from the Github Release page: https://github.com/nlhans/ets2-sdk-plugin/releases 
+Actually you need to build this branch yourself
 
 Installation is easy inside Euro Truck Simulator 2. Place the acquired DLL inside bin/win_x86/plugins/ of your ETS2 installation. It is possible the plugins directory doesn't exists yet (as with every default installation). In that case you need to create the plugins folder. Place the DLL inside the plugins folder. 
 
@@ -19,7 +17,7 @@ You will now notice that each time ETS2 now starts it prompts the SDK has been a
 
 ## Developers Information
 
-### Overview
+### Overview #### Todo correct this and add more information
 This plug-in stores it's data inside a Memory Mapped File, or "Shared Memory". This allows it to operate without any access to harddrive, or configuration hassle by the user to locate the memory map.
 
 The following telemetry fields are supported:
@@ -84,4 +82,4 @@ There is no "sample ticker" yet. This must be done at the client side, by regula
 A C# 4.0 demo application is provided inside the ets2-client folder. The demo application includes a Ets2SdkClient DLL and a Windows GUI application for viewing the output of the DLL. 
 
 ### Other
-For other languages you need to create/find a library that can open and read MemoryMapped files. The data storage format is binary and can be found in "ets2-telemetry/inc/ets2-telemetry-common.hpp". The shared memory map name is "Local\SimTelemetryETS2".
+For other languages you need to create/find a library that can open and read MemoryMapped files. The data storage format is binary and can be found in "ets2-telemetry/inc/ets2-telemetry-common.hpp". The shared memory map name is "Local\SimTelemetryETS22".
