@@ -1,7 +1,7 @@
 In development rework to allow 32bit and 64 bit, make it a bit better modifiable and add a few Wishes and game detection
 
 fork of nlhans work
-# Euro Truck Simulator 2 Telemetry And American Truck Simulator (not tested but should work?)
+# Euro Truck Simulator 2 Telemetry And American Truck Simulator 
 
 SCS has kindly released a SDK that allows developers and users to stream telemetry data from the game to any 3rd party applications. An example program was provided (and often used) which enabled streaming data by using text files stored on the users harddisk. This puts unnecessary stress on the users harddrive (not the mention the number of re-writes that would hurt SSDs), and moreover requires the user to manually configure the telemetry data source.
 
@@ -17,7 +17,7 @@ You will now notice that each time ETS2 now starts it prompts the SDK has been a
 
 ## Developers Information
 
-### Overview #### Todo correct this and add more information
+### Overview #### Todo correct this and add more information now nearly every possible value is collected
 This plug-in stores it's data inside a Memory Mapped File, or "Shared Memory". This allows it to operate without any access to harddrive, or configuration hassle by the user to locate the memory map.
 
 The following telemetry fields are supported:
