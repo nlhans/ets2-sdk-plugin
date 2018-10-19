@@ -1,8 +1,19 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ets2SdkClient {
-     public class Ets2Telemetry
+    /// <summary>
+    /// Telemetry Data off SCS SDK's
+    /// </summary>
+    ///
+    /// <!----> **Currency** <!---->
+    ///     ATS use US Dolars as internal currency
+    ///     ETS2 use Euro as internal currency
+    /// <!----> **Currency** <!---->
+    ///
+    /// 
+    public class SCSTelemetry
     {
         public uint Time { get; internal set; }
         public int AbsolutTime { get; internal set; }
@@ -15,7 +26,9 @@ namespace Ets2SdkClient {
 
         public string Manufacturer { get; internal set; }
         public string ManufacturerId { get; internal set; }
-       
+        public float Scale { get; internal set; }
+        public int RestStop { get; internal set; }
+        public float FuelWarningFactor { get; internal set; }
 
         public class _Physics
         {
@@ -69,6 +82,14 @@ namespace Ets2SdkClient {
             public float FuelWarning { get; internal set; }
             public bool FuelWarningLight { get; internal set; }
             public float FuelRate { get; internal set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <!----> **ATS Information** <!---->
+            ///     The fuel_average_consumption is currently mostly static and depends
+            ///     on presence of the trailer and skills of the driver instead
+            ///     of the workload of the engine.
+            /// <!----> **ATS Information** <!---->
             public float FuelAvgConsumption { get; internal set; }
 
             public int Retarder { get; internal set; }
@@ -83,17 +104,97 @@ namespace Ets2SdkClient {
             public bool ParkingBrake { get; internal set; }
             public bool MotorBrake { get; internal set; }
 
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <!----> **Information** <!---->
+            ///     Not simulated. They are very loosely approximated.
+            /// <!----> **Information** <!---->
             public float OilPressure { get; internal set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <!----> **Information** <!---->
+            ///     Not simulated. They are very loosely approximated.
+            /// <!----> **Information** <!---->
             public float OilTemperature { get; internal set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <!----> **Information** <!---->
+            ///     Not simulated. They are very loosely approximated.
+            /// <!----> **Information** <!---->
             public float WaterTemperature { get; internal set; }
 
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <!----> **ATS Information** <!---->
+            ///     No Support currently
+            /// <!----> **ATS Information** <!---->
             public float Adblue { get; internal set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <!----> **ATS Information** <!---->
+            ///     No Support currently
+            /// <!----> **ATS Information** <!---->
             public float AdblueConsumption { get; internal set; }
             public float AirPressure { get; internal set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <!----> **Information** <!---->
+            ///     Not simulated. They are very loosely approximated.
+            /// <!----> **Information** <!---->
             public float BrakeTemperature { get; internal set; }
 
             public float Weight { get; internal set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <!----> **Information** <!---->
+            ///     Not simulated. They are very loosely approximated.
+            /// <!----> **Information** <!---->
             public float BatteryVoltage { get; internal set; }
+
+
+            public float AdblueCapacity { get; internal set; }
+            public float AdblueWarningFactor { get; internal set; }
+
+            public float AirPressureWarning { get; internal set; }
+            public float AirPressureEmergency { get; internal set; }
+
+            public float OilPressureWarning { get; internal set; }
+            public float WaterTemperatureWarning { get; internal set; }
+            public float BatteryVoltageWarning { get; internal set; }
+
+            public int RetarderStepCount { get; internal set; }
+            public float CabinPositionX { get; internal set; }
+            public float CabinPositionY { get; internal set; }
+            public float CabinPositionZ { get; internal set; }
+
+            public float HeadPositionX { get; internal set; }
+            public float HeadPositionY { get; internal set; }
+            public float HeadPositionZ { get; internal set; }
+
+            public float HookPositionX { get; internal set; }
+            public float HookPositionY { get; internal set; }
+            public float HookPositionZ { get; internal set; }
+            public int WheelCount { get; internal set; }
+
+            public float[] WheelPositionX { get; internal set; }
+            public float[] WheelPositionY { get; internal set; }
+            public float[] WheelPositionZ { get; internal set; }
+
+
+            public bool[] WheelSteerable { get; internal set; }
+            public bool[] WheelSimulated { get; internal set; }
+            public float[] WheelRadius { get; internal set; }
+            public bool[] WheelPowered { get; internal set; }
+            public bool[] WheelLiftable { get; internal set; }
+
+
 
         }
 
@@ -141,9 +242,101 @@ namespace Ets2SdkClient {
             public bool BatteryVoltageWarning { get; internal set; }
             public bool AirPressureWarning { get; internal set; }
             public bool AirPressureEmergency { get; internal set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <!----> **ATS Information** <!---->
+            ///     No Support currently
+            /// <!----> **ATS Information** <!---->
             public bool AdblueWarning { get; internal set; }
             public bool OilPressureWarning { get; internal set; }
             public bool WaterTemperatureWarning { get; internal set; }
+
+            public int SelectorCount { get; internal set; }
+            public string ShifterType { get;internal set; } //TODO: ENUM
+            public string cityDestinationId { get; internal set; }
+            public string citySourceId { get; internal set; }
+            public string compDestinationId { get; internal set; }
+            public string compSourceId { get; internal set; }
+            public float trailer_coordinateX { get; internal set; }
+            public float trailer_coordinateY { get; internal set; }
+            public float trailer_coordinateZ { get; internal set; }
+
+            public float trailer_RotationeX { get; internal set; }
+            public float trailer_RotationeY { get; internal set; }
+            public float trailer_RotationeZ { get; internal set; }
+
+            public float trailer_lv_accelerationX { get; internal set; }
+            public float trailer_lv_accelerationY { get; internal set; }
+            public float trailer_lv_accelerationZ { get; internal set; }
+
+            public float trailer_av_accelerationX { get; internal set; }
+            public float trailer_av_accelerationY { get; internal set; }
+            public float trailer_av_accelerationZ { get; internal set; }
+
+            public float trailer_la_accelerationX { get; internal set; }
+            public float trailer_la_accelerationY { get; internal set; }
+            public float trailer_la_accelerationZ { get; internal set; }
+
+            public float trailer_aa_accelerationX { get; internal set; }
+            public float trailer_aa_accelerationY { get; internal set; }
+            public float trailer_aa_accelerationZ { get; internal set; }
+
+            public float[] trailer_wheelSuspDeflection { get; internal set; }
+
+            public bool[] trailer_wheelOnGround { get; internal set; }
+            public int[] trailer_wheelSubstance { get; internal set; }
+            public float[] trailer_wheelVelocity { get; internal set; }
+            public float[] trailer_wheelSteering { get; internal set; }
+            public float[] trailer_wheelRotation { get; internal set; }
+
+            public float lv_accelerationX { get; internal set; }
+            public float lv_accelerationY { get; internal set; }
+            public float lv_accelerationZ { get; internal set; }
+
+            public float av_accelerationX { get; internal set; }
+            public float av_accelerationY { get; internal set; }
+            public float av_accelerationZ { get; internal set; }
+
+            public float aa_accelerationX { get; internal set; }
+            public float aa_accelerationY { get; internal set; }
+            public float aa_accelerationZ { get; internal set; }
+
+            public float cabinOffsetX { get; internal set; }
+            public float cabinOffsetY { get; internal set; }
+            public float cabinOffsetZ { get; internal set; }
+
+            public float cabinOffsetRotationX { get; internal set; }
+            public float cabinOffsetRotationY { get; internal set; }
+            public float cabinOffsetRotationZ { get; internal set; }
+
+            public float cabinAVX { get; internal set; }
+            public float cabinAVY { get; internal set; }
+            public float cabinAVZ { get; internal set; }
+            public float cabinAAX { get; internal set; }
+            public float cabinAAY { get; internal set; }
+            public float cabinAAZ { get; internal set; }
+
+
+            public float HeadOffsetX { get; internal set; }
+            public float HeadOffsetY { get; internal set; }
+            public float HeadOffsetZ { get; internal set; }
+
+            public float HeadOffsetRotationX { get; internal set; }
+            public float HeadOffsetRotationY { get; internal set; }
+            public float HeadOffsetRotationZ { get; internal set; }
+
+            public float[] TruckWheelSuspDeflection { get; internal set; }
+
+            public bool[] TruckWheelOnGround { get; internal set; }
+            public int[] TruckWheelSubstance { get; internal set; }
+            public float[] TruckWheelVelocity { get; internal set; }
+            public float[] TruckWheelSteering { get; internal set; }
+            public float[] TruckWheelRotation { get; internal set; }
+            public float[] TruckWheelLift { get; internal set; }
+            public float[] TruckWheelLiftOffset { get; internal set; }
+
+
         }
 
         public class _Damage
@@ -201,7 +394,7 @@ namespace Ets2SdkClient {
             }
             return new DateTime((long)seconds * 10000000, DateTimeKind.Utc);
         }
-        public Ets2Telemetry(Ets2SdkData raw, Ets2SdkUnmanaged rawUnmanaged)
+        public SCSTelemetry(Ets2SdkData raw, Ets2SdkUnmanaged rawUnmanaged)
         {
             Time = raw.time;
             Paused = (raw.paused > 0);
@@ -362,7 +555,7 @@ namespace Ets2SdkClient {
             //Lights.RoofAux = raw.GetBool(Ets2SdkBoolean.LightsAuxRoof);// TODO
         }
 
-        public Ets2Telemetry()
+        public SCSTelemetry()
         {
             Version = new _Version();
             Physics = new _Physics();

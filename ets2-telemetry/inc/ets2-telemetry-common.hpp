@@ -17,7 +17,7 @@
 #define SDK_ENABLE_LOGGING
 #endif
 
-#define ETS2_PLUGIN_MMF_NAME TEXT("Local\\SimTelemetryETS22")
+#define ETS2_PLUGIN_MMF_NAME TEXT("Local\\SimTelemetrySCS")
 #define ETS2_PLUGIN_MMF_SIZE (16*1024)
 
 #define TRUCK_STRING_OFFSET 15*1024
@@ -28,23 +28,30 @@ typedef struct ets2TelemetryMap_s
 	unsigned int time;
 	unsigned int paused;
 
-
+	// Contains Game independent values
 	struct
 	{
+		// Telemetry Plugin Version 
 		unsigned int telemetry_plugin_revision;
+		// Game major version
 		unsigned int version_major;
+		// Game minor version
 		unsigned int version_minor;
+		// Game identifier
 		unsigned int game; // actually 0 for unknown,1 for ets2 and 2 for ats
+		// Game telemetry version major
 		unsigned int telemetry_version_game_major;
-		unsigned int telemetry_version_game_minor;
-	} tel_revId;
-
-	// All variables per revision are packed into 1 struct.
-	// Newer revisions must contain identical struct layouts/lengths, even if variabeles become deprecated.
-	// Replaced/new variabeles should be added in seperate structs
+		// Game telemetry version minor
+		unsigned int telemetry_version_game_minor;		 
+	} tel_game_values;
+	struct {
+		float scale;
+		long time_abs;
+		int restStop;
+	}tel_channel;
+	
 	struct
 	{
-		bool engine_enabled;
 		bool trailer_attached;
 
 		// vehicle dynamics
@@ -98,7 +105,7 @@ typedef struct ets2TelemetryMap_s
 
 	struct
 	{
-		long time_abs;
+		
 		int gears_reverse;
 
 		// Trailer ID & display name
@@ -176,6 +183,7 @@ typedef struct ets2TelemetryMap_s
 		char truckMake[64];
 		char truckMakeId[64];
 		char truckModel[64];
+		float substances;
 
 
 	} tel_rev3;
@@ -197,6 +205,124 @@ typedef struct ets2TelemetryMap_s
 		bool onJob;
 		bool jobFinished;
 	} tel_rev5;
+
+	struct {
+		float adblueCapacity;
+		float adblueWarningFacto;
+		float airPressureWarning;
+		float airPressurEmergency;
+		float oilPressureWarning;
+		float waterTemperatureWarning;
+		float batteryVoltageWarning;
+		int retarderStepCount;
+		float cabinPositionX;
+		float cabinPositionY;
+			float cabinPositionZ;
+			float headPositionX;
+			float headPositionY;
+			float headPositionZ;
+			float hookPositionX;
+			float hookPositionY;
+			float hookPositionZ;
+			int wheelCount;
+			float wheelPositionX[16];
+			float wheelPositionY[16];
+			float wheelPositionZ[16];
+
+			bool wheelSteerable[16];
+			bool wheelSimulated[16];
+			float wheelRadius[16];
+			bool wheelPowered[16];
+			bool wheelLiftable[16];
+
+			int selectorCount;
+			char shifterType[16];
+			char cityDstId[64];
+			char citySrcId[64];
+			char compDstId[64];
+			char compSrcId[64];
+
+			float trailer_coordinateX;
+			float trailer_coordinateY;
+			float trailer_coordinateZ;
+
+			float trailer_rotationX;
+			float trailer_rotationY;
+			float trailer_rotationZ;
+
+			float trailer_lv_accelerationX;
+			float trailer_lv_accelerationY;
+			float trailer_lv_accelerationZ;
+
+			float trailer_av_accelerationX;
+			float trailer_av_accelerationY;
+			float trailer_av_accelerationZ;
+
+			float trailer_la_accelerationX;
+			float trailer_la_accelerationY;
+			float trailer_la_accelerationZ;
+
+			float trailer_aa_accelerationX;
+			float trailer_aa_accelerationY;
+			float trailer_aa_accelerationZ;
+
+			float trailer_wheelSuspDeflection[16];
+
+			bool trailer_wheelOnGround[16];
+			int trailer_wheelSubstance[16];
+			float trailer_wheelVelocity[16];
+			float trailer_wheelSteering[16];
+			float trailer_wheelRotation[16];
+
+			float lv_accelerationX;
+			float lv_accelerationY;
+			float lv_accelerationZ;
+
+			float av_accelerationX;
+			float av_accelerationY;
+			float av_accelerationZ;
+
+			float aa_accelerationX;
+			float aa_accelerationY;
+			float aa_accelerationZ;
+
+			float cabinOffsetX;
+			float cabinOffsetY;
+			float cabinOffsetZ;
+
+			float cabinOffsetrotationX;
+			float cabinOffsetrotationY;
+			float cabinOffsetrotationZ;
+
+			float cabinAVX;
+			float cabinAVY;
+			float cabinAVZ;
+
+			float cabinAAX;
+			float cabinAAY;
+			float cabinAAZ;
+
+			float headOffsetX;
+			float headOffsetY;
+			float headOffsetZ;
+
+			float headOffsetrotationX;
+			float headOffsetrotationY;
+			float headOffsetrotationZ;
+
+			float truck_wheelSuspDeflection[16];
+
+			bool truck_wheelOnGround[16];
+			int truck_wheelSubstance[16];
+			float truck_wheelVelocity[16];
+			float truck_wheelSteering[16];
+			float truck_wheelRotation[16];
+
+			float truck_wheelLift[16];
+			float truck_wheelLiftOffset[16];
+			char test[10];// Delete
+
+	}tel_unsorted;
 
 } ets2TelemetryMap_t;
 

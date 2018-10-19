@@ -47,7 +47,7 @@ namespace Ets2SdkClient.Demo
             MessageBox.Show("Just started job OR loaded game with active.");
         }
 
-        private void Telemetry_Data(Ets2Telemetry data, bool updated)
+        private void Telemetry_Data(SCSTelemetry data, bool updated)
         {
             Console.WriteLine("Does we come here?");
             try
@@ -61,7 +61,7 @@ namespace Ets2SdkClient.Demo
 
                 lbGeneral.Text = "General info:\r\n SDK Version: " + data.Version.SdkPlugin + "\r\n Reported game Version: " +
                                  data.Version.GameMajor + "." + data.Version.GameMinor +"\r\n"+data.Version.Game+"\r\n"+data.Version.GameTelemetryMajor+"."+data.Version.GameTelemetryMinor+"\r\n\r\nTruck: " + data.Truck + " (" + data.TruckId + ")\r\nManufacturer: " + data.Manufacturer + "(" + data.ManufacturerId + ")" +
-                                 "\r\nGame Timestamp: " + data.Time + "\r\nPaused? " + data.Paused +"\r\n\r\n"+data.AbsolutTime +" (seconds)"+"\r\n"+data.GameTime;
+                                 "\r\nGame Timestamp: " + data.Time + "\r\nPaused? " + data.Paused +"\r\n\r\n"+data.AbsolutTime +" (seconds)"+"\r\n"+data.GameTime+ "\r\nScale\t"+data.Scale+ "\r\nRestStop\t" + data.RestStop+ "\r\nFuelWarningFactor\t" + data.FuelWarningFactor;
 
                 // Do some magic trickery to display ALL info:
                 var grps = new object[]
@@ -105,6 +105,10 @@ namespace Ets2SdkClient.Demo
                         {
                       
                             vals.AppendLine(string.Join(", ", floats.Select(x=> Math.Abs(x) > 0.01?x.ToString("0.000"):"")));
+                        }else if (val is bool[] bools) {
+                            vals.AppendLine(string.Join(", ", bools.Select(x => x)));
+                        }else if (val is int[] ints) {
+                            vals.AppendLine(string.Join(", ", ints.Select(x => Math.Abs(x) > 0 ? x.ToString(): "")));
                         }
                         else
                         {

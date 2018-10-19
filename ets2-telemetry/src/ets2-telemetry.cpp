@@ -26,7 +26,22 @@
 #include "scs_config_handlers.hpp"
 
 #define UNUSED(x)
+scs_log_t game_log = NULL;
+void log_line(const scs_log_type_t type, const char *const text, ...)
+{
+	if (!game_log) {
+		return;
+	}
+	char formated[1000];
 
+	va_list args;
+	va_start(args, text);
+	vsnprintf_s(formated, sizeof(formated), _TRUNCATE, text, args);
+	formated[sizeof(formated) - 1] = 0;
+	va_end(args);
+
+	game_log(type, formated);
+}
 /**
  * These macro's are a shortcut to register channels inside the scs_telemetry_init function
  * They require the channel definition name (without prefix SCS_TELEMETRY_), type and destination.
@@ -292,6 +307,23 @@ SCSAPI_VOID telemetry_store_dplacement(const scs_string_t name, const scs_u32_t 
 	*(static_cast<float *>(context) + 4) = value->value_dplacement.orientation.pitch;
 	*(static_cast<float *>(context) + 5) = value->value_dplacement.orientation.roll;
 }
+SCSAPI_VOID telemetry_store_fplacement(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
+	const scs_context_t context) {
+	if (!value) return;
+	assert(value);
+	assert(value->type == SCS_VALUE_TYPE_fplacement);
+	assert(context);
+
+	// Messy hack to store the acceleration and orientation values into our telemetry struct
+	// It is neccesary that these are put together, otherwise it may overwrite over values.
+	*(static_cast<float *>(context) + 0) = static_cast<float>(value->value_fplacement.position.x);
+	*(static_cast<float *>(context) + 1) = static_cast<float>(value->value_fplacement.position.y);
+	*(static_cast<float *>(context) + 2) = static_cast<float>(value->value_fplacement.position.z);
+
+	*(static_cast<float *>(context) + 3) = value->value_fplacement.orientation.heading;
+	*(static_cast<float *>(context) + 4) = value->value_fplacement.orientation.pitch;
+	*(static_cast<float *>(context) + 5) = value->value_fplacement.orientation.roll;
+}
 
 
 /**
@@ -308,7 +340,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 
 	const auto version_params = static_cast<const scs_telemetry_init_params_v100_t *>(
 		params);
-
+	game_log = version_params->common.log;
 	if (version_params == nullptr) {
 		return SCS_RESULT_generic_error;
 	}
@@ -339,21 +371,21 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	telemPtr->paused = 1;
 	telemPtr->time = 0;
 
-	telemPtr->tel_revId.telemetry_plugin_revision = PLUGIN_REVID;
-	telemPtr->tel_revId.version_major = SCS_GET_MAJOR_VERSION(version_params->common.game_version);
-	telemPtr->tel_revId.version_minor = SCS_GET_MINOR_VERSION(version_params->common.game_version);
+	telemPtr->tel_game_values.telemetry_plugin_revision = PLUGIN_REVID;
+	telemPtr->tel_game_values.version_major = SCS_GET_MAJOR_VERSION(version_params->common.game_version);
+	telemPtr->tel_game_values.version_minor = SCS_GET_MINOR_VERSION(version_params->common.game_version);
 	if(strcmp(version_params->common.game_id, SCS_GAME_ID_EUT2) ==0) {
-		telemPtr->tel_revId.game = 1;
-		telemPtr->tel_revId.telemetry_version_game_major = SCS_GET_MAJOR_VERSION(SCS_TELEMETRY_EUT2_GAME_VERSION_CURRENT);
-		telemPtr->tel_revId.telemetry_version_game_major = SCS_GET_MINOR_VERSION(SCS_TELEMETRY_EUT2_GAME_VERSION_CURRENT);
+		telemPtr->tel_game_values.game = 1;
+		telemPtr->tel_game_values.telemetry_version_game_major = SCS_GET_MAJOR_VERSION(SCS_TELEMETRY_EUT2_GAME_VERSION_CURRENT);
+		telemPtr->tel_game_values.telemetry_version_game_major = SCS_GET_MINOR_VERSION(SCS_TELEMETRY_EUT2_GAME_VERSION_CURRENT);
 	}else if (strcmp(version_params->common.game_id, SCS_GAME_ID_ATS) == 0) {
-		telemPtr->tel_revId.game = 2;
-		telemPtr->tel_revId.telemetry_version_game_major = SCS_GET_MAJOR_VERSION(SCS_TELEMETRY_ATS_GAME_VERSION_CURRENT);
-		telemPtr->tel_revId.telemetry_version_game_major = SCS_GET_MINOR_VERSION(SCS_TELEMETRY_ATS_GAME_VERSION_CURRENT);
+		telemPtr->tel_game_values.game = 2;
+		telemPtr->tel_game_values.telemetry_version_game_major = SCS_GET_MAJOR_VERSION(SCS_TELEMETRY_ATS_GAME_VERSION_CURRENT);
+		telemPtr->tel_game_values.telemetry_version_game_major = SCS_GET_MINOR_VERSION(SCS_TELEMETRY_ATS_GAME_VERSION_CURRENT);
 	}else {
-		telemPtr->tel_revId.game = 0;
-		telemPtr->tel_revId.telemetry_version_game_major = 0;
-		telemPtr->tel_revId.telemetry_version_game_major =0;
+		telemPtr->tel_game_values.game = 0;
+		telemPtr->tel_game_values.telemetry_version_game_major = 0;
+		telemPtr->tel_game_values.telemetry_version_game_major =0;
 	}
 
 	
@@ -376,15 +408,19 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 
 	if (!events_registered) {
 		return SCS_RESULT_generic_error;
-	}
+	} 
 
 	/*** REGISTER ALL TELEMETRY CHANNELS TO OUR SHARED MEMORY MAP ***/
 	//registerChannel(TRUCK_CHANNEL_electric_enabled, bool, telemPtr->tel_rev1.engine_enabled);
-	registerChannel(CHANNEL_game_time, u32, telemPtr->tel_rev2.time_abs);
+	registerChannel(CHANNEL_game_time, u32, telemPtr->tel_channel.time_abs);
 	registerChannel(TRAILER_CHANNEL_connected, bool, telemPtr->tel_rev1.trailer_attached);
 
 	registerChannel(TRUCK_CHANNEL_speed, float, telemPtr->tel_rev1.speed);
 	registerChannel(TRUCK_CHANNEL_local_linear_acceleration, fvector, telemPtr->tel_rev1.accelerationX);
+	registerChannel(TRUCK_CHANNEL_local_linear_velocity, fvector, telemPtr->tel_unsorted.lv_accelerationX);
+	registerChannel(TRUCK_CHANNEL_local_angular_acceleration, fvector, telemPtr->tel_unsorted.aa_accelerationX);
+	registerChannel(TRUCK_CHANNEL_local_angular_velocity, fvector, telemPtr->tel_unsorted.av_accelerationX);
+
 	registerChannel(TRUCK_CHANNEL_world_placement, dplacement, telemPtr->tel_rev1.coordinateX);
 
 	registerChannel(TRUCK_CHANNEL_engine_gear, s32, telemPtr->tel_rev1.gear);
@@ -409,7 +445,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	// Auxilliary stuff:
 	registerChannel(TRUCK_CHANNEL_retarder_level, u32, telemPtr->tel_rev3.retarderBrake);
 	registerChannel(TRUCK_CHANNEL_hshifter_slot, u32, telemPtr->tel_rev3.shifterSlot);
-	registerChannel2(TRUCK_CHANNEL_hshifter_selector, bool, telemPtr->tel_rev3.shifterToggle,0);
+	registerChannel2(TRUCK_CHANNEL_hshifter_selector, bool, telemPtr->tel_rev3.shifterToggle,0); //Actually only for the first channel
 
 	// Booleans
 	registerChannel(TRUCK_CHANNEL_wipers, bool, telemPtr->tel_rev3.wipers);
@@ -460,6 +496,67 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	registerChannel(TRUCK_CHANNEL_navigation_time, float, telemPtr->tel_rev4.routeTime);
 	registerChannel(TRUCK_CHANNEL_fuel_range, float, telemPtr->tel_rev4.fuelRange);
 
+
+	registerChannel(TRAILER_CHANNEL_world_placement, dplacement, telemPtr->tel_unsorted.trailer_coordinateX);
+
+	registerChannel(TRAILER_CHANNEL_local_linear_velocity, fvector, telemPtr->tel_unsorted.trailer_lv_accelerationX);
+	registerChannel(TRAILER_CHANNEL_local_angular_velocity, fvector, telemPtr->tel_unsorted.trailer_la_accelerationX);
+	registerChannel(TRAILER_CHANNEL_local_linear_acceleration, fvector, telemPtr->tel_unsorted.trailer_la_accelerationX);
+	registerChannel(TRAILER_CHANNEL_local_angular_acceleration, fvector, telemPtr->tel_unsorted.trailer_aa_accelerationX);
+    const auto size = 14;
+	for (auto i = scs_u32_t(0); i < size;i++) {
+		registerChannel2(TRAILER_CHANNEL_wheel_on_ground, bool, telemPtr->tel_unsorted.trailer_wheelOnGround[i],i );
+	}
+	for (auto i = scs_u32_t(0); i < size; i++) {
+		registerChannel2(TRAILER_CHANNEL_wheel_substance, u32, telemPtr->tel_unsorted.trailer_wheelSubstance[i], i);
+	}
+	for (auto i = scs_u32_t(0); i < size; i++) {
+		registerChannel2(TRAILER_CHANNEL_wheel_velocity, float, telemPtr->tel_unsorted.trailer_wheelVelocity[i], i);
+	}
+	for (auto i = scs_u32_t(0); i < size; i++) {
+		registerChannel2(TRAILER_CHANNEL_wheel_steering, float, telemPtr->tel_unsorted.trailer_wheelSteering[i], i);
+	}
+	for (auto i = scs_u32_t(0); i < size; i++) {
+		registerChannel2(TRAILER_CHANNEL_wheel_rotation, float, telemPtr->tel_unsorted.trailer_wheelRotation[i], i);
+	}
+	for (auto i = scs_u32_t(0); i < size; i++) {
+		registerChannel2(TRAILER_CHANNEL_wheel_susp_deflection, float, telemPtr->tel_unsorted.trailer_wheelSuspDeflection[i], i);
+	}
+
+	for (auto i = scs_u32_t(0); i < size; i++) {
+		registerChannel2(TRUCK_CHANNEL_wheel_on_ground, bool, telemPtr->tel_unsorted.truck_wheelOnGround[i], i);
+	}
+	for (auto i = scs_u32_t(0); i < size; i++) {
+		registerChannel2(TRUCK_CHANNEL_wheel_substance, u32, telemPtr->tel_unsorted.truck_wheelSubstance[i], i);
+	}
+	for (auto i = scs_u32_t(0); i < size; i++) {
+		registerChannel2(TRUCK_CHANNEL_wheel_velocity, float, telemPtr->tel_unsorted.truck_wheelVelocity[i], i);
+	}
+	for (auto i = scs_u32_t(0); i < size; i++) {
+		registerChannel2(TRUCK_CHANNEL_wheel_steering, float, telemPtr->tel_unsorted.truck_wheelSteering[i], i);
+	}
+	for (auto i = scs_u32_t(0); i < size; i++) {
+		registerChannel2(TRUCK_CHANNEL_wheel_rotation, float, telemPtr->tel_unsorted.truck_wheelRotation[i], i);
+	}
+	for (auto i = scs_u32_t(0); i < size; i++) {
+		registerChannel2(TRUCK_CHANNEL_wheel_susp_deflection, float, telemPtr->tel_unsorted.truck_wheelSuspDeflection[i], i);
+	}
+	for (auto i = scs_u32_t(0); i < size; i++) {
+		registerChannel2(TRUCK_CHANNEL_wheel_lift, float, telemPtr->tel_unsorted.truck_wheelLift[i], i);
+	}
+	for (auto i = scs_u32_t(0); i < size; i++) {
+		registerChannel2(TRUCK_CHANNEL_wheel_lift_offset, float, telemPtr->tel_unsorted.truck_wheelLiftOffset[i], i);
+	}
+
+	registerChannel(TRUCK_CHANNEL_cabin_offset, fplacement, telemPtr->tel_unsorted.cabinOffsetX);
+	registerChannel(TRUCK_CHANNEL_cabin_angular_velocity, fvector, telemPtr->tel_unsorted.cabinAVX);
+	registerChannel(TRUCK_CHANNEL_cabin_angular_acceleration, fvector, telemPtr->tel_unsorted.cabinAAX);
+
+	registerChannel(TRUCK_CHANNEL_head_offset, fplacement, telemPtr->tel_unsorted.headOffsetX);
+	strncpy(telemPtr->tel_unsorted.test, "TestString", 10);
+    // MISSING: (Will be added on wish) see also on config handler
+    // more indexes of hshifter selector
+
 	// Set the structure with defaults.
 
 	timestamp = static_cast<scs_timestamp_t>(0);
@@ -467,6 +564,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 
 	return SCS_RESULT_ok;
 }
+
 
 /**
  * @brief Telemetry API deinitialization function.

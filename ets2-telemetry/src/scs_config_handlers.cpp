@@ -11,40 +11,80 @@ extern ets2TelemetryMap_t *telemPtr;
 
 const scsConfigHandler_t scsConfigTable[] = {
 	
-	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand, handleTruckMake },
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand_id, handleTruckMakeId },
-	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_name, handleTruckModel },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand, handleTruckMake },
+
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_id, handleId },
+
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_accessory_id, handleCargoId },
 
-	// Truck technical info
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_name, handleTruckModel },
+	
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_fuel_capacity, handleFuelCapacity },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_fuel_warning_factor, handleFuelWarningFactor},
+
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_adblue_capacity, handleAdblueCapacity},
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_adblue_warning_factor, handleAdblueWarningFactor},
+
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_air_pressure_warning, handleAirPressureWarning},
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_air_pressure_emergency, handleAirPressureEmergency},
+
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_oil_pressure_warning, handleOilPressureWarning},
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_water_temperature_warning, handleWaterTemperatureWarning},
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_battery_voltage_warning, handleBatteryVoltageWarning},
+
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_rpm_limit, handleRpmLimit },
+
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_forward_gear_count, handleFGearCount },
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_reverse_gear_count, handleRGearCount },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_differential_ratio, handleGearDifferential },
 
-	// Job information
-	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_income, handleJobIncome },
-	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_delivery_time, handleJobDeadline },
-	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_mass, handleTrailerMass },
-	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_id, handleTrailerId },
-	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo, handleTrailerName },
-	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_city, handleCitySrc },
-	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_city, handleCityDst },
-	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_company, handleCompSrc },
-	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_company, handleCompDst },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_retarder_step_count, handleRetarderStepCount },
 
-	// Revision 4 / ETS 1.17:
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_forward_ratio, handleGearForwardRatio },
 	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_reverse_ratio, handleGearReverseRatio },
-	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_differential_ratio, handleGearDifferential },
+
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_cabin_position, handleCabinPosition},
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_head_position, handleHeadPosition},
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_hook_position, handleHookPosition},
+
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_count,handleWheelCount},
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_position,handleWheelPosition},
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_steerable,handleWheelSteerable},
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_simulated,handleWheelSimulated},
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_radius,handleWheelRadius},
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_powered,handleWheelPowered},
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_liftable,handleWheelLiftable},
+
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_selector_count, handleSelectorCount},
+	// some slot missing actually when there is interest in i will add them
+
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_shifter_type, handleShifterType},
+
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_id, handleTrailerId },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo, handleTrailerName },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_mass, handleTrailerMass },
+
+	
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_city_id, handleCityDstId },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_city, handleCityDst },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_company_id, handleCompDstId },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_company, handleCompDst },	
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_city_id, handleCitySrcId },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_city, handleCitySrc },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_company_id, handleCompSrcId },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_company, handleCompSrc },
+
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_income, handleJobIncome },
+	{ SCS_TELEMETRY_CONFIG_ATTRIBUTE_delivery_time, handleJobDeadline },
+
 };
 
 #define NO_OF_CFGS ( sizeof(scsConfigTable)/sizeof(scsConfigHandler_t) )
 
 bool handleCfg(const scs_named_value_t* current)
 {
-	int i = 0;
+	auto i = 0;
 
 	for (i = 0; i < NO_OF_CFGS; i++)
 	{
@@ -74,6 +114,138 @@ scsConfigHandle(Id)
 		strcpy(strPtr, current->value.value_string.value);
 		telemPtr->tel_rev1.modelType[1] = strlen(current->value.value_string.value);
 				
+	}
+}
+scsConfigHandle(FuelWarningFactor) {
+	telemPtr->tel_rev3.substances = current->value.value_float.value;
+}
+scsConfigHandle(AdblueCapacity) {
+	telemPtr->tel_unsorted.adblueCapacity = current->value.value_float.value;
+}
+scsConfigHandle(AdblueWarningFactor) {
+	telemPtr->tel_unsorted.adblueWarningFacto = current->value.value_float.value;
+}
+scsConfigHandle(AirPressureWarning) {
+	telemPtr->tel_unsorted.airPressureWarning = current->value.value_float.value;
+}
+scsConfigHandle(AirPressureEmergency) {
+	telemPtr->tel_unsorted.airPressurEmergency = current->value.value_float.value;
+}
+scsConfigHandle(OilPressureWarning) {
+	telemPtr->tel_unsorted.oilPressureWarning = current->value.value_float.value;
+}
+scsConfigHandle(WaterTemperatureWarning) {
+	telemPtr->tel_unsorted.waterTemperatureWarning = current->value.value_float.value;
+}
+scsConfigHandle(BatteryVoltageWarning) {
+	telemPtr->tel_unsorted.batteryVoltageWarning = current->value.value_float.value;
+}
+scsConfigHandle(RetarderStepCount) {
+	telemPtr->tel_unsorted.retarderStepCount = current->value.value_u32.value;
+}
+scsConfigHandle(CabinPosition) {
+	telemPtr->tel_unsorted.cabinPositionX = current->value.value_fvector.x;
+	telemPtr->tel_unsorted.cabinPositionY = current->value.value_fvector.y;
+	telemPtr->tel_unsorted.cabinPositionZ = current->value.value_fvector.z;
+}
+scsConfigHandle(HeadPosition) {
+	telemPtr->tel_unsorted.headPositionX = current->value.value_fvector.x;
+	telemPtr->tel_unsorted.headPositionY = current->value.value_fvector.y;
+	telemPtr->tel_unsorted.headPositionZ = current->value.value_fvector.z;
+}
+
+scsConfigHandle(HookPosition) {
+	telemPtr->tel_unsorted.hookPositionX = current->value.value_fvector.x;
+	telemPtr->tel_unsorted.hookPositionY = current->value.value_fvector.y;
+	telemPtr->tel_unsorted.hookPositionZ = current->value.value_fvector.z;
+}
+
+scsConfigHandle(WheelCount) {
+	telemPtr->tel_unsorted.wheelCount = current->value.value_u32.value;
+}
+
+scsConfigHandle(WheelPosition) {
+	if (telemPtr)
+	{
+		int position = current->index;
+		auto ratio = current->value.value_fvector;
+
+		if (position < 14)
+		{
+			telemPtr->tel_unsorted.wheelPositionX[position] = ratio.x;
+			telemPtr->tel_unsorted.wheelPositionY[position] = ratio.y;
+			telemPtr->tel_unsorted.wheelPositionZ[position] = ratio.z;
+		}
+	}
+}
+scsConfigHandle(WheelSteerable) {
+	if (telemPtr)
+	{
+		int position = current->index;
+		auto ratio = current->value.value_bool;
+
+		if (position < 18)
+		{
+			telemPtr->tel_unsorted.wheelSteerable[position] = ratio.value; 
+		}
+	}
+}
+scsConfigHandle(WheelSimulated) {
+	if (telemPtr)
+	{
+		int position = current->index;
+		auto ratio = current->value.value_bool;
+
+		if (position < 18)
+		{
+			telemPtr->tel_unsorted.wheelSimulated[position] = ratio.value;
+		}
+	}
+}
+scsConfigHandle(WheelRadius) {
+	if (telemPtr)
+	{
+		int position = current->index;
+		auto ratio = current->value.value_float;
+
+		if (position < 18)
+		{
+			telemPtr->tel_unsorted.wheelRadius[position] = ratio.value;
+		}
+	}
+}
+scsConfigHandle(WheelPowered) {
+	if (telemPtr)
+	{
+		int position = current->index;
+		auto ratio = current->value.value_bool;
+
+		if (position < 18)
+		{
+			telemPtr->tel_unsorted.wheelPowered[position] = ratio.value;
+		}
+	}
+}
+scsConfigHandle(WheelLiftable) {
+	if (telemPtr)
+	{
+		int position = current->index;
+		auto ratio = current->value.value_bool;
+
+		if (position < 18)
+		{
+			telemPtr->tel_unsorted.wheelLiftable[position] = ratio.value;
+		}
+	}
+}
+scsConfigHandle(SelectorCount) {
+	telemPtr->tel_unsorted.selectorCount = current->value.value_u32.value;
+}
+scsConfigHandle(ShifterType)
+{
+	if (telemPtr)
+	{
+		strncpy(telemPtr->tel_unsorted.shifterType, current->value.value_string.value, 10);
 	}
 }
 
@@ -184,6 +356,34 @@ scsConfigHandle(CitySrc)
 	if (telemPtr)
 	{
 		strncpy(telemPtr->tel_rev2.citySrc, current->value.value_string.value, 64);
+	}
+}
+scsConfigHandle( CityDstId)
+{
+	if (telemPtr)
+	{
+		strncpy(telemPtr->tel_unsorted.cityDstId, current->value.value_string.value, 64);
+	}
+}
+scsConfigHandle(CompDstId)
+{
+	if (telemPtr)
+	{
+		strncpy(telemPtr->tel_unsorted.compDstId, current->value.value_string.value, 64);
+	}
+}
+scsConfigHandle(CitySrcId)
+{
+	if (telemPtr)
+	{
+		strncpy(telemPtr->tel_unsorted.citySrcId, current->value.value_string.value, 64);
+	}
+}
+scsConfigHandle(CompSrcId)
+{
+	if (telemPtr)
+	{
+		strncpy(telemPtr->tel_unsorted.compSrcId, current->value.value_string.value, 64);
 	}
 }
 

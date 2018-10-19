@@ -25,6 +25,7 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <LangVersion>7.3</LangVersion>
+    <DocumentationFile>bin\Debug\Ets2SdkClient.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,7 +52,7 @@
     <Compile Include="Ets2SdkData.cs" />
     <Compile Include="Ets2SdkDataAlt.cs" />
     <Compile Include="Ets2SdkTelemetry.cs" />
-    <Compile Include="Ets2Telemetry.cs" />
+    <Compile Include="SCSTelemetry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharedMemory.cs" />
   </ItemGroup>

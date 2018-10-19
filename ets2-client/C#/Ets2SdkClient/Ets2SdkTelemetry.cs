@@ -6,11 +6,11 @@ using System.Timers;
 using Timer = System.Threading.Timer;
 
 namespace Ets2SdkClient {
-    public delegate void TelemetryData(Ets2Telemetry data, bool newTimestamp);
+    public delegate void TelemetryData(SCSTelemetry data, bool newTimestamp);
 
     public class Ets2SdkTelemetry
     {
-        private const string DefaultSharedMemoryMap = "Local\\SimTelemetryETS22";
+        private const string DefaultSharedMemoryMap = "Local\\SimTelemetrySCS";
         private const int DefaultUpdateInterval = 25;
 
         private Timer _updateTimer;
@@ -83,8 +83,8 @@ namespace Ets2SdkClient {
             ets2RawUnmanaged.TrailerModel = Encoding.UTF8.GetString(SharedMemory.RawData, ets2RawData.trailerOffset, ets2RawData.trailerLength);
             ets2RawUnmanaged.TruckModel = Encoding.UTF8.GetString(SharedMemory.RawData, ets2RawData.modelOffset, ets2RawData.modelLength);
 
-            var ets2telemetry = new Ets2Telemetry(ets2RawData, ets2RawUnmanaged);*/
-            var ets2telemetry = SharedMemory.Update<Ets2Telemetry>();
+            var ets2telemetry = new SCSTelemetry(ets2RawData, ets2RawUnmanaged);*/
+            var ets2telemetry = SharedMemory.Update<SCSTelemetry>();
             var time = ets2telemetry.Time;
             if (Data != null)
                 Data(ets2telemetry, time != lastTime);

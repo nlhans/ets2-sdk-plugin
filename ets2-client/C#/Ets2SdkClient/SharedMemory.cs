@@ -59,7 +59,7 @@ namespace Ets2SdkClient {
             memoryMappedHandle.Dispose();
         }
 
-        public Ets2Telemetry Update<T>()
+        public SCSTelemetry Update<T>()
         {
             Update();
 
@@ -84,7 +84,7 @@ namespace Ets2SdkClient {
         /// <typeparam name="T">Managed C# object type</typeparam>
         /// <param name="structureDataBytes">Bytes array</param>
         /// <returns>Managed object from given bytes</returns>
-        protected Ets2Telemetry ToObject<T>(byte[] structureDataBytes)
+        protected SCSTelemetry ToObject<T>(byte[] structureDataBytes)
         {
            /* T createdObject = default(T);
 
