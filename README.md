@@ -1,6 +1,8 @@
 In development rework to allow 32bit and 64 bit, make it a bit better modifiable and add a few Wishes and game detection
 
 fork of nlhans work
+
+.dll and c# object is complet new and won't work with old code, but i think when it is ready it would be worth 
 # Euro Truck Simulator 2 Telemetry And American Truck Simulator 
 
 SCS has kindly released a SDK that allows developers and users to stream telemetry data from the game to any 3rd party applications. An example program was provided (and often used) which enabled streaming data by using text files stored on the users harddisk. This puts unnecessary stress on the users harddrive (not the mention the number of re-writes that would hurt SSDs), and moreover requires the user to manually configure the telemetry data source.
