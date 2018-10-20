@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("File:SCSGame.cs","SCSGame.cs");NDSummary.OnSummaryLoaded("File:SCSGame.cs",[["C#","CSharp"]],[["Enums","Enumeration"],["Groups","Group"],["Information","Information"]],[[1,0,1,"Types","Ets2SdkClient.Types"],[2,0,0,"SCSGame","Ets2SdkClient.SCSGame"],[3,0,2,"Values","Ets2SdkClient.SCSGame.Values"]]);

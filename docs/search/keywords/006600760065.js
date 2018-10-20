@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("fve",["Class"],[["FVector",,[["Ets2SdkClient.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.FVector.cs:Ets2SdkClient.SCSTelemetry.FVector","CSharpClass:Ets2SdkClient.SCSTelemetry.FVector"]]]]);

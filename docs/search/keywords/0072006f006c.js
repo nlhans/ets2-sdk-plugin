@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("rol",["Information"],[["Roll",,[["Ets2SdkClient.SCSTelemetry.Euler",,,,0,"File:Object/SCSTelemetry.Euler.cs:Ets2SdkClient.SCSTelemetry.Euler.Roll","CSharpClass:Ets2SdkClient.SCSTelemetry.Euler:Roll"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("dif",["Property"],[["DifferentialRation",,[["Ets2SdkClient.SCSTelemetry.Truck.Constants.Motor",,,,0,"File:Object/SCSTelemetry.Truck.Constants.cs:Ets2SdkClient.SCSTelemetry.Truck.Constants.Motor.DifferentialRation","CSharpClass:Ets2SdkClient.SCSTelemetry.Truck.Constants.Motor:DifferentialRation"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("pau",["Property"],[["Paused",,[["Ets2SdkClient.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.cs:Ets2SdkClient.SCSTelemetry.Paused","CSharpClass:Ets2SdkClient.SCSTelemetry:Paused"]]]]);

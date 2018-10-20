@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("rpm",["Property"],[["RPM",,[["Ets2SdkClient.SCSTelemetry.Truck.Current.Dashboard",,,,0,"File:Object/SCSTelemetry.Truck.Current.cs:Ets2SdkClient.SCSTelemetry.Truck.Current.Dashboard.RPM","CSharpClass:Ets2SdkClient.SCSTelemetry.Truck.Current.Dashboard:RPM"]]]]);

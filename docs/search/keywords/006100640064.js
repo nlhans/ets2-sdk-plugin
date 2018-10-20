@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("add",["Function"],[["Add",,[["Ets2SdkClient.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.Methods.cs:Ets2SdkClient.SCSTelemetry.Add","CSharpClass:Ets2SdkClient.SCSTelemetry:Add"]]]]);

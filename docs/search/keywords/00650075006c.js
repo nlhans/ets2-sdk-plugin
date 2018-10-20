@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("eul",["Class"],[["Euler",,[["Ets2SdkClient.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.Euler.cs:Ets2SdkClient.SCSTelemetry.Euler","CSharpClass:Ets2SdkClient.SCSTelemetry.Euler"]]]]);

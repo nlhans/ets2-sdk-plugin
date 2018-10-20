@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("too",["Function"],[["ToObject",,[["Ets2SdkClient.SharedMemory",,,,0,"File:SharedMemory.cs:Ets2SdkClient.SharedMemory.ToObject","CSharpClass:Ets2SdkClient.SharedMemory:ToObject"]]]]);

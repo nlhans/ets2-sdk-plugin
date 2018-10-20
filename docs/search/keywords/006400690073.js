@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("dis",["Function"],[["Disconnect",,[["Ets2SdkClient.SharedMemory",,,,0,"File:SharedMemory.cs:Ets2SdkClient.SharedMemory.Disconnect","CSharpClass:Ets2SdkClient.SharedMemory:Disconnect"]]]]);

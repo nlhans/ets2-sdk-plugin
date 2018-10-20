@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("avt",["Information"],[["Avtive",,[["Ets2SdkClient.SCSTelemetry.Truck.Current.Lights","Blinker Avtive",,,0,"File:Object/SCSTelemetry.Truck.Current.cs:Ets2SdkClient.SCSTelemetry.Truck.Current.Lights.Blinker_Avtive","CSharpClass:Ets2SdkClient.SCSTelemetry.Truck.Current.Lights:Blinker_Avtive"]]]]);

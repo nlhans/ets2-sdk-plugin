@@ -7,18 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Ets2SdkClient.Object;
 
 namespace Ets2SdkClient.Demo
 {
     public partial class Ets2SdkClientDemo : Form
     {
-    public Ets2SdkTelemetry Telemetry;
+    public SCSSdkTelemetry Telemetry;
 
         public Ets2SdkClientDemo()
         {
             InitializeComponent();
             Console.WriteLine("SOMEMEOMEO");
-            Telemetry = new Ets2SdkTelemetry();
+            Telemetry = new SCSSdkTelemetry();
             Console.WriteLine("SOMEMEOMEO2");
             Telemetry.Data += Telemetry_Data;
             Console.WriteLine("SOMEMEOMEO3");

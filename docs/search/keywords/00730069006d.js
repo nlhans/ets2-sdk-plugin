@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("sim",["Property"],[["Simulated",,[["Ets2SdkClient.SCSTelemetry.Truck.Constants.Wheels",,,,0,"File:Object/SCSTelemetry.Truck.Constants.cs:Ets2SdkClient.SCSTelemetry.Truck.Constants.Wheels.Simulated","CSharpClass:Ets2SdkClient.SCSTelemetry.Truck.Constants.Wheels:Simulated"]]]]);

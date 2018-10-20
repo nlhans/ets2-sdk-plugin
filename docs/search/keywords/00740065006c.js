@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("tel",["Delegate","Property"],[["TelemetryData",,[["Ets2SdkClient",,,,0,"File:SCSSdkTelemetry.cs:Ets2SdkClient.TelemetryData"]]],["TelemetryVersion",,[["Ets2SdkClient.SCSTelemetry",,,,1,"File:Object/SCSTelemetry.cs:Ets2SdkClient.SCSTelemetry.TelemetryVersion","CSharpClass:Ets2SdkClient.SCSTelemetry:TelemetryVersion"]]]]);

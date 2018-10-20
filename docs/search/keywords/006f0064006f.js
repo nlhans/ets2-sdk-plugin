@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("odo",["Property"],[["Odometer",,[["Ets2SdkClient.SCSTelemetry.Truck.Current.Dashboard",,,,0,"File:Object/SCSTelemetry.Truck.Current.cs:Ets2SdkClient.SCSTelemetry.Truck.Current.Dashboard.Odometer","CSharpClass:Ets2SdkClient.SCSTelemetry.Truck.Current.Dashboard:Odometer"]]]]);

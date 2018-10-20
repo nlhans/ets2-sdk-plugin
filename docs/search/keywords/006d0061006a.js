@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("maj",["Property"],[["Major",,[["Ets2SdkClient.SCSTelemetry.Version",,,,0,"File:Object/SCSTelemetry.Version.cs:Ets2SdkClient.SCSTelemetry.Version.Major","CSharpClass:Ets2SdkClient.SCSTelemetry.Version:Major"]]]]);

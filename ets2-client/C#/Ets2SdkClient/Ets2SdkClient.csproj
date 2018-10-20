@@ -48,13 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ets2SdkBoolean.cs" />
-    <Compile Include="Ets2SdkData.cs" />
-    <Compile Include="Ets2SdkDataAlt.cs" />
-    <Compile Include="Ets2SdkTelemetry.cs" />
+    <Compile Include="AuxLevel.cs" />
+    <Compile Include="SCSTelemetry.Truck.cs" />
+    <Compile Include="SCSGame.cs" />
+    <Compile Include="SCSSdkConvert.cs" />
+    <Compile Include="SCSSdkTelemetry.cs" />
+    <Compile Include="SCSTelemetry.Common.cs" />
     <Compile Include="SCSTelemetry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharedMemory.cs" />
+    <Compile Include="ShifterType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

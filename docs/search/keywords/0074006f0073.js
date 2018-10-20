@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("tos",["Function"],[["ToString",,[["Ets2SdkClient.SCSTelemetry.Version",,,,0,"File:Object/SCSTelemetry.Version.cs:Ets2SdkClient.SCSTelemetry.Version.ToString","CSharpClass:Ets2SdkClient.SCSTelemetry.Version:ToString"]]]]);
