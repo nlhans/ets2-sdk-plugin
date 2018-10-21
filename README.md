@@ -82,32 +82,181 @@ The following telemetry fields are supported, structure like the c# object:
 				- Name
 
 
-			Current Values (Values that change alot):
-				-
+			Current Values (Values that change a lot):
+				- Electric Enabled
+				- Engine Enabled
+				Motor Values:
+					Gear Values:
+						- HShifterSlot
+						- Selected
+						- HShifterSelector
+
+					Brake Values:
+						- RetarderLevel
+						- Air Pressure
+						- Temperature 
+						- Parking Brake
+						- Motor Brake					
+				
+				Dashboard:
+					Fuel Values:
+						- Amount
+						- Average Consumption
+						- Range (estimated range with current amount of fuel)
+
+					Warnings:
+						- Air Pressure
+						- Air Pressure Emergency
+						- Fuel warning
+						- Adblue
+						- oil pressure
+						- adblue
+						- water temperature
+						- battery voltage
+
+					- Gear Dashboards
+					- Speed (m/s,km/h,mph)
+					- CruiseControlSpeed (m/s,km/h,mph)
+					- Adblue amount
+					- Oil Pressure
+					- Oil Temperature
+					- Water Temperature
+					- BatteryVoltage
+					- RPM
+					- Odometer
+					- Wipers
+					- Cruise Control ("special field", same like `CruiseControlspeed == 0`)
+					Acceleration:
+						- Linear Velocity
+						- Angular Velocity
+						- Linear Acceleration
+						- Angular Acceleration
+						- Cabin Angular Velocity
+						- Cabin Angular Acceleration					
+
+				Lights:
+					- Aux Front (enum for 3 states)
+					- Aux Roof (enum for 3 states)
+					- Dashboard Backlight
+					- Blinker Left Active
+					- Blinker Right Active
+					- Blinker Left On
+					- Blinker Right On
+					- Parking
+					- Beam Low
+					- Beam High
+					- Beacon
+					- Brake
+					- Reverse
+
+				Wheels:
+					- Substance
+					- SuspDeflection
+					- Velocity
+					- Steering
+					- Rotation
+					- Lift
+					- Lift Offset
+					- on ground
+					- position
+
+				Damage:
+					- Engine
+					- Transmission
+					- Cabin
+					- chassis
+					- wheels (avg. of all wheels)
+
+				- Position (position in world space with position and orientation)
+
 			
 			Positioning:
-				-
+				- Cabin (vehicle space)
+				- Head (cabin space)
+				- Hook (vehicle space)
+				- Head Offset
+				- Cabin Offset
+				- Contains "more fields" see at the bottom of the list
+
 
 		Trailer Values:
-			-
+			- Attached
+			- Damage
+			Wheel Values:
+				- Substance
+				- SuspDeflection
+				- Velocity
+				- Steering
+				- Rotation
+				- On Ground
+			
+			Cargo Values:
+				- Mass 
+				- Name (code)
+			
+			Acceleration:
+				- Linear Velocity
+				- Angular Velocity
+				- Linear Acceleration
+				- Angular Acceleration
+
+			- Chassis (code)
+			- Id (code)
+			- Name
 		
 		Job Values:
-			-
+			- Delivery Time (time object -> in-game minutes and datetime object)
+			- Remaining Delivery Time (calculated)
+			- City Destination Id (code)
+			- City Destination
+			- Company Destination Id (code)
+			- Company Destination
+			- City Source Id (code)
+			- City Source 
+			- Company Source Id (code)
+			- Company Source
+			- Income 
 
 		Control Values:
-			-
+			User Input:
+				- Steering
+				- Throttle
+				- Brake
+				- Clutch
+
+			Game Values:
+				- Steering
+				- Throttle
+				- Brake
+				- Clutch
 
 		Navigation Values:
-			-
+			- Navigation Distance
+			- Navigation Time
+			- Speed Limit
 		
 		SpecialEvents:
-			-
+			- On Job 
+			- Job Finished (flag that disappears after some time)
 
 
 Also there are a few more fields you can use:
 
+	Under Truck.Positioning:
+		- Head position in Cabin Space
+		- Head position in Vehicle Space
+		- Head position in World Space
+		- Head Position in World Space 
+		- Cabin Position in World Space
+		- Hook Position in World Space
+	Methods:
+		- In-game Minutes to Date(Time)
+		- Add 2 FVectors
+		- Add a FVector and a DVector
+		- Rotate: Rotates specified vector by specified orientation
+		- 
 
-
+May I forgot something. When you found missing values or something else create an issue. Thanks. 
 
 The fields are updated as fast as ETS2/ATS can and will do, as this is how the SDK has been designed by SCS. When a telemetry value has changed the SDK will immediately call a handler. This plug-in implements this handler which stores the data to the right field inside the data structure.
 There is no "sample ticker" yet. This must be done at the client side, by regularly checking if the timestamp has been updated.
