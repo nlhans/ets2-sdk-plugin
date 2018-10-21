@@ -253,8 +253,7 @@ Also there are a few more fields you can use:
 		- In-game Minutes to Date(Time)
 		- Add 2 FVectors
 		- Add a FVector and a DVector
-		- Rotate: Rotates specified vector by specified orientation
-		- 
+		- Rotate: Rotates specified vector by specified orientation 
 
 May I forgot something. When you found missing values or something else create an issue. Thanks. 
 
