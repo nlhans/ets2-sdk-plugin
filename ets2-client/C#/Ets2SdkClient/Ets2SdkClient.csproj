@@ -49,13 +49,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuxLevel.cs" />
-    <Compile Include="SCSTelemetry.Truck.cs" />
+    <Compile Include="Extension.cs" />
+    <Compile Include="Object\SCSTelemetry.Methods.cs" />
     <Compile Include="SCSGame.cs" />
     <Compile Include="SCSSdkConvert.cs" />
     <Compile Include="SCSSdkTelemetry.cs" />
-    <Compile Include="SCSTelemetry.Common.cs" />
-    <Compile Include="SCSTelemetry.cs" />
+    <Compile Include="Object\SCSTelemetry.Common.cs" />
+    <Compile Include="Object\SCSTelemetry.Control.cs" />
+    <Compile Include="Object\SCSTelemetry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Object\SCSTelemetry.DPlacement.cs" />
+    <Compile Include="Object\SCSTelemetry.DVector.cs" />
+    <Compile Include="Object\SCSTelemetry.Euler.cs" />
+    <Compile Include="Object\SCSTelemetry.FPlacement.cs" />
+    <Compile Include="Object\SCSTelemetry.Frequency.cs" />
+    <Compile Include="Object\SCSTelemetry.FVector.cs" />
+    <Compile Include="Object\SCSTelemetry.Job.cs" />
+    <Compile Include="Object\SCSTelemetry.Movement.cs" />
+    <Compile Include="Object\SCSTelemetry.Navigation.cs" />
+    <Compile Include="Object\SCSTelemetry.Position.cs" />
+    <Compile Include="Object\SCSTelemetry.SpecialEvents.cs" />
+    <Compile Include="Object\SCSTelemetry.Time.cs" />
+    <Compile Include="Object\SCSTelemetry.Trailer.cs" />
+    <Compile Include="Object\SCSTelemetry.Truck.Constants.cs" />
+    <Compile Include="Object\SCSTelemetry.Truck.cs" />
+    <Compile Include="Object\SCSTelemetry.Truck.Current.cs" />
+    <Compile Include="Object\SCSTelemetry.Version.cs" />
     <Compile Include="SharedMemory.cs" />
     <Compile Include="ShifterType.cs" />
   </ItemGroup>

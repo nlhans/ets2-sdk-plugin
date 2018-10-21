@@ -60,14 +60,26 @@ namespace Ets2SdkClient.Demo
                     return;
                 }
 
-                lbGeneral.Text = "General info:\r\n SDK Version: " + data.Version.SdkPlugin + "\r\n Reported game Version: " +
-                                 data.Version.GameMajor + "." + data.Version.GameMinor +"\r\n"+data.Version.Game+"\r\n"+data.Version.GameTelemetryMajor+"."+data.Version.GameTelemetryMinor+"\r\n\r\nTruck: " + data.Truck + " (" + data.TruckId + ")\r\nManufacturer: " + data.Manufacturer + "(" + data.ManufacturerId + ")" +
-                                 "\r\nGame Timestamp: " + data.Time + "\r\nPaused? " + data.Paused +"\r\n\r\n"+data.AbsolutTime +" (seconds)"+"\r\n"+data.GameTime+ "\r\nScale\t"+data.Scale+ "\r\nRestStop\t" + data.RestStop+ "\r\nFuelWarningFactor\t" + data.FuelWarningFactor;
+                lbGeneral.Text = "General info:\n " +
+                                 "\tSDK Version:\n" +
+                                 $"\t\t\t{data.DllVersion}\n" +
+                                 "\tGame:\n " +
+                                 $"\t\t\t{data.Game}\n" +
+                                 "\tGame Version:\n" +
+                                 $"\t\t\t{data.GameVersion}\n" +
+                                 "\tTelemetry Version:\n" +
+                                 $"\t\t\t{data.TelemetryVersion}\n" +
+                                 "\tTimeStamp:\n" +
+                                 $"\t\t\t{data.Timestamp}\n"+
+                                  "\tGame Paused:\n"+
+                                 $"\t\t\t{data.Paused}\n";
+                            
+
 
                 // Do some magic trickery to display ALL info:
                 var grps = new object[]
                        {
-                           data.Drivetrain, data.Physics, data.Controls, data.Axilliary, data.Damage, data.Lights, data.Job
+                           
                        };
 
                 foreach (var grp in grps)

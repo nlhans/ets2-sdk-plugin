@@ -3,6 +3,7 @@
 // Ets2SdkDataAlt.cs
 // 22:51
 using System;
+using System.Text;
 using Ets2SdkClient.Object;
 
 namespace Ets2SdkClient {
@@ -14,6 +15,8 @@ namespace Ets2SdkClient {
         private int _offset;
         private readonly int[] _offsetAreas = new[] {0,40,280,320,1400,1600,2000,2200,2400,4200,4400 };
         private int _offsetArea;
+        private const int StringSize = 64;
+        private const int WheelSize = 16;
         /// <summary>
         /// Convert the Shared Memory Byte data structure in a C# object
         /// </summary>
@@ -30,21 +33,45 @@ namespace Ets2SdkClient {
 
             _data = structureDataBytes;
             var retData = new SCSTelemetry();
-             
-            // Encoding.UTF8.GetString(GetSubArray(64)).Replace('\0', ' ').Trim();
-            
 
-             
-            //TODO: 16 auslagern
+            #region FIRST ZONE 
+            retData.Timestamp = GetUint();
+            retData.Paused = GetBool();
+
             
+            NextOffsetArea();
+            #endregion
+
+            #region SECOND ZONE
+            retData.DllVersion = GetUint();
+            retData.GameVersion.Major = GetUint();
+            retData.GameVersion.Minor = GetUint();
+            retData.Game = GetUint().ToEnum<SCSGame>();
+            retData.TelemetryVersion.Major = GetUint();
+            retData.TelemetryVersion.Minor = GetUint();
+
+            
+            NextOffsetArea();
+            #endregion
+
+
+
+
+
+
+
+
+
             return retData;
         }
 
-        private byte GetByte() {
+        private bool GetBool() {
             var temp = _data[_offset];
             _offset++;
-            return temp;
+            return temp>0;
         }
+        // actually no Uint conversion... 
+        //TODO: check if it is every time correct uint
         private uint GetUint() {
             while (_offset % 4 != 0) {
                 _offset++;
@@ -91,15 +118,7 @@ namespace Ets2SdkClient {
             _offset += length;
             return ret;
         }
-        private byte[] GetSubArray(int specialOffset, int length)
-        {
-            var ret = new byte[length];
-            for (var i = 0; i < length; i++)
-            {
-                ret[i] = _data[specialOffset + i];
-            }
-            return ret;
-        }
+       
 
         private void NextOffsetArea() {
             _offsetArea++;
@@ -109,5 +128,12 @@ namespace Ets2SdkClient {
         private void SetOffset() {
             _offset = _offsetAreas[_offsetArea];
         }
+
+        private string GetString(int length = StringSize) {
+            return Encoding.UTF8.GetString(GetSubArray(length)).Replace('\0', ' ').Trim();
+        }
+
+
+      
     }
 }

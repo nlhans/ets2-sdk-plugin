@@ -8,6 +8,16 @@ namespace Ets2SdkClient.Object {
     public partial class SCSTelemetry {
         private const float PiTimes2 = 6.2831853071795864769252867665590058f;
 
+        public SCSTelemetry()
+        {
+            GameVersion = new Version();
+            TelemetryVersion = new Version();
+
+
+
+            SpecialEventsValues = new SpecialEvents();
+        }
+
 
         /// About: Currency
         ///  
@@ -19,7 +29,7 @@ namespace Ets2SdkClient.Object {
         /// 
         /// About: Temperatures
         /// Aproximated for entire truck, not at the wheel level.
-        
+
         /// <summary>
         ///     Timestamp not the in game time,
         /// </summary>
