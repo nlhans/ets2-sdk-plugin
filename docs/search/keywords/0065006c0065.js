@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("ele",["Property"],[["ElectricEnabled",,[["SCSSdkClient.Object.SCSTelemetry.Truck.Current",,,,0,"File:Object/SCSTelemetry.Truck.Current.cs:SCSSdkClient.Object.SCSTelemetry.Truck.Current.ElectricEnabled","CSharpClass:SCSSdkClient.Object.SCSTelemetry.Truck.Current:ElectricEnabled"]]]]);

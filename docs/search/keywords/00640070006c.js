@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("dpl",["Class"],[["DPlacement",,[["SCSSdkClient.Object.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.DPlacement.cs:SCSSdkClient.Object.SCSTelemetry.DPlacement","CSharpClass:SCSSdkClient.Object.SCSTelemetry.DPlacement"]]]]);

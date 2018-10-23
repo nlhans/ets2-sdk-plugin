@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("File3:scs_telemetry.cpp","scs_telemetry.cpp");NDSummary.OnSummaryLoaded("File3:scs_telemetry.cpp",[["C/C++","C"]],[["Functions","Function"],["Groups","Group"]],[[31,0,1,"Functions","Functions"],[32,0,0,"telemetry_frame_start","telemetry_frame_start"]]);

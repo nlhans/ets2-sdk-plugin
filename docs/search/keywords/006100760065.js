@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("ave",["Property"],[["AverageConsumption",,[["SCSSdkClient.Object.SCSTelemetry.Truck.Current.Dashboard.Fuel",,,,0,"File:Object/SCSTelemetry.Truck.Current.cs:SCSSdkClient.Object.SCSTelemetry.Truck.Current.Dashboard.Fuel.AverageConsumption","CSharpClass:SCSSdkClient.Object.SCSTelemetry.Truck.Current.Dashboard.Fuel:AverageConsumption"]]]]);

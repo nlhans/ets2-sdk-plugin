@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("File:AuxLevel.cs","AuxLevel.cs");NDSummary.OnSummaryLoaded("File:AuxLevel.cs",[["C#","CSharp"]],[["Enums","Enumeration"],["Groups","Group"],["Information","Information"]],[[332,0,1,"Types","SCSSdkClient.Types"],[333,0,0,"AuxLevel","SCSSdkClient.AuxLevel"],[334,0,2,"Values","SCSSdkClient.AuxLevel.Values"]]);

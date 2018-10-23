@@ -61,6 +61,11 @@ TestResult.xml
 *.pidb
 *.svclog
 *.scc
+*.db*
+*.opendb
+*.gitlab
+*.dll
+*.lock
 
 # Chutzpah Test files
 _Chutzpah*
@@ -192,3 +197,5 @@ Desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
+
+.vs

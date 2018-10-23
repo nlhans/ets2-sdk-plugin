@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("pow",["Property"],[["Powered",,[["SCSSdkClient.Object.SCSTelemetry.Truck.Constants.Wheels",,,,0,"File:Object/SCSTelemetry.Truck.Constants.cs:SCSSdkClient.Object.SCSTelemetry.Truck.Constants.Wheels.Powered","CSharpClass:SCSSdkClient.Object.SCSTelemetry.Truck.Constants.Wheels:Powered"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("amo",["Property"],[["Amount",,[["SCSSdkClient.Object.SCSTelemetry.Truck.Current.Dashboard.Fuel",,,,0,"File:Object/SCSTelemetry.Truck.Current.cs:SCSSdkClient.Object.SCSTelemetry.Truck.Current.Dashboard.Fuel.Amount","CSharpClass:SCSSdkClient.Object.SCSTelemetry.Truck.Current.Dashboard.Fuel:Amount"]]]]);

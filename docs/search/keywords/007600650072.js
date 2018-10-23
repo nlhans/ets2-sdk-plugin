@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("ver",["Class"],[["Version",,[["SCSSdkClient.Object.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.Version.cs:SCSSdkClient.Object.SCSTelemetry.Version","CSharpClass:SCSSdkClient.Object.SCSTelemetry.Version"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("rad",["Property"],[["Radius",,[["SCSSdkClient.Object.SCSTelemetry.Truck.Constants.Wheels",,,,0,"File:Object/SCSTelemetry.Truck.Constants.cs:SCSSdkClient.Object.SCSTelemetry.Truck.Constants.Wheels.Radius","CSharpClass:SCSSdkClient.Object.SCSTelemetry.Truck.Constants.Wheels:Radius"]]]]);

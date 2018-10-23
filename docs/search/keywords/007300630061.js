@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("sca",["Information"],[["Scale",,[["SCSSdkClient.Object.SCSTelemetry.Common",,,,0,"File:Object/SCSTelemetry.Common.cs:SCSSdkClient.Object.SCSTelemetry.Common.Scale","CSharpClass:SCSSdkClient.Object.SCSTelemetry.Common:Scale"]]]]);

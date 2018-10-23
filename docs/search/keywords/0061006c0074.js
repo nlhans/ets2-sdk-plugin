@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("alt",["Variable"],[["alt",,[["SCSSdkClient.SharedMemory",,,,0,"File:SharedMemory.cs:SCSSdkClient.SharedMemory.alt","CSharpClass:SCSSdkClient.SharedMemory:alt"]]]]);
