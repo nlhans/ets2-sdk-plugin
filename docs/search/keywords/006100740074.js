@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("att",["Property"],[["Attached",,[["Ets2SdkClient.SCSTelemetry.Trailer",,,,0,"File:Object/SCSTelemetry.Trailer.cs:Ets2SdkClient.SCSTelemetry.Trailer.Attached","CSharpClass:Ets2SdkClient.SCSTelemetry.Trailer:Attached"]]]]);
+NDSearch.OnPrefixDataLoaded("att",["Property"],[["Attached",,[["SCSSdkClient.Object.SCSTelemetry.Trailer",,,,0,"File:Object/SCSTelemetry.Trailer.cs:SCSSdkClient.Object.SCSTelemetry.Trailer.Attached","CSharpClass:SCSSdkClient.Object.SCSTelemetry.Trailer:Attached"]]]]);

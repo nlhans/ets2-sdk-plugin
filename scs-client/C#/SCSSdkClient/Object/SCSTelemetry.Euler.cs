@@ -1,6 +1,6 @@
 ﻿#pragma warning disable 1570
 
-namespace Ets2SdkClient.Object{
+namespace SCSSdkClient.Object{
     public partial class SCSTelemetry {
         /// <summary>
         ///  Orientation of object.

@@ -1,11 +1,19 @@
 ﻿#pragma warning disable 1570
 
-namespace Ets2SdkClient.Object {
+namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
         /// <summary>
         ///     Trailer Values
         /// </summary>
         public class Trailer {
+            public Trailer()
+            {
+                Wheelvalues = new Wheels();
+                CargoValues = new Cargo();
+                AccelerationValues = new Acceleration();
+             
+            }
+
             /// <summary>
             ///     Is the trailer connected to the truck
             /// </summary>
@@ -19,7 +27,7 @@ namespace Ets2SdkClient.Object {
             public Wheels Wheelvalues { get; internal set; }
             public Cargo CargoValues { get; internal set; }
             public Acceleration AccelerationValues { get; internal set; }
-
+            public DPlacement Position { get; internal set; }
             /// <summary>
             ///     Name for internal use by code.
             ///     Limited to C-identifier characters and dots.
@@ -42,6 +50,9 @@ namespace Ets2SdkClient.Object {
             ///     States of the Wheels
             /// </summary>
             public class Wheels {
+              
+
+
                 /// About: Velocity
                 /// Positive velocity corresponds to forward movement
                 /// 
@@ -63,7 +74,7 @@ namespace Ets2SdkClient.Object {
                 ///     About: LiftOffset
                 ///     Might have non-linear relation to lift ratio.
                 ///     Set to zero or not provided for non-liftable axles.
-                
+
                 /// <summary>
                 ///     Substance below the wheel
                 /// </summary>

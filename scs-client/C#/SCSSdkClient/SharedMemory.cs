@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO.MemoryMappedFiles;
-using Ets2SdkClient.Object;
+using SCSSdkClient.Object;
 
-namespace Ets2SdkClient {
+namespace SCSSdkClient {
     public class SharedMemory {
         private const uint defaultMapSize = 16 * 1024;
         private readonly SCSSdkConvert alt = new SCSSdkConvert();

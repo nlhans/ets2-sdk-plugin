@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("dpl",["Class"],[["DPlacement",,[["Ets2SdkClient.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.DPlacement.cs:Ets2SdkClient.SCSTelemetry.DPlacement","CSharpClass:Ets2SdkClient.SCSTelemetry.DPlacement"]]]]);
+NDSearch.OnPrefixDataLoaded("dpl",["Class"],[["DPlacement",,[["SCSSdkClient.Object.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.DPlacement.cs:SCSSdkClient.Object.SCSTelemetry.DPlacement","CSharpClass:SCSSdkClient.Object.SCSTelemetry.DPlacement"]]]]);

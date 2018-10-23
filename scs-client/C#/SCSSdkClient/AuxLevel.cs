@@ -1,4 +1,4 @@
-﻿namespace Ets2SdkClient {
+﻿namespace SCSSdkClient {
     /// <summary>
     ///     Intensity Level of Auxiliary Lights
     /// </summary>

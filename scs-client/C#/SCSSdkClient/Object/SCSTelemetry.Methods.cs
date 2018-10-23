@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
-namespace Ets2SdkClient.Object {
+namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
         /// <summary>
         ///     Converts uint minutes in a DateTime object
@@ -10,7 +11,7 @@ namespace Ets2SdkClient.Object {
         ///     DateTime object of the in-game time
         /// </returns>
         internal static DateTime MinutesToDate(uint minutes) =>
-            new DateTime((long) minutes * 10000000, DateTimeKind.Utc);
+            new DateTime((long) minutes * 10000000*60, DateTimeKind.Utc);
 
         /// <summary>
         ///     Converts int minutes in a DateTime object
@@ -20,7 +21,8 @@ namespace Ets2SdkClient.Object {
         ///     DateTime object of the in-game time
         /// </returns>
         internal static DateTime MinutesToDate(int minutes) =>
-            new DateTime((long) minutes * 10000000, DateTimeKind.Utc);
+            new DateTime((long) Math.Abs(minutes) * 10000000*60, DateTimeKind.Utc);
+
 
         /// <summary>
         ///     Adds two float vectors

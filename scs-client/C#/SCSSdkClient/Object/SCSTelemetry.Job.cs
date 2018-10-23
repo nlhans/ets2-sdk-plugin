@@ -1,23 +1,17 @@
 ﻿#pragma warning disable 1570
 
-namespace Ets2SdkClient.Object {
+namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
         /// <summary>
         ///     Job values. Income, destination, source, etc.
         /// </summary>
         public class Job {
-            /// About: DeliveryTime
-            /// Delivering the job after this time will cause it be late
-            /// 
-            /// About: RemainingDeliveryTime
-            /// Negative if the delivery is to late
-            
-            /// <summary>
-            ///     Absolute in-game time of end of job delivery window
-            /// </summary>
-            /// <!----> **INFORMATION** <!---->
-            /// Delivering the job after this time will cause it be late
-            /// <!----> **INFORMATION** <!---->
+            public Job()
+            {
+                DeliveryTime = new Time();
+                RemainingDeliveryTime = new Frequency();
+            }
+
             public Time DeliveryTime { get; internal set; }
 
             /// <summary>
@@ -42,6 +36,8 @@ namespace Ets2SdkClient.Object {
             ///     Reward in internal game-specific currency.
             /// </summary>
             public long Income { get; internal set; }
+
+            
         }
     }
 }

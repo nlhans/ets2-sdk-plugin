@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("fre",["Class"],[["Frequency",,[["Ets2SdkClient.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.Frequency.cs:Ets2SdkClient.SCSTelemetry.Frequency","CSharpClass:Ets2SdkClient.SCSTelemetry.Frequency"]]]]);
+NDSearch.OnPrefixDataLoaded("fre",["Class"],[["Frequency",,[["SCSSdkClient.Object.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.Frequency.cs:SCSSdkClient.Object.SCSTelemetry.Frequency","CSharpClass:SCSSdkClient.Object.SCSTelemetry.Frequency"]]]]);

@@ -1,11 +1,22 @@
 ﻿#pragma warning disable 1570
-namespace Ets2SdkClient.Object {
+namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
         public partial class Truck {
             /// <summary>
             ///     Values that are changing a lot oftener
             /// </summary>
             public class Current {
+                public Current()
+                {
+                    MotorValues = new Motor();
+                    DashboardValues = new Dashboard();
+                    LightsValues = new Lights();
+                    WheelsValues = new Wheels();
+                    DamageValues = new Damage();
+                    PositionValue = new DPlacement();
+                    AccelerationValues = new Acceleration();
+                }
+
                 /// <summary>
                 ///     Is the electric enabled
                 /// </summary>
@@ -21,6 +32,7 @@ namespace Ets2SdkClient.Object {
                 public Lights LightsValues { get; internal set; }
                 public Wheels WheelsValues { get; internal set; }
                 public Damage DamageValues { get; internal set; }
+                public  Acceleration AccelerationValues { get; internal set; }
 
                 /// <summary>
                 ///     Represents world space position and orientation of the truck.
@@ -31,6 +43,12 @@ namespace Ets2SdkClient.Object {
                 ///     Gear, Retarder, etc.
                 /// </summary>
                 public class Motor {
+                    public Motor()
+                    {
+                        GearValues = new Gear();
+                        BrakeValues = new Brakes();
+                    }
+
                     public Gear GearValues { get; internal set; }
                     public Brakes BrakeValues { get; internal set; }
 
@@ -117,6 +135,15 @@ namespace Ets2SdkClient.Object {
                 ///     Speed, RPM, Pressures, Temperatures
                 /// </summary>
                 public class Dashboard {
+                    public Dashboard()
+                    {
+                        FuelValue = new Fuel();
+                        WarningValues = new Warnings(); 
+                        Speed = new Movement();
+                        CruiseControlSpeed = new Movement();
+                        AccelerationValues = new Acceleration();
+                    }
+
                     /// About: Speed
                     /// Uses negative value to represent reverse movement
                     /// 
@@ -446,10 +473,6 @@ namespace Ets2SdkClient.Object {
                     /// </summary>
                     public bool[] OnGround { get; internal set; }
 
-                    /// <summary>
-                    ///     Position of respective wheels in the vehicle space.
-                    /// </summary>
-                    public FVector[] PositionValues { get; internal set; }
                 }
 
                 /// <summary>

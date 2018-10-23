@@ -1,1 +1,1 @@
-NDMenu.OnTabsLoaded([["File","Files","File:","files.js"],["Class",["Classes","Ets2SdkClient"],"CSharpClass:Ets2SdkClient.","classes.js"]]);
+NDMenu.OnTabsLoaded([["File","Files",,"files.js"],["Class",["Classes","SCSSdkClient"],"CSharpClass:SCSSdkClient.","classes.js"]]);

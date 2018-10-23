@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("dll",["Property"],[["DllVersion",,[["Ets2SdkClient.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.cs:Ets2SdkClient.SCSTelemetry.DllVersion","CSharpClass:Ets2SdkClient.SCSTelemetry:DllVersion"]]]]);
+NDSearch.OnPrefixDataLoaded("dll",["Property"],[["DllVersion",,[["SCSSdkClient.Object.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.cs:SCSSdkClient.Object.SCSTelemetry.DllVersion","CSharpClass:SCSSdkClient.Object.SCSTelemetry:DllVersion"]]]]);

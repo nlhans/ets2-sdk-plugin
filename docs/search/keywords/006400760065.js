@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("dve",["Class"],[["DVector",,[["Ets2SdkClient.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.DVector.cs:Ets2SdkClient.SCSTelemetry.DVector","CSharpClass:Ets2SdkClient.SCSTelemetry.DVector"]]]]);
+NDSearch.OnPrefixDataLoaded("dve",["Class"],[["DVector",,[["SCSSdkClient.Object.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.DVector.cs:SCSSdkClient.Object.SCSTelemetry.DVector","CSharpClass:SCSSdkClient.Object.SCSTelemetry.DVector"]]]]);

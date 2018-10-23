@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("onj",["Property"],[["OnJob",,[["Ets2SdkClient.SCSTelemetry.SpecialEvents",,,,0,"File:Object/SCSTelemetry.SpecialEvents.cs:Ets2SdkClient.SCSTelemetry.SpecialEvents.OnJob","CSharpClass:Ets2SdkClient.SCSTelemetry.SpecialEvents:OnJob"]]]]);
+NDSearch.OnPrefixDataLoaded("onj",["Property"],[["OnJob",,[["SCSSdkClient.Object.SCSTelemetry.SpecialEvents",,,,0,"File:Object/SCSTelemetry.SpecialEvents.cs:SCSSdkClient.Object.SCSTelemetry.SpecialEvents.OnJob","CSharpClass:SCSSdkClient.Object.SCSTelemetry.SpecialEvents:OnJob"]]]]);

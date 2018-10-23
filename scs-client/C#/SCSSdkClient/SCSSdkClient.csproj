@@ -7,8 +7,8 @@
     <ProjectGuid>{B62F8E57-9D8C-4EA2-90E4-1F6B09DCE468}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ets2SdkClient</RootNamespace>
-    <AssemblyName>Ets2SdkClient</AssemblyName>
+    <RootNamespace>SCSSdkClient</RootNamespace>
+    <AssemblyName>SCSSdkClient</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -25,7 +25,7 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <LangVersion>7.3</LangVersion>
-    <DocumentationFile>bin\Debug\Ets2SdkClient.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\SCSSdkClient.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

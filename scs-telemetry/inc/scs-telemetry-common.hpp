@@ -281,7 +281,7 @@ typedef struct scsTelemetryMap_s
 		float cabinAAY;
 		float cabinAAZ;
 	}truck_fv;
-	char buffer_fv[142];
+	char buffer_fv[52];
 	//----- END OF SIXTH ZONE AT OFFSET 1999 -----//
 
 	//----- START OF 7TH ZONE AT OFFSET 2000 -----//
@@ -320,7 +320,7 @@ typedef struct scsTelemetryMap_s
 		double trailer_rotationY;
 		double trailer_rotationZ;
 	}truck_dp;
-	char buffer_dp[104];
+	char buffer_dp[128];
 	//----- END OF 8TH ZONE AT OFFSET 2399 -----//
 
 	//----- START OF 9TH ZONE AT OFFSET 2400 -----//

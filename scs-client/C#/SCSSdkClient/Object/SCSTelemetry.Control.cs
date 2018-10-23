@@ -2,12 +2,18 @@
 
 #pragma warning disable 1570
 
-namespace Ets2SdkClient.Object {
+namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
         /// <summary>
         ///     User Input value and value used by the game
         /// </summary>
         public class Control {
+            public Control()
+            {
+                InputValues = new Input();
+                GameValues = new Game();
+            }
+
             /// <summary>
             ///     Contains the values of the user input
             /// </summary>
@@ -16,6 +22,10 @@ namespace Ets2SdkClient.Object {
             ///     Cpntains the values the game use
             /// </summary>
             public Game GameValues { get; internal set; }
+
+            public override string ToString() {
+                return $"Input Values:\n\t{InputValues.ToString().StringFormater()}\nGame Values:\n\t{GameValues.ToString().StringFormater()}";
+            }
 
             /// <summary>
             ///     Input value
@@ -72,6 +82,7 @@ namespace Ets2SdkClient.Object {
                 /// <!----> **INFORMATION** <!---->
                 /// <seealso cref="Game.Clutch" />
                 public float Clutch { get; internal set; }
+ 
             }
 
             /// <summary>
@@ -130,6 +141,7 @@ namespace Ets2SdkClient.Object {
                 /// <!----> **INFORMATION** <!---->
                 /// <seealso cref="Input.Clutch" />
                 public float Clutch { get; internal set; }
+             
             }
         }
     }

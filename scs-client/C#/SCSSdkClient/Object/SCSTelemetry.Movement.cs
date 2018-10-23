@@ -1,6 +1,6 @@
 ﻿#pragma warning disable 1570
 
-namespace Ets2SdkClient.Object {
+namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
         /// <summary>
         ///     Contains a in-game speed value (m/s), Kph (Km/h) and Mph of a speed value

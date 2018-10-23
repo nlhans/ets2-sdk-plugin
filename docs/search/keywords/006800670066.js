@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("hgf",["Variable"],[["hgf",,[["SCSSdkClient.Demo.SCSSdkClientDemo",,,,0,"File2:SCSSdkClient.Demo/SCSSdkClientDemo.Designer.cs:SCSSdkClient.Demo.SCSSdkClientDemo.hgf","CSharpClass:SCSSdkClient.Demo.SCSSdkClientDemo:hgf"]]]]);

@@ -1,6 +1,6 @@
 ﻿#pragma warning disable 1570
 
-namespace Ets2SdkClient.Object {
+namespace SCSSdkClient.Object {
     /// <summary>
     ///     Telemetry Data of SCS SDK's
     /// </summary>
@@ -12,9 +12,12 @@ namespace Ets2SdkClient.Object {
         {
             GameVersion = new Version();
             TelemetryVersion = new Version();
-
-
-
+            TruckValues = new Truck();
+            JobValues = new Job();
+            CommonValues = new Common();
+            TrailerValues = new Trailer();
+            ControlValues = new Control();
+            NavigationValues = new Navigation();
             SpecialEventsValues = new SpecialEvents();
         }
 

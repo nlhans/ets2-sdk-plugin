@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ets2SdkClient.Demo.Properties
+namespace SCSSdkClient.Demo.Properties
 {
 
 

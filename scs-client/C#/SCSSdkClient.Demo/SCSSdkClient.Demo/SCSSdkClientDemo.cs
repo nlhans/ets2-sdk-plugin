@@ -1,62 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Ets2SdkClient.Object;
+using Newtonsoft.Json;
+using SCSSdkClient.Object;
 
-namespace Ets2SdkClient.Demo
-{
-    public partial class Ets2SdkClientDemo : Form
-    {
-    public SCSSdkTelemetry Telemetry;
-
-        public Ets2SdkClientDemo()
-        {
+namespace SCSSdkClient.Demo {
+    public partial class SCSSdkClientDemo : Form {
+        public SCSSdkTelemetry Telemetry; 
+        public SCSSdkClientDemo() {
             InitializeComponent();
-            Console.WriteLine("SOMEMEOMEO");
             Telemetry = new SCSSdkTelemetry();
-            Console.WriteLine("SOMEMEOMEO2");
             Telemetry.Data += Telemetry_Data;
-            Console.WriteLine("SOMEMEOMEO3");
             Telemetry.JobFinished += TelemetryOnJobFinished;
-            Console.WriteLine("SOMEMEOMEO4");
             Telemetry.JobStarted += TelemetryOnJobStarted;
-            Console.WriteLine("SOMEMEOMEO5");
-            if (Telemetry.Error != null)
-            {
-                Console.WriteLine("SOMEMEOMEOError");
+            if (Telemetry.Error != null) {
                 lbGeneral.Text =
-                    "General info:\r\nFailed to open memory map " + Telemetry.Map +
-                        " - on some systems you need to run the client (this app) with elevated permissions, because e.g. you're running Steam/ETS2 with elevated permissions as well. .NET reported the following Exception:\r\n" +
-                        Telemetry.Error.Message + "\r\n\r\nStacktrace:\r\n" + Telemetry.Error.StackTrace;
+                    "General info:\r\nFailed to open memory map " +
+                    Telemetry.Map +
+                    " - on some systems you need to run the client (this app) with elevated permissions, because e.g. you're running Steam/ETS2 with elevated permissions as well. .NET reported the following Exception:\r\n" +
+                    Telemetry.Error.Message +
+                    "\r\n\r\nStacktrace:\r\n" +
+                    Telemetry.Error.StackTrace;
             }
-            Console.WriteLine("SOMEMEOMEO6");
         }
 
-        private void TelemetryOnJobFinished(object sender, EventArgs args)
-        {
+        private void TelemetryOnJobFinished(object sender, EventArgs args) =>
             MessageBox.Show("Job finished, or at least unloaded nearby cargo destination.");
-        }
 
-        private void TelemetryOnJobStarted(object sender, EventArgs e)
-        {
+        private void TelemetryOnJobStarted(object sender, EventArgs e) =>
             MessageBox.Show("Just started job OR loaded game with active.");
-        }
 
-        private void Telemetry_Data(SCSTelemetry data, bool updated)
-        {
-            Console.WriteLine("Does we come here?");
-            try
-            {
-                if (this.InvokeRequired)
-                {
-                    Console.WriteLine("SOMEMEOMEO");
-                    this.Invoke(new TelemetryData(Telemetry_Data), new object[2] { data, updated });
+        private void Telemetry_Data(SCSTelemetry data, bool updated) {
+            try {
+                if (InvokeRequired) {
+                    Invoke(new TelemetryData(Telemetry_Data), data, updated);
                     return;
                 }
 
@@ -70,78 +50,35 @@ namespace Ets2SdkClient.Demo
                                  "\tTelemetry Version:\n" +
                                  $"\t\t\t{data.TelemetryVersion}\n" +
                                  "\tTimeStamp:\n" +
-                                 $"\t\t\t{data.Timestamp}\n"+
-                                  "\tGame Paused:\n"+
-                                 $"\t\t\t{data.Paused}\n";
-                            
+                                 $"\t\t\t{data.Timestamp}\n" +
+                                 "\tGame Paused:\n" +
+                                 $"\t\t\t{data.Paused}\n"+
+                                 "\tOn Job:\n" +
+                                 $"\t\t\t{data.SpecialEventsValues.OnJob}\n"+
+                                 "\tJob Finished:\n" +
+                                 $"\t\t\t{data.SpecialEventsValues.JobFinished}\n";
+
+                common.Text = JsonConvert.SerializeObject(data.CommonValues, Formatting.Indented);
+                truck.Text = JsonConvert.SerializeObject(data.TruckValues, Formatting.Indented);
+                trailer.Text = JsonConvert.SerializeObject(data.TrailerValues, Formatting.Indented);
+                job.Text = JsonConvert.SerializeObject(data.JobValues, Formatting.Indented);
+                control.Text = JsonConvert.SerializeObject(data.ControlValues, Formatting.Indented);
+                navigation.Text = JsonConvert.SerializeObject(data.NavigationValues,Formatting.Indented);
 
 
-                // Do some magic trickery to display ALL info:
-                var grps = new object[]
-                       {
-                           
-                       };
 
-                foreach (var grp in grps)
-                {
-                    // Find the right tab page:
-                    var grpName = grp.GetType().Name;
-                    if (grpName.StartsWith("_"))
-                        grpName = grpName.Substring(1);
 
-                    var tabPage = default(TabPage);
-                    var tabFound = false;
 
-                    for (int k = 0; k < telemetryInfo.TabCount; k++)
-                    {
-                        if (telemetryInfo.TabPages[k].Text == grpName)
-                        {
-                            tabPage = telemetryInfo.TabPages[k];
-                            tabFound = true;
-                        }
-                    }
-                    if (!tabFound)
-                    {
-                        tabPage = new CustomTabPage(grpName);
-                        telemetryInfo.TabPages.Add(tabPage);
-                    }
 
-                    // All properties;
-                    var props = grp.GetType().GetProperties().OrderBy(x => x.Name);
-                    var labels = new StringBuilder();
-                    var vals = new StringBuilder();
-                    foreach (var prop in props)
-                    {
-                        labels.AppendLine(prop.Name + ":");
-                        var val = prop.GetValue(grp, null);
-                        if (val is float[] floats)
-                        {
-                      
-                            vals.AppendLine(string.Join(", ", floats.Select(x=> Math.Abs(x) > 0.01?x.ToString("0.000"):"")));
-                        }else if (val is bool[] bools) {
-                            vals.AppendLine(string.Join(", ", bools.Select(x => x)));
-                        }else if (val is int[] ints) {
-                            vals.AppendLine(string.Join(", ", ints.Select(x => Math.Abs(x) > 0 ? x.ToString(): "")));
-                        }
-                        else
-                        {
-                            vals.AppendLine(val.ToString());
-                        }
-                    }
 
-                    tabPage.Controls.Clear();
-                    var lbl1 = new Label { Location = new Point(3, 3), Size = new Size(200, tabPage.Height - 6) };
-                    var lbl2 = new Label { Location = new Point(203, 3), Size = new Size(1000, tabPage.Height - 6) };
-                    lbl1.Text = labels.ToString();
-                    lbl2.Text = vals.ToString();
-                    lbl2.AutoSize = false;
-                    tabPage.Controls.Add(lbl1);
-                    tabPage.Controls.Add(lbl2);
-                }
-            }
-            catch
-            {
+
+            } catch {
+                // ignored
             }
         }
+
+    
+ 
+       
     }
 }

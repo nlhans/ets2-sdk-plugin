@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
-using Ets2SdkClient.Object;
+using SCSSdkClient.Object;
 
-namespace Ets2SdkClient {
+namespace SCSSdkClient {
     public delegate void TelemetryData(SCSTelemetry data, bool newTimestamp);
 
     public class SCSSdkTelemetry {

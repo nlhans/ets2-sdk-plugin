@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("inc",["Property"],[["Income",,[["Ets2SdkClient.SCSTelemetry.Job",,,,0,"File:Object/SCSTelemetry.Job.cs:Ets2SdkClient.SCSTelemetry.Job.Income","CSharpClass:Ets2SdkClient.SCSTelemetry.Job:Income"]]]]);
+NDSearch.OnPrefixDataLoaded("inc",["Property"],[["Income",,[["SCSSdkClient.Object.SCSTelemetry.Job",,,,0,"File:Object/SCSTelemetry.Job.cs:SCSSdkClient.Object.SCSTelemetry.Job.Income","CSharpClass:SCSSdkClient.Object.SCSTelemetry.Job:Income"]]]]);

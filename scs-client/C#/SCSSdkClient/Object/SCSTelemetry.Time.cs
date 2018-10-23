@@ -2,7 +2,7 @@
 
 #pragma warning disable 1570
 
-namespace Ets2SdkClient.Object {
+namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
         /// <summary>
         ///     Represent a time object with time in minutes and a DateTime object
@@ -17,6 +17,8 @@ namespace Ets2SdkClient.Object {
             ///     Represented in data of in-game minutes
             /// </summary>
             public DateTime Date => MinutesToDate(Value);
+
+             
         }
     }
 }

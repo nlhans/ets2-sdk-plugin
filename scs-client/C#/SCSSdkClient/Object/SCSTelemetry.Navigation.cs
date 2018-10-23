@@ -1,14 +1,21 @@
 ﻿#pragma warning disable 1570
 
-namespace Ets2SdkClient.Object {
+namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
         /// <summary>
         ///     Advisor Values
         /// </summary>
         public class Navigation {
+            public Navigation()
+            {
+              
+                SpeedLimit = new Movement();
+            }
+
             /// About: SpeedLimit
             /// Respects the current state of the "Route Advisor speed limit" option
-            
+
+
             /// <summary>
             ///     The value of truck's navigation distance (in meters)
             /// </summary>
@@ -25,7 +32,7 @@ namespace Ets2SdkClient.Object {
             /// <!----> **INFORMATION** <!---->
             /// Respects the current state of the "Route Advisor speed limit" option
             /// <!----> **INFORMATION** <!---->
-            public float SpeedLimit { get; internal set; }
+            public Movement SpeedLimit { get; internal set; }
         }
     }
 }

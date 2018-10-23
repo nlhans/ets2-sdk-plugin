@@ -1,11 +1,21 @@
 ﻿#pragma warning disable 1570
 
-namespace Ets2SdkClient.Object {
+namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
         /// <summary>
         ///     Position of the Cabin, head and hook
         /// </summary>
         public class PositionData {
+            public PositionData()
+            {
+                Cabin = new FVector();
+                Head = new FVector();
+                Hook = new FVector();
+                HeadOffset = new FPlacement();
+                CabinOffset = new FPlacement();
+                TruckPosition = new DPlacement();
+            }
+
             /// About: Cabin
             /// This is position of the joint around which the cabin rotates.
             /// This attribute might be not present if the vehicle does not
@@ -14,7 +24,7 @@ namespace Ets2SdkClient.Object {
             /// About: HeadOffset
             /// Note that this value might change rapidly as result of
             /// the user switching between cameras or camera presets.
-            
+
             /// <summary>
             ///     Position of the cabin in the vehicle space.
             /// </summary>

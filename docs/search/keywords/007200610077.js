@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("raw",["Property"],[["RawData",,[["Ets2SdkClient.SharedMemory",,,,0,"File:SharedMemory.cs:Ets2SdkClient.SharedMemory.RawData","CSharpClass:Ets2SdkClient.SharedMemory:RawData"]]]]);
+NDSearch.OnPrefixDataLoaded("raw",["Property"],[["RawData",,[["SCSSdkClient.SharedMemory",,,,0,"File:SharedMemory.cs:SCSSdkClient.SharedMemory.RawData","CSharpClass:SCSSdkClient.SharedMemory:RawData"]]]]);

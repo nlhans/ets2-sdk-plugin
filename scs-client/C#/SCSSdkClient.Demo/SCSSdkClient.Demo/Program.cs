@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Ets2SdkClient.Demo
+namespace SCSSdkClient.Demo
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace Ets2SdkClient.Demo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Ets2SdkClientDemo());
+            Application.Run(new SCSSdkClientDemo());
         }
     }
 }

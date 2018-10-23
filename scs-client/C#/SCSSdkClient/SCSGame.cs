@@ -1,4 +1,4 @@
-﻿namespace Ets2SdkClient {
+﻿namespace SCSSdkClient {
     /// <summary>
     /// Which game loaded the sdk?
     /// </summary>

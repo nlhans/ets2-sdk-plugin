@@ -26,6 +26,7 @@ Thats also why there are (if i wouldn't use '#pragma') a lot `warnings` while co
 
 ### Overview 
 This plug-in stores it's data inside a Memory Mapped File, or "Shared Memory". This allows it to operate without any access to harddrive, or configuration hassle by the user to locate the memory map.
+Like you see on the structure the C# object is now a bit bigger and has more nested types. It's not the best way to store and display the data, but i didn't like it that such a lot of values display one object. For some operation an other structure would be better, but for the most this should be ok also. But you can take the source and create a simpler object or create an issue for small changes.
 
 The following telemetry fields are supported, structure like the c# object:
 
@@ -182,6 +183,7 @@ The following telemetry fields are supported, structure like the c# object:
 		Trailer Values:
 			- Attached
 			- Damage
+			- Position
 			Wheel Values:
 				- Substance
 				- SuspDeflection
@@ -262,7 +264,8 @@ There is no "sample ticker" yet. This must be done at the client side, by regula
 
 ## Client Implementations
 
-
+### C#
+Actually I'm not fully happy with the actual demo. But I didn't reached my plan that works like the old one. Later I will change the current demo so that they will be a lot times better.
 
 ### Other
 For other languages you need to create/find a library that can open and read MemoryMapped files. The data storage format is binary and can be found in "ets2-telemetry/inc/ets2-telemetry-common.hpp". The shared memory map name is "Local\SCSTelemetry".

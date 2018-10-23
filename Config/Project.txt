@@ -41,7 +41,16 @@ Timestamp: dd.mm.yyyy
 # Source Code
 # ------------------------------------------------------------------------
 
-Source Folder: ..\ets2-client\C#\Ets2SdkClient
+Source Folder: ..\scs-client\C#\SCSSdkClient
+   Name: SCSSdkClient
+
+Source Folder 2: ..\scs-client\C#\SCSSdkClient.Demo
+   Name: SCSSdkClient.Demo
+
+Source Folder 3: ..\scs-telemetry\src
+   Name: SCSTelemetry
+
+
 
 
 
@@ -64,6 +73,17 @@ Source Folder: ..\ets2-client\C#\Ets2SdkClient
 
 # Source Filtering
 # ------------------------------------------------------------------------
+
+Ignore Source Folder Pattern: .vs
+
+Ignore Source Folder Pattern: bin
+
+Ignore Source Folder Pattern: Debug
+
+Ignore Source Folder Pattern: Properties
+
+Ignore Source Folder Pattern: Release
+
 
 # If there are any subfolders in the source code that you would like Natural
 # Docs to ignore, they can be specified here.  If you use any of these options

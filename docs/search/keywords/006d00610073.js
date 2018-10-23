@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("mas",["Property"],[["Mass",,[["Ets2SdkClient.SCSTelemetry.Trailer.Cargo",,,,0,"File:Object/SCSTelemetry.Trailer.cs:Ets2SdkClient.SCSTelemetry.Trailer.Cargo.Mass","CSharpClass:Ets2SdkClient.SCSTelemetry.Trailer.Cargo:Mass"]]]]);
+NDSearch.OnPrefixDataLoaded("mas",["Property"],[["Mass",,[["SCSSdkClient.Object.SCSTelemetry.Trailer.Cargo",,,,0,"File:Object/SCSTelemetry.Trailer.cs:SCSSdkClient.Object.SCSTelemetry.Trailer.Cargo.Mass","CSharpClass:SCSSdkClient.Object.SCSTelemetry.Trailer.Cargo:Mass"]]]]);

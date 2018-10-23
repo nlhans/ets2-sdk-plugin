@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("mov",["Class"],[["Movement",,[["Ets2SdkClient.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.Movement.cs:Ets2SdkClient.SCSTelemetry.Movement","CSharpClass:Ets2SdkClient.SCSTelemetry.Movement"]]]]);
+NDSearch.OnPrefixDataLoaded("mov",["Class"],[["Movement",,[["SCSSdkClient.Object.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.Movement.cs:SCSSdkClient.Object.SCSTelemetry.Movement","CSharpClass:SCSSdkClient.Object.SCSTelemetry.Movement"]]]]);

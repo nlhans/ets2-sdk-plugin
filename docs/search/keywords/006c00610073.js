@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("las",["Variable"],[["lastTime",,[["Ets2SdkClient.SCSSdkTelemetry",,,,0,"File:SCSSdkTelemetry.cs:Ets2SdkClient.SCSSdkTelemetry.lastTime","CSharpClass:Ets2SdkClient.SCSSdkTelemetry:lastTime"]]]]);
+NDSearch.OnPrefixDataLoaded("las",["Variable"],[["lastTime",,[["SCSSdkClient.SCSSdkTelemetry",,,,0,"File:SCSSdkTelemetry.cs:SCSSdkClient.SCSSdkTelemetry.lastTime","CSharpClass:SCSSdkClient.SCSSdkTelemetry:lastTime"]]]]);

@@ -43,6 +43,11 @@ static bool on_job;
 
 scs_log_t game_log = nullptr;
 //Used for Logging ingame
+// use for values
+//char buff[100];
+	//(buff, sizeof(buff), "%f", value->value_dplacement.position.x);	 
+//log_line(SCS_LOG_TYPE_warning, buff);
+
 void log_line(const scs_log_type_t type, const char *const text, ...)
 {
 	if (!game_log) {
@@ -64,7 +69,8 @@ void log_line(const scs_log_type_t type, const char *const text, ...)
  */
 scs_timestamp_t last_timestamp = static_cast<scs_timestamp_t>(-1);
 scs_timestamp_t timestamp;
-
+// Function: telemetry_frame_start
+// Register telemetry values
 SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*const event_info,
                                   const scs_context_t UNUSED(context)) {
     static auto clear_job_ticker = 0;
@@ -227,13 +233,14 @@ SCSAPI_VOID telemetry_store_dplacement(const scs_string_t name, const scs_u32_t 
 
     // Messy hack to store the acceleration and orientation values into our telemetry struct
     // It is neccesary that these are put together, otherwise it may overwrite over values.
-    *(static_cast<double *>(context) + 0) = static_cast<double>(value->value_dplacement.position.x);
-    *(static_cast<double *>(context) + 1) = static_cast<double>(value->value_dplacement.position.y);
-    *(static_cast<double *>(context) + 2) = static_cast<double>(value->value_dplacement.position.z);
-
+    *(static_cast<double *>(context) + 0) = (value->value_dplacement.position.x);
+    *(static_cast<double *>(context) + 1) = value->value_dplacement.position.y;
+    *(static_cast<double *>(context) + 2) = value->value_dplacement.position.z;
+    
     *(static_cast<double *>(context) + 3) = value->value_dplacement.orientation.heading;
     *(static_cast<double *>(context) + 4) = value->value_dplacement.orientation.pitch;
     *(static_cast<double *>(context) + 5) = value->value_dplacement.orientation.roll;
+
 }
 
 SCSAPI_VOID telemetry_store_fplacement(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
@@ -245,9 +252,9 @@ SCSAPI_VOID telemetry_store_fplacement(const scs_string_t name, const scs_u32_t 
 
     // Messy hack to store the acceleration and orientation values into our telemetry struct
     // It is neccesary that these are put together, otherwise it may overwrite over values.
-    *(static_cast<float *>(context) + 0) = static_cast<float>(value->value_fplacement.position.x);
-    *(static_cast<float *>(context) + 1) = static_cast<float>(value->value_fplacement.position.y);
-    *(static_cast<float *>(context) + 2) = static_cast<float>(value->value_fplacement.position.z);
+    *(static_cast<float *>(context) + 0) = (value->value_fplacement.position.x);
+    *(static_cast<float *>(context) + 1) = value->value_fplacement.position.y;
+    *(static_cast<float *>(context) + 2) = value->value_fplacement.position.z;
 
     *(static_cast<float *>(context) + 3) = value->value_fplacement.orientation.heading;
     *(static_cast<float *>(context) + 4) = value->value_fplacement.orientation.pitch;

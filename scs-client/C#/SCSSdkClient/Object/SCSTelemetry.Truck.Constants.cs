@@ -1,10 +1,20 @@
-﻿namespace Ets2SdkClient.Object {
+﻿using System.Windows.Forms.VisualStyles;
+
+namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
         public partial class Truck {
             /// <summary>
             ///     Config values
             /// </summary>
             public class Constants {
+                public Constants()
+                {
+                    MotorValues = new Motor();
+                    CapacityValues =  new Capacity();
+                    WarningFactorValues = new WarningFactor();
+                    WheelsValues = new Wheels();
+                }
+
                 public Motor MotorValues { get; internal set; }
                 public Capacity CapacityValues { get; internal set; }
                 public WarningFactor WarningFactorValues { get; internal set; }
@@ -87,6 +97,7 @@
                     ///     Type of the shifter.
                     /// </summary>
                     public ShifterType ShifterTypeValue { get; internal set; }
+
                 }
 
 
@@ -181,6 +192,11 @@
                     ///     Is the wheel steerable?
                     /// </summary>
                     public bool[] Steerable { get; internal set; }
+
+                    /// <summary>
+                    ///     Position of respective wheels in the vehicle space.
+                    /// </summary>
+                    public FVector[] PositionValues { get; internal set; }
                 }
             }
         }
