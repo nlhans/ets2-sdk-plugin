@@ -109,6 +109,7 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*co
         if (telem_ptr->special_b.onJob && !telem_ptr->truck_b.trailer_attached && telem_ptr
                                                                                   ->truck_f.routeDistance
             <= 0.1f && telem_ptr->truck_f.routeDistance >= 0.0f) {
+            //TODO: PROBLEM IF YOU SET A ROUTE DIRECTLY AFTER DETACHED
             // if was carrying cargo and not anymore with navigation distance close to zero; 
             // then we assume the job has finished
             // we allow some frames (see ticker) for the client to retrieve data
@@ -128,12 +129,17 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*co
                
                 memset(telem_ptr->config_s.trailerId, 0, stringsize);
                 memset(telem_ptr->config_s.trailerName, 0, stringsize);
-
+				memset(telem_ptr->config_s.compDstId, 0, stringsize);
+				memset(telem_ptr->config_s.compSrcId, 0, stringsize);
+				memset(telem_ptr->config_s.cityDstId, 0, stringsize);
+				memset(telem_ptr->config_s.citySrcId, 0, stringsize);
                 memset(telem_ptr->config_s.citySrc, 0, stringsize); // TODO: put 64-byte into global define
                 memset(telem_ptr->config_s.cityDst, 0, stringsize);
                 memset(telem_ptr->config_s.compSrc, 0, stringsize);
                 memset(telem_ptr->config_s.compDst, 0, stringsize);
 				memset(telem_ptr->config_s.Cargo, 0, stringsize);
+                 
+
 
 
                 telem_ptr->special_b.jobFinished = false;
@@ -152,7 +158,7 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*co
 SCSAPI_VOID telemetry_pause(const scs_event_t event, const void*const UNUSED(event_info),
                             const scs_context_t UNUSED(context)) {
     if (telem_ptr != nullptr) {
-        telem_ptr->paused = (event == SCS_TELEMETRY_EVENT_paused) ? true : false;
+        telem_ptr->paused = event == SCS_TELEMETRY_EVENT_paused;
     }
 }
 

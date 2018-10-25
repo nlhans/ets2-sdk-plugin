@@ -320,7 +320,7 @@ typedef struct scsTelemetryMap_s
 		double trailer_rotationY;
 		double trailer_rotationZ;
 	}truck_dp;
-	char buffer_dp[128];
+	char buffer_dp[104];
 	//----- END OF 8TH ZONE AT OFFSET 2399 -----//
 
 	//----- START OF 9TH ZONE AT OFFSET 2400 -----//

@@ -99,7 +99,12 @@ namespace SCSSdkClient.Object {
 
         internal  void SetGameTime(uint gameTime) {
             CommonValues.GameTime.Value = gameTime;
-            JobValues.RemainingDeliveryTime.Value = (int) (JobValues.DeliveryTime.Value - gameTime);
+            if (gameTime > 0&& gameTime<4000000000) {
+                JobValues.RemainingDeliveryTime.Value = (int)(JobValues.DeliveryTime.Value - gameTime);
+            } else {
+                JobValues.RemainingDeliveryTime.Value = 0;
+            }
+            
         }
 
         internal void SetTruckPosition(DPlacement position) {

@@ -101,7 +101,7 @@ bool handleCfg(const scs_named_value_t* current) {
 
 scsConfigHandle(Id) {
     char* strPtr;
-    // TODO : CHECK VALUES INGAME
+    // TODO : check if every thing is working like expected
     // ID is shared between vehicle & chassis.
     // So examples could be: vehicle.scania_r and chassis.trailer.overweighl_w
     if (current->value.value_string.value[0] == 'v') {
@@ -113,17 +113,24 @@ scsConfigHandle(Id) {
 		log_line(SCS_LOG_TYPE_warning, "Vehicle Handling");
 		log_line(SCS_LOG_TYPE_warning, current->value.value_string.value);
 
-    }else   if (current->value.value_string.value[0] == 'c') {
-	
-		if (telem_ptr) {
-			strncpy(telem_ptr->config_s.Chassis, current->value.value_string.value, stringsize);
-		}
-		log_line(SCS_LOG_TYPE_warning, "Chassis Chandling");
-		log_line(SCS_LOG_TYPE_warning, current->value.value_string.value);
+    }else{
+		auto dot = false;
+		for (auto *element = current->value.value_string.value; *element; ++element) {
+            if(*element=='.') {
+				dot = true;
+				break;
+            }
+        }
+        if(dot) {
+			if (telem_ptr) {
+				strncpy(telem_ptr->config_s.Chassis, current->value.value_string.value, stringsize);
+				log_line(SCS_LOG_TYPE_warning, "Chassis Chandling");
+				log_line(SCS_LOG_TYPE_warning, current->value.value_string.value);
 
-	}else {
-		log_line(SCS_LOG_TYPE_warning, "Unknown handling" );
-		log_line(SCS_LOG_TYPE_warning, current->value.value_string.value);
+			}
+        }
+		
+		
 	}
 }
 
@@ -325,6 +332,9 @@ scsConfigHandle(JobIncome) {
 scsConfigHandle(JobDeadline) {
     if (telem_ptr) {
         telem_ptr->config_ui.time_abs_delivery = current->value.value_u32.value;
+		char buff[100];
+		snprintf(buff, sizeof(buff), "%f", current->value.value_u32.value);
+            log_line(SCS_LOG_TYPE_warning, buff);
     }
 }
 
