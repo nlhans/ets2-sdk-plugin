@@ -108,7 +108,7 @@ scsConfigHandle(Id) {
         // Vehicle ID
         // vehicle.scania_r
 		if (telem_ptr) {
-			strncpy(telem_ptr->config_s.Vehicle, current->value.value_string.value, stringsize);
+			strncpy_s(telem_ptr->config_s.Vehicle, current->value.value_string.value, stringsize);
 		}
 		log_line(SCS_LOG_TYPE_warning, "Vehicle Handling");
 		log_line(SCS_LOG_TYPE_warning, current->value.value_string.value);
@@ -123,7 +123,7 @@ scsConfigHandle(Id) {
         }
         if(dot) {
 			if (telem_ptr) {
-				strncpy(telem_ptr->config_s.Chassis, current->value.value_string.value, stringsize);
+				strncpy_s(telem_ptr->config_s.Chassis, current->value.value_string.value, stringsize);
 				log_line(SCS_LOG_TYPE_warning, "Chassis Chandling");
 				log_line(SCS_LOG_TYPE_warning, current->value.value_string.value);
 
@@ -266,25 +266,25 @@ scsConfigHandle(SelectorCount) {
 
 scsConfigHandle(ShifterType) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.shifterType, current->value.value_string.value, 10);
+		strncpy_s(telem_ptr->config_s.shifterType, current->value.value_string.value, 10);
     }
 }
 
 scsConfigHandle(TruckMake) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.truckMake, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.truckMake, current->value.value_string.value, stringsize);
     }
 }
 
 scsConfigHandle(TruckMakeId) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.truckMakeId, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.truckMakeId, current->value.value_string.value, stringsize);
     }
 }
 
 scsConfigHandle(TruckModel) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.truckModel, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.truckModel, current->value.value_string.value, stringsize);
     }
 }
 
@@ -295,7 +295,7 @@ scsConfigHandle(CargoId) {
     // Example: cargo.overweighl_w.kvn
     // Cargo type overweighl_w.kvn can be found in def/cargo/
 	if (telem_ptr) {
-		strncpy(telem_ptr->config_s.Cargo, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.Cargo, current->value.value_string.value, stringsize);
 	}
 }
 
@@ -346,61 +346,61 @@ scsConfigHandle(TrailerMass) {
 
 scsConfigHandle(TrailerId) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.trailerId, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.trailerId, current->value.value_string.value, stringsize);
     }
 }
 
 scsConfigHandle(TrailerName) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.trailerName, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.trailerName, current->value.value_string.value, stringsize);
     }
 }
 
 scsConfigHandle(CitySrc) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.citySrc, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.citySrc, current->value.value_string.value, stringsize);
     }
 }
 
 scsConfigHandle( CityDstId) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.cityDstId, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.cityDstId, current->value.value_string.value, stringsize);
     }
 }
 
 scsConfigHandle(CompDstId) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.compDstId, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.compDstId, current->value.value_string.value, stringsize);
     }
 }
 
 scsConfigHandle(CitySrcId) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.citySrcId, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.citySrcId, current->value.value_string.value, stringsize);
     }
 }
 
 scsConfigHandle(CompSrcId) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.compSrcId, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.compSrcId, current->value.value_string.value, stringsize);
     }
 }
 
 scsConfigHandle(CityDst) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.cityDst, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.cityDst, current->value.value_string.value, stringsize);
     }
 }
 
 scsConfigHandle(CompSrc) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.compSrc, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.compSrc, current->value.value_string.value, stringsize);
     }
 }
 
 scsConfigHandle(CompDst) {
     if (telem_ptr) {
-        strncpy(telem_ptr->config_s.compDst, current->value.value_string.value, stringsize);
+		strncpy_s(telem_ptr->config_s.compDst, current->value.value_string.value, stringsize);
     }
 }
 

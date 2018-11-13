@@ -1,17 +1,21 @@
 ﻿using System;
+using System.Runtime.Remoting.Lifetime;
 using System.Threading;
 using SCSSdkClient.Object;
 
 namespace SCSSdkClient {
     public delegate void TelemetryData(SCSTelemetry data, bool newTimestamp);
 
-    public class SCSSdkTelemetry {
+    public class SCSSdkTelemetry : IDisposable {
         private const string DefaultSharedMemoryMap = "Local\\SimTelemetrySCS";
         private const int DefaultUpdateInterval = 25;
 
         private Timer _updateTimer;
 
         private uint lastTime = 0xFFFFFFFF;
+
+        public void Dispose() => _updateTimer?.Dispose();
+
         private SharedMemory SharedMemory;
         private bool wasFinishingJob;
 
@@ -32,7 +36,7 @@ namespace SCSSdkClient {
         public event TelemetryData Data;
 
         public event EventHandler JobStarted;
-        public event EventHandler JobFinished;
+        public event EventHandler JobFinished; 
 
         /// <summary>
         ///     Set up SCS telemetry provider.
@@ -55,6 +59,7 @@ namespace SCSSdkClient {
             var tsInterval = new TimeSpan(0, 0, 0, 0, interval);
 
             _updateTimer = new Timer(_updateTimer_Elapsed, null, tsInterval, tsInterval);
+           
         }
 
         private void _updateTimer_Elapsed(object sender) {

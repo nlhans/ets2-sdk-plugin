@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using SCSSdkClient.Object;
@@ -72,13 +73,28 @@ namespace SCSSdkClient.Demo {
 
 
 
-            } catch {
+            } catch(Exception ex) {
                 // ignored
+                Console.WriteLine(ex);
             }
         }
 
-    
- 
-       
+        private void SCSSdkClientDemo_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to quit?", "My Application", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+              
+                e.Cancel = true;
+            }
+            Telemetry.Dispose();
+
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Telemetry.Dispose();
+
+        }
     }
 }
