@@ -7,7 +7,7 @@ fork of [nlhans](https://github.com/nlhans/ets2-sdk-plugin) work
 
 .dll and c# object is complete new and won't work with old code. Why change? It at a lot missing values.
 # WARNING 
-Both events, onJob and JobFinished currently does there best to work, but through 4 different types of jobs and without a properly value to check it isn't possible to detect both correct
+Both events, onJob and JobFinished currently does there best to work, but through 4 different types of jobs and without a properly value to check it isn't possible to detect both correct. Why 4 ways and a few more words look in my comments [Source](https://github.com/RenCloud/scs-sdk-plugin/blob/c5c35e430803da752bd244a08fb3148dd185ded2/scs-telemetry/src/scs_telemetry.cpp#L105).
 
 Actually it work `simple` -> 
 ```c
