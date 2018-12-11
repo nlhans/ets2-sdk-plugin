@@ -91,10 +91,6 @@ namespace SCSSdkClient.Demo {
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Telemetry.Dispose();
-
-        }
+  
     }
 }

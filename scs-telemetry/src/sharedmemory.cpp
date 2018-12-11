@@ -1,4 +1,4 @@
-#include "SharedMemory.hpp"
+#include "sharedmemory.hpp"
 
 void SharedMemory::LogError(const char* logPtr) {
 #ifdef SHAREDMEM_LOGGING
