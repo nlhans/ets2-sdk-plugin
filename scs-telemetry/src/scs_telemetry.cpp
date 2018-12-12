@@ -5,7 +5,6 @@
 #include <windows.h>
 #include <cassert>
 #include <cstdarg>
-
 // SDK
 
 #include "scssdk_telemetry.h"
@@ -37,7 +36,7 @@ scsTelemetryMap_t* telem_ptr;
 /**
  * \brief Name/Location of the Shared Memory
  */
-const wchar_t* ets2_mmf_name = SCS_PLUGIN_MMF_NAME;
+const wchar_t* scs_mmf_name = SCS_PLUGIN_MMF_NAME;
 
 scs_log_t game_log = nullptr;
 // Used for Logging ingame
@@ -46,6 +45,9 @@ scs_log_t game_log = nullptr;
 // snprintf(buff, sizeof(buff), "%f", value->value_dplacement.position.x);	 
 // log_line(SCS_LOG_TYPE_warning, buff);
 
+/*
+ * \brief log into the game log as message, warning, or error
+ */
 void log_line(const scs_log_type_t type, const char*const text, ...) {
     if (!game_log) {
         return;
@@ -61,16 +63,142 @@ void log_line(const scs_log_type_t type, const char*const text, ...) {
     game_log(type, formated);
 }
 
+/*
+ * \brief log into the game log as error
+ * only for testing purpose like log_conif
+ */
+void log_line(const char*const text, ...) {
+    if (!game_log) {
+        return;
+    }
+    char formated[1000];
+
+    va_list args;
+    va_start(args, text);
+    vsnprintf_s(formated, sizeof formated, _TRUNCATE, text, args);
+    formated[sizeof formated - 1] = 0;
+    va_end(args);
+
+    game_log(SCS_LOG_TYPE_error, formated);
+}
+
+/*
+ * \brief if you want to now more about configs/the config event
+ * careful create a lot of logs so that fast parts are not readable anymore in the log window
+ */
+void log_configs(const scs_telemetry_configuration_t* info) {
+
+    log_line("Configuration: %s", info->id);
+    for (auto current = info->attributes; current->name; ++current) {
+
+        if (current->index != SCS_U32_NIL) {
+            //log_line("[%u]", static_cast<unsigned>(current->index));
+        }
+        switch (current->value.type) {
+        case SCS_VALUE_TYPE_INVALID: {
+            log_line(" %s none", current->name);
+            break;
+        }
+        case SCS_VALUE_TYPE_bool: {
+            log_line(" %s bool = %s", current->name, current->value.value_bool.value ? "true" : "false");
+            break;
+        }
+        case SCS_VALUE_TYPE_s32: {
+            log_line(" %s s32 = %d", current->name, static_cast<int>(current->value.value_s32.value));
+            break;
+        }
+        case SCS_VALUE_TYPE_u32: {
+            log_line(" %s u32 = %u", current->name, static_cast<unsigned>(current->value.value_u32.value));
+            break;
+        }
+        case SCS_VALUE_TYPE_u64: {
+            log_line(" %s u64 = %" SCS_PF_U64, current->name, current->value.value_u64.value);
+            break;
+        }
+        case SCS_VALUE_TYPE_float: {
+            log_line(" %s float = %f", current->name, current->value.value_float.value);
+            break;
+        }
+        case SCS_VALUE_TYPE_double: {
+            log_line(" %s double = %f", current->name, current->value.value_double.value);
+            break;
+        }
+        case SCS_VALUE_TYPE_fvector: {
+            log_line(
+                " %s fvector = (%f,%f,%f)", current->name,
+                current->value.value_fvector.x,
+                current->value.value_fvector.y,
+                current->value.value_fvector.z
+            );
+            break;
+        }
+        case SCS_VALUE_TYPE_dvector: {
+            log_line(
+                " %s dvector = (%f,%f,%f)", current->name,
+                current->value.value_dvector.x,
+                current->value.value_dvector.y,
+                current->value.value_dvector.z
+            );
+            break;
+        }
+        case SCS_VALUE_TYPE_euler: {
+            log_line(
+                " %s euler = h:%f p:%f r:%f", current->name,
+                current->value.value_euler.heading * 360.0f,
+                current->value.value_euler.pitch * 360.0f,
+                current->value.value_euler.roll * 360.0f
+            );
+            break;
+        }
+        case SCS_VALUE_TYPE_fplacement: {
+            log_line(
+                " %s fplacement = (%f,%f,%f) h:%f p:%f r:%f", current->name,
+                current->value.value_fplacement.position.x,
+                current->value.value_fplacement.position.y,
+                current->value.value_fplacement.position.z,
+                current->value.value_fplacement.orientation.heading * 360.0f,
+                current->value.value_fplacement.orientation.pitch * 360.0f,
+                current->value.value_fplacement.orientation.roll * 360.0f
+            );
+            break;
+        }
+        case SCS_VALUE_TYPE_dplacement: {
+            log_line(
+                " %s dplacement = (%f,%f,%f) h:%f p:%f r:%f", current->name,
+                current->value.value_dplacement.position.x,
+                current->value.value_dplacement.position.y,
+                current->value.value_dplacement.position.z,
+                current->value.value_dplacement.orientation.heading * 360.0f,
+                current->value.value_dplacement.orientation.pitch * 360.0f,
+                current->value.value_dplacement.orientation.roll * 360.0f
+            );
+            break;
+        }
+        case SCS_VALUE_TYPE_string: {
+            log_line(" %s string = %s", current->name, current->value.value_string.value);
+            break;
+        }
+        default: {
+            log_line(" %s unknown", current->name);
+            break;
+        }
+
+        }
+
+    }
+}
+
 /**
  * @brief Last timestamp we received.
  */
 scs_timestamp_t last_timestamp = static_cast<scs_timestamp_t>(-1);
 scs_timestamp_t timestamp;
+static auto clear_job_ticker = 0;
 // Function: telemetry_frame_start
 // Register telemetry values
 SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*const event_info,
                                   const scs_context_t UNUSED(context)) {
-    static auto clear_job_ticker = 0;
+
     const auto info = static_cast<const scs_telemetry_frame_start_t *>(event_info);
 
     // The following processing of the timestamps is done so the output
@@ -102,102 +230,67 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*co
         // Do a non-convential periodic update of this field:
         telem_ptr->truck_b.cruiseControl = telem_ptr->truck_f.cruiseControlSpeed > 0;
 
-        // Sadly at 1.9 there is do way do find every job correctly 
-        // why? 
-        // We have different problems for different kind of jobs
-        // 4 Jobs we have: Without own Truck and Trailer, With own Truck but without Trailer, with Truck and Trailer, and Online with Truck but without Trailer
-        // So for Without both we start a job one after each so we may now we are on a job, but to find the end is not that easy
-        // with Truck but no trailer We can also detect a job and should find also the end of an job through Trailer detached attribute
-        // with Truck and Trailer we should still detect a job, but to find the end we have problems (no trailer detached, only on route distance)
-        // for online job the detecting is still possible (but currently no delivery time) that lead to nearly the same with some additional problems like for the truck+no trailer
-        //
-        // For Developer means this the Events are fired, but there is no guarantee atm that the finish event is correct (on job should work correct)
-
-        // if a trailer attached we could be on a job
-        if (telem_ptr->truck_b.trailer_attached) {
-            // because online jobs currently don't have a delivery time  we can't use that field, instead we will use the income field
-            // but for that we need to reset at finishing this field that's not every time possible but we can't do more
-            if (telem_ptr->config_o.jobIncome != 0) {
-                // when we are here -> on JOb == true
-                telem_ptr->special_b.onJob = true;
-            }
-        }
-        else {
-            // without a trailer we can't (not 100% correct, but we have no better way to diff instead and you can't finish without a trailer)
-            if (telem_ptr->special_b.onJob) {
-                // that can't be correct anymore. Sure now we lead into problems -> Trailer detached doesn't mean job finished, but routeDistance can be set manually at lead to problems
-                telem_ptr->special_b.onJob = false;
-                telem_ptr->special_b.jobFinished = true;
-                clear_job_ticker = 0;
-            }
-            if (telem_ptr->special_b.jobFinished) {
-                clear_job_ticker++;
-
-                if (clear_job_ticker > 10) {
-                    telem_ptr->config_o.jobIncome = 0;
-                    telem_ptr->config_ui.time_abs_delivery = 0;
-                    telem_ptr->config_f.trailerMass = 0;
-                    memset(telem_ptr->config_s.trailerId, 0, stringsize);
-                    memset(telem_ptr->config_s.trailerName, 0, stringsize);
-                    memset(telem_ptr->config_s.compDstId, 0, stringsize);
-                    memset(telem_ptr->config_s.compSrcId, 0, stringsize);
-                    memset(telem_ptr->config_s.cityDstId, 0, stringsize);
-                    memset(telem_ptr->config_s.citySrcId, 0, stringsize);
-                    memset(telem_ptr->config_s.citySrc, 0, stringsize);
-                    memset(telem_ptr->config_s.cityDst, 0, stringsize);
-                    memset(telem_ptr->config_s.compSrc, 0, stringsize);
-                    memset(telem_ptr->config_s.compDst, 0, stringsize);
-                    memset(telem_ptr->config_s.Cargo, 0, stringsize);
-                    telem_ptr->special_b.jobFinished = false;
-                }
-            }
-        }
-        /* OLD WAY TO check if a job is finished (nearly the same ^^) 
-         * I let this here for backup purpose, may delete it complete in a later update
-        if (telem_ptr->special_b.onJob && !telem_ptr->truck_b.trailer_attached && telem_ptr
-                                                                                  ->truck_f.routeDistance
-            <= 0.1f && telem_ptr->truck_f.routeDistance >= 0.0f) {
-            // if was carrying cargo and not anymore with navigation distance close to zero; 
-            // then we assume the job has finished
-            // we allow some frames (see ticker) for the client to retrieve data
-            telem_ptr->special_b.onJob = false;
-
-            telem_ptr->special_b.jobFinished = true;
-            clear_job_ticker = 0;
-        }
-        else if (telem_ptr->special_b.jobFinished) {
-            clear_job_ticker ++;
+        if (telem_ptr->special_b.jobFinished) {
+            clear_job_ticker++;
 
             if (clear_job_ticker > 10) {
                 telem_ptr->config_o.jobIncome = 0;
                 telem_ptr->config_ui.time_abs_delivery = 0;
                 telem_ptr->config_f.trailerMass = 0;
-
-               
                 memset(telem_ptr->config_s.trailerId, 0, stringsize);
                 memset(telem_ptr->config_s.trailerName, 0, stringsize);
-				memset(telem_ptr->config_s.compDstId, 0, stringsize);
-				memset(telem_ptr->config_s.compSrcId, 0, stringsize);
-				memset(telem_ptr->config_s.cityDstId, 0, stringsize);
-				memset(telem_ptr->config_s.citySrcId, 0, stringsize);
-                memset(telem_ptr->config_s.citySrc, 0, stringsize); 
+                memset(telem_ptr->config_s.compDstId, 0, stringsize);
+                memset(telem_ptr->config_s.compSrcId, 0, stringsize);
+                memset(telem_ptr->config_s.cityDstId, 0, stringsize);
+                memset(telem_ptr->config_s.citySrcId, 0, stringsize);
+                memset(telem_ptr->config_s.citySrc, 0, stringsize);
                 memset(telem_ptr->config_s.cityDst, 0, stringsize);
                 memset(telem_ptr->config_s.compSrc, 0, stringsize);
                 memset(telem_ptr->config_s.compDst, 0, stringsize);
-				memset(telem_ptr->config_s.Cargo, 0, stringsize);
-                 
-
-
-
+                memset(telem_ptr->config_s.Cargo, 0, stringsize);
                 telem_ptr->special_b.jobFinished = false;
             }
         }
-        else {
-            if (telem_ptr->config_o.jobIncome != 0 && telem_ptr->truck_b.trailer_attached) {
-                telem_ptr->special_b.onJob = true;
-            }
-        }
-		*/
+
+        // Sadly with Version 1.9 there is do way to find every job correctly  <- that's incorrect but actually it's here for a while as backup, so it's a information that is in this way correct but with the new detection not anymore
+        // why? 
+        // We have different problems for the job types we have
+        // 4 Job types we have: 
+        //                      - 1 loan Truck and loan Trailer,
+        //                      - 2 own Truck and loan Trailer,
+        //                      - 3 own Truck and  own Trailer,
+        //                      - 4 Online, own Truck and loan Trailer
+        //
+        // 1 -> For both as loan, we start a job one after each, so we may now we are on a job, but to find the end is not that easy, because values are not updated.
+        // 1 -> but as good point this should simple detectable when you save the values and check by hand if navigatordistance was near 0 and trailer change
+        //
+        // 2 -> own Truck and loan trailer, we can detect a job and should find also the end of an job through Trailer detached attribute
+        // 2 -> a problem here could be change to loan Truck and loan Trailer(1), but i don't think that happens that mutch
+        //
+        // 3 -> own Truck and own Trailer we should still detect a job, but to find the end we have problems (no trailer detached, only on route distance)
+        // 3 -> but route distance can be set manual and eg. directly after the job without going back to the simulation, also again change to loan truck (1) create problem 
+        //
+        // 4 -> for online job the detecting is still possible (but currently without delivery time) that lead to nearly the same problems with some additional ike for the own truck+loan trailer  (2)
+        //
+        // For Developer means this the Events are fired, but there is no guarantee atm that the finish event is correct (on job should work correct, if game start or not on a job)
+        // if a trailer attached we could be on a job, but with trailer ownership it doesn't have to
+        // if (telem_ptr->truck_b.trailer_attached) {
+        // because online jobs currently don't have a delivery time  we can't use that field, instead we will use the income field
+        // but for that we need to reset at finishing this field that's not every time possible but we can't do more. As idea you could use that field to detect changing of jobs. With history data you could check if a job is finsihed.
+        // Sadly that there is no way with the SDK to detect the profile that is loaded.
+        //     if (telem_ptr->config_o.jobIncome != 0) {
+        // when we are here -> on JOb == true
+        //          telem_ptr->special_b.onJob = true;
+        //      }
+        //  }
+        //  else {
+        // without a trailer we can't (not 100% correct, but we have no better way to check and you can't finish without a trailer)
+        //     if (telem_ptr->special_b.onJob) {
+        // that can't be correct anymore. Sure now we lead into problems -> Trailer detached doesn't mean job finished, but routeDistance can be set manually at lead to problems
+        //          telem_ptr->special_b.onJob = false;
+        //         telem_ptr->special_b.jobFinished = true;
+        //         clear_job_ticker = 0;
+        //     }
     }
 
 }
@@ -210,15 +303,33 @@ SCSAPI_VOID telemetry_pause(const scs_event_t event, const void*const UNUSED(eve
 }
 
 SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const event_info,
-                                    const scs_context_t UNUSED(context)) {
-    // This method prints all available attributes of the truck.
+                                    const scs_context_t UNUSED(context)) { 
     // On configuration change, this function is called.
     const auto info = static_cast<const scs_telemetry_configuration_t *>(
         event_info);
 
+    // uncomment to log every config, should work but with function not tested ^^`
+    //log_configs(info); 
+
+    // attribute is a pointer array that is never null so ... i have no clue how to check it on another way than this
+    // if for loop can't loop it is empty so simple 
+    auto isEmpty = true;
 
     for (auto current = info->attributes; current->name; ++current) {
         handleCfg(current);
+        isEmpty = false;
+    }
+    // if id of config is "job" but without element and we are on a job -> we finished it now
+    if (strcmp(info->id, "job") == 0 && isEmpty && telem_ptr->special_b.onJob) {
+        telem_ptr->special_b.onJob = false;
+        telem_ptr->special_b.jobFinished = true;
+        clear_job_ticker = 0;
+        log_line("Job is finished event should fire");
+    }
+    else if (!telem_ptr->special_b.onJob && strcmp(info->id, "job") == 0 && !isEmpty) {
+        // oh hey no job but now we have fields in this array so we start a new job
+        telem_ptr->special_b.onJob = true;
+        log_line("event start event fire");
     }
 }
 
@@ -336,7 +447,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
     }
 
     /*** ACQUIRE SHARED MEMORY BUFFER ***/
-    telem_mem = new SharedMemory(ets2_mmf_name, SCS_PLUGIN_MMF_SIZE);
+    telem_mem = new SharedMemory(scs_mmf_name, SCS_PLUGIN_MMF_SIZE);
 
     if (telem_mem == nullptr) {
         return SCS_RESULT_generic_error;

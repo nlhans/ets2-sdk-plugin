@@ -80,12 +80,16 @@ const scsConfigHandler_t scs_config_table[] = {
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_income, handleJobIncome},
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_delivery_time, handleJobDeadline},
 
+ 
+
 };
 
 #define NO_OF_CFGS ( sizeof(scsConfigTable)/sizeof(scsConfigHandler_t) )
 
 bool handleCfg(const scs_named_value_t* current) {
+	
     for (auto i : scs_config_table) {
+        
         if (strcmp(i.id, current->name) == 0) {
             // Equal ID's; then handle this configuration
             if (i.handle)
@@ -101,14 +105,15 @@ scsConfigHandle(Id) {
     // TODO : check if every thing is working like expected
     // ID is shared between vehicle & chassis.
     // So examples could be: vehicle.scania_r and chassis.trailer.overweighl_w
+    // here exist a few more information that atm will be ignored
     if (current->value.value_string.value[0] == 'v') {
         // Vehicle ID
         // vehicle.scania_r
         if (telem_ptr) {
             strncpy_s(telem_ptr->config_s.Vehicle, current->value.value_string.value, stringsize);
         }
-        log_line(SCS_LOG_TYPE_warning, "Vehicle Handling");
-        log_line(SCS_LOG_TYPE_warning, current->value.value_string.value);
+        //log_line(SCS_LOG_TYPE_warning, "Vehicle Handling");
+        //log_line(SCS_LOG_TYPE_warning, current->value.value_string.value);
 
     }
     else {
@@ -122,8 +127,8 @@ scsConfigHandle(Id) {
         if (dot) {
             if (telem_ptr) {
                 strncpy_s(telem_ptr->config_s.Chassis, current->value.value_string.value, stringsize);
-                log_line(SCS_LOG_TYPE_warning, "Chassis Chandling");
-                log_line(SCS_LOG_TYPE_warning, current->value.value_string.value);
+                //log_line(SCS_LOG_TYPE_warning, "Chassis Chandling");
+                //log_line(SCS_LOG_TYPE_warning, current->value.value_string.value);
 
             }
         }
@@ -294,7 +299,8 @@ scsConfigHandle(CargoId) {
     // Cargo type overweighl_w.kvn can be found in def/cargo/
     if (telem_ptr) {
         strncpy_s(telem_ptr->config_s.Cargo, current->value.value_string.value, stringsize);
-    }
+		log_line(SCS_LOG_TYPE_error, current->value.value_string.value);
+	}
 }
 
 scsConfigHandle(FuelCapacity) {
@@ -348,13 +354,15 @@ scsConfigHandle(TrailerId) {
 scsConfigHandle(TrailerName) {
     if (telem_ptr) {
         strncpy_s(telem_ptr->config_s.trailerName, current->value.value_string.value, stringsize);
+		log_line(SCS_LOG_TYPE_error, current->value.value_string.value);
     }
 }
 
 scsConfigHandle(CitySrc) {
     if (telem_ptr) {
         strncpy_s(telem_ptr->config_s.citySrc, current->value.value_string.value, stringsize);
-    }
+		log_line(SCS_LOG_TYPE_error, current->value.value_string.value);
+	}
 }
 
 scsConfigHandle( CityDstId) {

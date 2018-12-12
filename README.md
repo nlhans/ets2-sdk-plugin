@@ -2,40 +2,13 @@
   <a href="https://rencloud.github.io/scs-sdk-plugin/docs/" title="Documentation">
     <img alt="" src="https://img.shields.io/badge/documentation-23.10-green.svg?style=for-the-badge" />
   </a>
-  
+  (need to be updated with next commit...)
 fork of [nlhans](https://github.com/nlhans/ets2-sdk-plugin) work
 
-.dll and c# object is complete new and won't work with old code. Why change? It at a lot missing values.
-# WARNING 
-Both events, onJob and JobFinished currently does there best to work, but through 4 different types of jobs and without a properly value to check it isn't possible to detect both correct
-
-Actually it work `simple` -> 
-```c
-Trailer attached + income != 0 -> onJob 
-Trailer attached + income == 0 -> !onJob
-// but if you own a trailer or doesn't have a own Truck this leads after the first job to
-Trailer attached + income is not reseted -> onJob
-
-Trailer dettached + onJob -> jobFinished + !onJob
-// was on job and now have no trailer attached leads to jobFinished, ignoring every other values
-// that's because online job, special transport ... doesn't use every field, fields are not updated after ending a job and routing time is not job defined,
-// you could manualy plan the route
-
-Trailer dettached + jobFinished -> 10 updates jobFinished after that !jobFinished
-
-```
-Legende
-```
-onJob -> onJob event is true
-!onJob -> onJob event is false
-jobFinished -> jobFinished is true
-!jobFinished -> jobFinished is false
-
-!Trailer attached == Trailer dettached 
-```
-
-So if you want a better detecting you have to use more fields and save data and check it yourself. May later the SDK will change that they will work better again.
+**.dll and c# object is complete new and won't work with old code. Why change? A lot of missing values are added, job fire event complete change and should now detect every job.**
+ 
 # SCS Telemetry for EuroTruckSimulator 2 and AmericanTruckSimulator
+## Now with correct job event for all kind of jobs
 
 SCS has kindly released a SDK that allows developers and users to stream telemetry data from the game to any 3rd party applications. An example program was provided (and often used) which enabled streaming data by using text files stored on the users harddisk. This puts unnecessary stress on the users harddrive (not the mention the number of re-writes that would hurt SSDs), and moreover requires the user to manually configure the telemetry data source.
 
@@ -51,12 +24,12 @@ You will now notice that each time ETS2/ATS now starts it prompts the SDK has be
 
 ## Developers Information
 
-### Documentation
+### Documentation (not completed and not up to date atm i try to change that)
 I created a documentation. It tells you a lot about the values. I will also add there a installation, build, etc. guide to make it simpler for all to use this sdk and may change a bit on your on.
 
 But at the moment only C# code/value documentation exists.
 
-Thats also why there are (if i wouldn't use '#pragma') a lot `warnings` while compiling the c# part. In the documentation i use `<` and `>`. But that's not valid xml and the compiler create this warning. So only a warning we can ignore.
+Sadly the usage of the documentation generating syntax leads to a lot of `warnings` while compiling the c# part. That's because the documentation use `<` and `>`. But that's no valid xml. Therefore the compiler cry's :cry: and give the warning about invalid xml. With the help of `#pragma` it wont show up. 
 
 ### Overview 
 This plug-in stores it's data inside a Memory Mapped File, or "Shared Memory". This allows it to operate without any access to harddrive, or configuration hassle by the user to locate the memory map.
@@ -271,7 +244,7 @@ The following telemetry fields are supported, structure like the c# object:
 			- Navigation Time
 			- Speed Limit
 		
-		SpecialEvents:
+		SpecialEvents (now working as expected -> correct) :
 			- On Job 
 			- Job Finished (flag that disappears after some time)
 
