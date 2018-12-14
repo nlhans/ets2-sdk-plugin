@@ -91,12 +91,12 @@ void log_line(const char*const text, ...) {
 // It print every config event that appears to the in game log
 // careful, create a lot of logs so that fast parts are not readable anymore in the log window
 void log_configs(const scs_telemetry_configuration_t* info) {
-
+    // TODO: create string that will be printed so it doesn't need so many lines
     log_line("Configuration: %s", info->id);
     for (auto current = info->attributes; current->name; ++current) {
 
         if (current->index != SCS_U32_NIL) {
-            //log_line("[%u]", static_cast<unsigned>(current->index));
+            log_line("[%u]", static_cast<unsigned>(current->index));
         }
         switch (current->value.type) {
         case SCS_VALUE_TYPE_INVALID: {

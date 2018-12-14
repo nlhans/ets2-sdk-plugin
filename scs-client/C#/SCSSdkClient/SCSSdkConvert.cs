@@ -232,8 +232,7 @@ namespace SCSSdkClient {
             NextOffsetArea();
             #endregion
 
-            #region 8TH ZONE
-            //TODO: Check Double offset after 3 floats
+            #region 8TH ZONE 
 
             retData.SetTruckPosition(GetDPlacement());
             retData.TrailerValues.Position = GetDPlacement();
@@ -293,9 +292,7 @@ namespace SCSSdkClient {
             var temp = _data[_offset];
             _offset++;
             return temp>0;
-        }
-        // actually no Uint conversion... 
-        //TODO: check if it is every time correct uint
+        } 
         private uint GetUint() {
             while (_offset % 4 != 0) {
                 _offset++;

@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using SCSSdkClient.Object;
 
 namespace SCSSdkClient.Demo {
     public partial class SCSSdkClientDemo : Form {
-        public SCSSdkTelemetry Telemetry; 
+        public SCSSdkTelemetry Telemetry;
+
         public SCSSdkClientDemo() {
             InitializeComponent();
             Telemetry = new SCSSdkTelemetry();
@@ -29,7 +25,7 @@ namespace SCSSdkClient.Demo {
         }
 
         private void TelemetryOnJobFinished(object sender, EventArgs args) =>
-            MessageBox.Show("Job finished, or at least unloaded nearby cargo destination.");
+            MessageBox.Show("Job finished.");
 
         private void TelemetryOnJobStarted(object sender, EventArgs e) =>
             MessageBox.Show("Just started job OR loaded game with active.");
@@ -53,9 +49,9 @@ namespace SCSSdkClient.Demo {
                                  "\tTimeStamp:\n" +
                                  $"\t\t\t{data.Timestamp}\n" +
                                  "\tGame Paused:\n" +
-                                 $"\t\t\t{data.Paused}\n"+
+                                 $"\t\t\t{data.Paused}\n" +
                                  "\tOn Job:\n" +
-                                 $"\t\t\t{data.SpecialEventsValues.OnJob}\n"+
+                                 $"\t\t\t{data.SpecialEventsValues.OnJob}\n" +
                                  "\tJob Finished:\n" +
                                  $"\t\t\t{data.SpecialEventsValues.JobFinished}\n";
 
@@ -64,33 +60,20 @@ namespace SCSSdkClient.Demo {
                 trailer.Text = JsonConvert.SerializeObject(data.TrailerValues, Formatting.Indented);
                 job.Text = JsonConvert.SerializeObject(data.JobValues, Formatting.Indented);
                 control.Text = JsonConvert.SerializeObject(data.ControlValues, Formatting.Indented);
-                navigation.Text = JsonConvert.SerializeObject(data.NavigationValues,Formatting.Indented);
-
-
-
-
-
-
-
-
-            } catch(Exception ex) {
+                navigation.Text = JsonConvert.SerializeObject(data.NavigationValues, Formatting.Indented);
+            } catch (Exception ex) {
                 // ignored
                 Console.WriteLine(ex);
             }
         }
 
-        private void SCSSdkClientDemo_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (MessageBox.Show("Are you sure you want to quit?", "My Application", MessageBoxButtons.YesNo) == DialogResult.No)
-            {
-              
+        private void SCSSdkClientDemo_FormClosing(object sender, FormClosingEventArgs e) {
+            if (MessageBox.Show("Are you sure you want to quit?", "My Application", MessageBoxButtons.YesNo) ==
+                DialogResult.No) {
                 e.Cancel = true;
             }
+
             Telemetry.Dispose();
-
-
         }
-
-  
     }
 }
