@@ -29,25 +29,31 @@
  */
 #define REGISTER_CHANNEL(name, type, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ));
 #define REGISTER_CHANNEL_INDEX(name, type, to, index) version_params->register_for_channel(SCS_TELEMETRY_##name, index, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ));
-#define REGISTER_SPECIFIC_CHANNEL(name, type, handler, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, handler, &( to ));
+#define REGISTER_SPECIFIC_CHANNEL(name, type, handler,to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, handler, &( to ));
 
 SharedMemory* telem_mem;
 scsTelemetryMap_t* telem_ptr;
-/**
- * \brief Name/Location of the Shared Memory
- */
+
+// const: scs_mmf_name
+// Name/Location of the Shared Memory
 const wchar_t* scs_mmf_name = SCS_PLUGIN_MMF_NAME;
 
+// ptr: game_log
+// Used to write to the game log
 scs_log_t game_log = nullptr;
-// Used for Logging ingame
+
+// About: Game log
+//
+// - Use function log_line(const scs_log_type_t type, const char*const text,...) to write to the in game console log with choosen message type
+// - or use log_line(const char*const text, ...) to write to the in game console log with error type (more for debugging purpose)
+
 // use for values
 // char buff[100];
 // snprintf(buff, sizeof(buff), "%f", value->value_dplacement.position.x);	 
 // log_line(SCS_LOG_TYPE_warning, buff);
 
-/*
- * \brief log into the game log as message, warning, or error
- */
+// Function: log_line
+// Used to write to the in game console log
 void log_line(const scs_log_type_t type, const char*const text, ...) {
     if (!game_log) {
         return;
@@ -63,10 +69,8 @@ void log_line(const scs_log_type_t type, const char*const text, ...) {
     game_log(type, formated);
 }
 
-/*
- * \brief log into the game log as error
- * only for testing purpose like log_conif
- */
+// Function: log_line
+// Used to write to the in game console log as error (debugging)
 void log_line(const char*const text, ...) {
     if (!game_log) {
         return;
@@ -82,10 +86,10 @@ void log_line(const char*const text, ...) {
     game_log(SCS_LOG_TYPE_error, formated);
 }
 
-/*
- * \brief if you want to now more about configs/the config event
- * careful create a lot of logs so that fast parts are not readable anymore in the log window
- */
+
+// Function: log_configs
+// It print every config event that appears to the in game log
+// careful, create a lot of logs so that fast parts are not readable anymore in the log window
 void log_configs(const scs_telemetry_configuration_t* info) {
 
     log_line("Configuration: %s", info->id);
@@ -194,6 +198,7 @@ void log_configs(const scs_telemetry_configuration_t* info) {
 scs_timestamp_t last_timestamp = static_cast<scs_timestamp_t>(-1);
 scs_timestamp_t timestamp;
 static auto clear_job_ticker = 0;
+
 // Function: telemetry_frame_start
 // Register telemetry values
 SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*const event_info,
@@ -303,13 +308,13 @@ SCSAPI_VOID telemetry_pause(const scs_event_t event, const void*const UNUSED(eve
 }
 
 SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const event_info,
-                                    const scs_context_t UNUSED(context)) { 
+                                    const scs_context_t UNUSED(context)) {
     // On configuration change, this function is called.
     const auto info = static_cast<const scs_telemetry_configuration_t *>(
         event_info);
 
     // uncomment to log every config, should work but with function not tested ^^`
-    //log_configs(info); 
+    // log_configs(info); 
 
     // attribute is a pointer array that is never null so ... i have no clue how to check it on another way than this
     // if for loop can't loop it is empty so simple 
@@ -324,12 +329,10 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
         telem_ptr->special_b.onJob = false;
         telem_ptr->special_b.jobFinished = true;
         clear_job_ticker = 0;
-        log_line("Job is finished event should fire");
     }
     else if (!telem_ptr->special_b.onJob && strcmp(info->id, "job") == 0 && !isEmpty) {
         // oh hey no job but now we have fields in this array so we start a new job
         telem_ptr->special_b.onJob = true;
-        log_line("event start event fire");
     }
 }
 

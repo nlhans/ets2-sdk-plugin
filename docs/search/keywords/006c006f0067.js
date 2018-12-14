@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("log",["Information","Function"],[["log",,[[,"Game log",,,0,"File3:scs_telemetry.cpp:Game_log"]]],["log_configs",,[[,,,,1,"File3:scs_telemetry.cpp:log_configs"]]],["log_line",,[[,,,,1,"File3:scs_telemetry.cpp:log_line"]]]]);

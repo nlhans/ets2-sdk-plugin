@@ -8,8 +8,54 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Functions"></a><a name="Topic31"></a><div class="CTopic TGroup LC first">
+<a name="Constants"></a><a name="Topic398"></a><div class="CTopic TGroup LC first">
+ <div class="CTitle">Constants</div>
+</div>
+
+<a name="scs_mmf_name"></a><a name="Topic399"></a><div class="CTopic TConstant LC">
+ <div class="CTitle">scs_mmf_name</div>
+ <div class="CBody"><p>Name/Location of the Shared Memory</p></div>
+</div>
+
+<a name="Variables"></a><a name="Topic142"></a><div class="CTopic TGroup LC">
+ <div class="CTitle">Variables</div>
+</div>
+
+<a name="game_log"></a><a name="Topic397"></a><div class="CTopic TVariable LC">
+ <div class="CTitle">game_log</div>
+ <div id="NDPrototype397" class="NDPrototype NoParameterForm">scs_log_t game_log</div>
+ <div class="CBody"><p>Used to write to the game log</p></div>
+</div>
+
+<a name="Information"></a><a name="Topic400"></a><div class="CTopic TGroup LC">
+ <div class="CTitle">Information</div>
+</div>
+
+<a name="Game_log"></a><a name="Topic403"></a><div class="CTopic TInformation LC">
+ <div class="CTitle">Game log</div>
+ <div class="CBody"><ul><li><p>Use function log_line(const scs_log_type_t type, const char*const text,...) to write to the in game console log with choosen message type</p></li><li><p>or use log_line(const char*const text, ...) to write to the in game console log with error type (more for debugging purpose)</p></li></ul></div>
+</div>
+
+<a name="Functions"></a><a name="Topic31"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
+</div>
+
+<a name="log_line"></a><a name="Topic402"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">log_line</div>
+ <div id="NDPrototype402" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> log_line(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">scs_log_type_t&nbsp;</td><td class="PName last">type,</td></tr><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><span class="SHKeyword">char</span>*<span class="SHKeyword">const</span>&nbsp;</td><td class="PName last">text,</td></tr><tr><td class="PModifierQualifier first">...</td><td></td><td class="last"></td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Used to write to the in game console log</p></div>
+</div>
+
+<a name="log_line(2)"></a><a name="Topic404"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">log_line</div>
+ <div id="NDPrototype404" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> log_line(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><span class="SHKeyword">char</span>*<span class="SHKeyword">const</span>&nbsp;</td><td class="PName last">text,</td></tr><tr><td class="PModifierQualifier first">...</td><td></td><td class="last"></td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Used to write to the in game console log as error (debugging)</p></div>
+</div>
+
+<a name="log_configs"></a><a name="Topic405"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">log_configs</div>
+ <div id="NDPrototype405" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> log_configs(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">scs_telemetry_configuration_t&nbsp;</td><td class="PNamePrefix">*</td><td class="PName last">info</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>It print every config event that appears to the in game log careful, create a lot of logs so that fast parts are not readable anymore in the log window</p></div>
 </div>
 
 <a name="telemetry_frame_start"></a><a name="Topic32"></a><div class="CTopic TFunction LC last">

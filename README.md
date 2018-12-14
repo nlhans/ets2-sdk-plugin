@@ -2,13 +2,17 @@
   <a href="https://rencloud.github.io/scs-sdk-plugin/docs/" title="Documentation">
     <img alt="" src="https://img.shields.io/badge/documentation-23.10-green.svg?style=for-the-badge" />
   </a>
-  (need to be updated with next commit...)
+ 
+  <a href="https://discord.gg/JDqkZZd" title="Discord">
+    <img alt="" src="https://img.shields.io/badge/Discord-blue.svg?style=for-the-badge" />
+  </a>
+
+ 
 fork of [nlhans](https://github.com/nlhans/ets2-sdk-plugin) work
 
-**.dll and c# object is complete new and won't work with old code. Why change? A lot of missing values are added, job fire event complete change and should now detect every job.**
+**.dll and c# object is complete new and won't work with old code. Why change? A lot of missing values are added, job fire event complete change and should now detect every job and th ending of an job (delivered, canceled,...).**
  
 # SCS Telemetry for EuroTruckSimulator 2 and AmericanTruckSimulator
-## Now with correct job event for all kind of jobs
 
 SCS has kindly released a SDK that allows developers and users to stream telemetry data from the game to any 3rd party applications. An example program was provided (and often used) which enabled streaming data by using text files stored on the users harddisk. This puts unnecessary stress on the users harddrive (not the mention the number of re-writes that would hurt SSDs), and moreover requires the user to manually configure the telemetry data source.
 
@@ -24,23 +28,22 @@ You will now notice that each time ETS2/ATS now starts it prompts the SDK has be
 
 ## Developers Information
 
-### Documentation (not completed and not up to date atm i try to change that)
-I created a documentation. It tells you a lot about the values. I will also add there a installation, build, etc. guide to make it simpler for all to use this sdk and may change a bit on your on.
+### Documentation (not completed at the moment)
+There is also an Documentation. It tells a lot about the values. An installation, build , etc. guide will also follow. Should there still be questions, feature request or other changes visit the discord server linked at the top.
 
-But at the moment only C# code/value documentation exists.
 
-Sadly the usage of the documentation generating syntax leads to a lot of `warnings` while compiling the c# part. That's because the documentation use `<` and `>`. But that's no valid xml. Therefore the compiler cry's :cry: and give the warning about invalid xml. With the help of `#pragma` it wont show up. 
+Sadly the usage of the documentation generating syntax leads to a lot of `warnings`, while compiling the c# part. That's because the documentation use `<` and `>`. But that's no valid xml. Therefore the compiler cry's :cry: and give the warning about invalid xml. With the help of `#pragma` it wont show up. 
 
 ### Overview 
 This plug-in stores it's data inside a Memory Mapped File, or "Shared Memory". This allows it to operate without any access to harddrive, or configuration hassle by the user to locate the memory map.
-Like you see on the structure the C# object is now a bit bigger and has more nested types. It's not the best way to store and display the data, but i didn't like it that such a lot of values display one object. For some operation an other structure would be better, but for the most this should be ok also. But you can take the source and create a simpler object or create an issue for small changes.
+Like you see on the structure the C# object is now a bit bigger and has more nested types. It's not the best way to store and display the data, but storing it like the old way -> all values in 3-4 list was also not that nice. For some operation an other structure would be better, but for the most this should be ok. But you can take the source and create a simpler object or create an issue for small changes. Discord would also a way.
 
 The following telemetry fields are supported, structure like the c# object:
 
 	Basic Game Independent Values:
 		- Telemetry Timestamp (not the in-game time, only for usage in code, see documentation for more information #todo add link)
 		- Paused, game state
-		- SCSGame identifier as enum
+		- SCSGame identifier as enum, currently ets2/ats/unknown
 		- GameVersion and Game Telemetry Version (major.minor)
 		- Dll version (usage in code)
 
@@ -244,14 +247,14 @@ The following telemetry fields are supported, structure like the c# object:
 			- Navigation Time
 			- Speed Limit
 		
-		SpecialEvents (now working as expected -> correct) :
+		SpecialEvents:
 			- On Job 
 			- Job Finished (flag that disappears after some time)
 
 
 Also there are a few more fields you can use:
 
-	Under Truck.Positioning:
+	Truck.Positioning:
 		- Head position in Cabin Space
 		- Head position in Vehicle Space
 		- Head position in World Space
@@ -275,4 +278,4 @@ There is no "sample ticker" yet. This must be done at the client side, by regula
 Actually I'm not fully happy with the actual demo. But I didn't reached my plan that works like the old one. Later I will change the current demo so that they will be a lot times better.
 
 ### Other
-For other languages you need to create/find a library that can open and read MemoryMapped files. The data storage format is binary and can be found in "ets2-telemetry/inc/ets2-telemetry-common.hpp". The shared memory map name is "Local\SCSTelemetry".
+For other languages you need to create/find a library that can open and read MemoryMapped files. The data storage format is binary and can be found in "scs-telemetry/inc/scs-telemetry-common.hpp". The shared memory map name is "Local\SCSTelemetry".
