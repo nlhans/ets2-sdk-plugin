@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <cassert>
 #include <cstdarg>
+#include <algorithm>
 // SDK
 
 #include "scssdk_telemetry.h"
@@ -213,11 +214,57 @@ void set_job_values_zero() {
 	memset(telem_ptr->config_s.cargoId, 0, stringsize);
 	memset(telem_ptr->config_s.cargoAcessoryId, 0, stringsize);
 	memset(telem_ptr->config_s.cargo, 0, stringsize);
-    //TODO: check if every hjob and cargo value is zero
 }
 void set_trailer_values_zero() {
-    //TODO: set trailer values zero
+    
+	telem_ptr->truck_f.wearTrailer = 0;
+	std::fill(telem_ptr->truck_ui.trailer_wheelSubstance, telem_ptr->truck_ui.trailer_wheelSubstance+16, 0u);
+	std::fill(telem_ptr->truck_f.trailer_wheelSuspDeflection, telem_ptr->truck_f.trailer_wheelSuspDeflection + 16, 0);
+	std::fill(telem_ptr->truck_f.trailer_wheelVelocity, telem_ptr->truck_f.trailer_wheelVelocity + 16, 0);
+	std::fill(telem_ptr->truck_f.trailer_wheelSteering, telem_ptr->truck_f.trailer_wheelSteering + 16, 0);
+	std::fill(telem_ptr->truck_f.trailer_wheelRotation, telem_ptr->truck_f.trailer_wheelRotation + 16, 0);
+	std::fill(telem_ptr->truck_b.trailer_wheelOnGround, telem_ptr->truck_b.trailer_wheelOnGround + 16, false);
 
+	telem_ptr->truck_fv.trailer_lv_accelerationX = 0;
+	telem_ptr->truck_fv.trailer_lv_accelerationY = 0;
+	telem_ptr->truck_fv.trailer_lv_accelerationZ = 0;
+
+	telem_ptr->truck_fv.trailer_av_accelerationX = 0;
+	telem_ptr->truck_fv.trailer_av_accelerationY = 0;
+	telem_ptr->truck_fv.trailer_av_accelerationZ = 0;
+
+	telem_ptr->truck_fv.trailer_la_accelerationX = 0;
+	telem_ptr->truck_fv.trailer_la_accelerationY = 0;
+	telem_ptr->truck_fv.trailer_la_accelerationZ = 0;
+
+	telem_ptr->truck_fv.trailer_aa_accelerationX = 0;
+	telem_ptr->truck_fv.trailer_aa_accelerationY = 0;
+	telem_ptr->truck_fv.trailer_aa_accelerationZ = 0;
+
+	telem_ptr->config_fv.trailerHookPositionX = 0;
+	telem_ptr->config_fv.trailerHookPositionY = 0;
+	telem_ptr->config_fv.trailerHookPositionZ = 0;
+
+	telem_ptr->truck_dp.trailer_coordinateX = 0;
+	telem_ptr->truck_dp.trailer_coordinateY = 0;
+	telem_ptr->truck_dp.trailer_coordinateZ = 0;
+
+	telem_ptr->truck_dp.trailer_rotationX = 0;
+	telem_ptr->truck_dp.trailer_rotationY = 0;
+	telem_ptr->truck_dp.trailer_rotationZ = 0;
+
+	telem_ptr->config_ui.trailerWheelCount = 0; 
+
+	std::fill(telem_ptr->config_f.trailerWheelRadius, telem_ptr->config_f.trailerWheelRadius + 16, 0u);
+	std::fill(telem_ptr->config_b.trailerWheelSimulated, telem_ptr->config_b.trailerWheelSimulated + 16, false);
+	std::fill(telem_ptr->config_b.trailerWheelLiftable, telem_ptr->config_b.trailerWheelLiftable + 16, false);
+	std::fill(telem_ptr->config_b.trailerWheelPowered, telem_ptr->config_b.trailerWheelPowered + 16, false);
+	std::fill(telem_ptr->config_b.trailerWheelSteerable, telem_ptr->config_b.trailerWheelSteerable + 16, false);
+	std::fill(telem_ptr->config_fv.trailerWheelPositionX, telem_ptr->config_fv.trailerWheelPositionX + 16, 0);
+	std::fill(telem_ptr->config_fv.trailerWheelPositionY, telem_ptr->config_fv.trailerWheelPositionY + 16, 0);
+	std::fill(telem_ptr->config_fv.trailerWheelPositionZ, telem_ptr->config_fv.trailerWheelPositionZ + 16, 0);
+
+	memset(telem_ptr->config_s.trailerId, 0, stringsize);
 }
 // Function: telemetry_frame_start
 // Register telemetry values

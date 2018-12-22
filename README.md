@@ -195,7 +195,7 @@ The following telemetry fields are supported, structure is like the c# object:
 				- Contains "more fields" see at the bottom of the list
 
 
-		Trailer Values:
+		Trailer Values (will be set to 0,false, etc. if you have no trailer, while on job or with trailer ownership detached wont reset the values):
 			- Attached
 			- Damage
 			- Position
@@ -227,7 +227,7 @@ The following telemetry fields are supported, structure is like the c# object:
 			- Id (code)
 			- Name
 		
-		Job Values:
+		Job Values(will be reset after the job finished flag is disappeared):
 			- Delivery Time (time object -> in-game minutes and datetime object)
 			- Remaining Delivery Time (calculated)
 			- City Destination Id (code)

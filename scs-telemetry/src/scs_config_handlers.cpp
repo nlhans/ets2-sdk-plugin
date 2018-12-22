@@ -405,7 +405,7 @@ scsConfigHandle(Trailer, WheelOffset) {
     if (position < WHEEL_SIZE) {
         telem_ptr->config_fv.trailerWheelPositionX[position] = ratio.x;
         telem_ptr->config_fv.trailerWheelPositionY[position] = ratio.y;
-        telem_ptr->config_fv.TrailerWheelPositionZ[position] = ratio.z;
+        telem_ptr->config_fv.trailerWheelPositionZ[position] = ratio.z;
     }
 }
 

@@ -265,7 +265,7 @@ typedef struct scsTelemetryMap_s
 		float trailerHookPositionZ;
 		float trailerWheelPositionX[16];
 		float trailerWheelPositionY[16];
-		float TrailerWheelPositionZ[16];
+		float trailerWheelPositionZ[16];
 	}config_fv;
 	struct {
 		float trailer_lv_accelerationX;
