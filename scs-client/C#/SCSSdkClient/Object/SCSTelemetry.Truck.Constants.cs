@@ -1,24 +1,21 @@
-﻿using System.Windows.Forms.VisualStyles;
-
-namespace SCSSdkClient.Object {
+﻿namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
         public partial class Truck {
             /// <summary>
             ///     Config values
             /// </summary>
             public class Constants {
-                public Constants()
-                {
+                public Constants() {
                     MotorValues = new Motor();
-                    CapacityValues =  new Capacity();
+                    CapacityValues = new Capacity();
                     WarningFactorValues = new WarningFactor();
-                    WheelsValues = new Wheels();
+                    WheelsValues = new WheelsConstants();
                 }
 
                 public Motor MotorValues { get; internal set; }
                 public Capacity CapacityValues { get; internal set; }
                 public WarningFactor WarningFactorValues { get; internal set; }
-                public Wheels WheelsValues { get; internal set; }
+                public WheelsConstants WheelsValues { get; internal set; }
 
                 /// <summary>
                 ///     Brand id for configuration purposes.
@@ -48,8 +45,8 @@ namespace SCSSdkClient.Object {
                 /// </summary>
                 public class Motor {
                     /// About: RetarderStepCount
-                    /// Set to zero if retarder is not mounted on the truck
                     
+                    /// Set to zero if retarder is not mounted on the truck
                     /// <summary>
                     ///     Number of forward gears on undamaged truck
                     /// </summary>
@@ -63,15 +60,38 @@ namespace SCSSdkClient.Object {
                     /// <summary>
                     ///     Number of steps in the retarder
                     /// </summary>
-                    /// <!----> **INFORMATION** <!---->
+                    /// <!---->
+                    /// **INFORMATION**
+                    /// <!---->
                     /// Set to zero if retarder is not mounted on the truck
-                    /// <!----> **INFORMATION** <!---->
+                    /// <!---->
+                    /// **INFORMATION**
+                    /// <!---->
                     public uint RetarderStepCount { get; internal set; }
 
                     /// <summary>
                     ///     Number of selectors (e.g. range/splitters toggles)
                     /// </summary>
                     public uint SelectorCount { get; internal set; }
+
+                    /// <summary>
+                    ///     Gear selected when requirements for this h-shifter slot are meet.
+                    /// </summary>
+                    public int[] SlotGear { get; internal set; }
+
+                    /// <summary>
+                    ///     Position of h-shifter handle.
+                    ///     Zero corresponds to neutral position. Mapping to physical position of
+                    ///     the handle depends on input setup.
+                    /// </summary>
+
+                    public uint[] SlotHandlePosition { get; internal set; }
+
+                    /// <summary>
+                    ///     Bitmask of required on/off state of selectors.
+                    ///     Only first selector_count bits are relevant.
+                    /// </summary>
+                    public uint[] SlotSelectors { get; internal set; }
 
                     /// <summary>
                     ///     Maximal rpm value.
@@ -97,7 +117,6 @@ namespace SCSSdkClient.Object {
                     ///     Type of the shifter.
                     /// </summary>
                     public ShifterType ShifterTypeValue { get; internal set; }
-
                 }
 
 
@@ -154,49 +173,6 @@ namespace SCSSdkClient.Object {
                     ///     Voltage of the battery bellow which the warning activates.
                     /// </summary>
                     public float BatteryVoltage { get; internal set; }
-                }
-
-                /// <summary>
-                ///     Wheel information
-                /// </summary>
-                public class Wheels {
-                    /// About: Count
-                    /// SDK limited to 14 for SDK 1_9
-                    
-                    /// <summary>
-                    ///     Number of wheels
-                    /// </summary>
-                    public uint Count { get; internal set; }
-
-                    /// <summary>
-                    ///     Radius of the wheel(s)
-                    /// </summary>
-                    public float[] Radius { get; internal set; }
-
-                    /// <summary>
-                    ///     Is the wheel Simulated?
-                    /// </summary>
-                    public bool[] Simulated { get; internal set; }
-
-                    /// <summary>
-                    ///     Is the wheel Powered?
-                    /// </summary>
-                    public bool[] Powered { get; internal set; }
-
-                    /// <summary>
-                    ///     Is the wheel Liftable?
-                    /// </summary>
-                    public bool[] Liftable { get; internal set; }
-
-                    /// <summary>
-                    ///     Is the wheel steerable?
-                    /// </summary>
-                    public bool[] Steerable { get; internal set; }
-
-                    /// <summary>
-                    ///     Position of respective wheels in the vehicle space.
-                    /// </summary>
-                    public FVector[] PositionValues { get; internal set; }
                 }
             }
         }

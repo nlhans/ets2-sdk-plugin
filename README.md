@@ -18,6 +18,7 @@ SCS has kindly released a SDK that allows developers and users to stream telemet
 
 This SDK plug-in transports the telemetry stream via a Memory Mapped File. This is a special Windows (file)stream which resides completely in RAM and can be read from multiple applications. 
 
+
 ## Installation
 
 Actually you need to build this branch yourself. I will add a release later. Stay tuned for more information.
@@ -36,9 +37,9 @@ Sadly the usage of the documentation generating syntax leads to a lot of `warnin
 
 ### Overview 
 This plug-in stores it's data inside a Memory Mapped File, or "Shared Memory". This allows it to operate without any access to harddrive, or configuration hassle by the user to locate the memory map.
-Like you see on the structure the C# object is now a bit bigger and has more nested types. It's not the best way to store and display the data, but storing it like the old way -> all values in 3-4 list was also not that nice. For some operation an other structure would be better, but for the most this should be ok. But you can take the source and create a simpler object or create an issue for small changes. Discord would also a way.
 
-The following telemetry fields are supported, structure like the c# object:
+### Telemetry fields and the c# object
+The following telemetry fields are supported, structure is like the c# object:
 
 	Basic Game Independent Values:
 		- Telemetry Timestamp (not the in-game time, only for usage in code, see documentation for more information #todo add link)
@@ -46,6 +47,7 @@ The following telemetry fields are supported, structure like the c# object:
 		- SCSGame identifier as enum, currently ets2/ats/unknown
 		- GameVersion and Game Telemetry Version (major.minor)
 		- Dll version (usage in code)
+		- Substances 
 
 		Common Values:
 			- Scale
@@ -65,6 +67,9 @@ The following telemetry fields are supported, structure like the c# object:
 					- Gear Ratios Forward
 					- Gear Ratios Reverse
 					- Shifter Type Value (Enum)
+					- SlotGear
+					- SlotHandlePosition
+					- SlotSelectors
 
 				Capacity Values:
 					- Fuel
@@ -137,13 +142,13 @@ The following telemetry fields are supported, structure like the c# object:
 					- Odometer
 					- Wipers
 					- Cruise Control ("special field", same like `CruiseControlspeed == 0`)
-					Acceleration:
-						- Linear Velocity
-						- Angular Velocity
-						- Linear Acceleration
-						- Angular Acceleration
-						- Cabin Angular Velocity
-						- Cabin Angular Acceleration					
+				Acceleration:
+					- Linear Velocity
+					- Angular Velocity
+					- Linear Acceleration
+					- Angular Acceleration
+					- Cabin Angular Velocity
+					- Cabin Angular Acceleration					
 
 				Lights:
 					- Aux Front (enum for 3 states)
@@ -201,10 +206,16 @@ The following telemetry fields are supported, structure like the c# object:
 				- Steering
 				- Rotation
 				- On Ground
+
+			WheelsConstants:
+					- Count
+					- Radius
+					- Simulated
+					- Powered
+					- Liftable
+					- Steerable
 			
-			Cargo Values:
-				- Mass 
-				- Name (code)
+			~~Cargo Values~~(moved to job values) 
 			
 			Acceleration:
 				- Linear Velocity
@@ -228,6 +239,10 @@ The following telemetry fields are supported, structure like the c# object:
 			- Company Source Id (code)
 			- Company Source
 			- Income 
+		 
+		 	Cargo Values:
+				- Mass 
+				- Name (code)
 
 		Control Values:
 			User Input:
@@ -267,7 +282,7 @@ Also there are a few more fields you can use:
 		- Add a FVector and a DVector
 		- Rotate: Rotates specified vector by specified orientation 
 
-May I forgot something. When you found missing values or something else create an issue. Thanks. 
+May I forgot something. When you found missing values or something else create an issue that would be great.
 
 The fields are updated as fast as ETS2/ATS can and will do, as this is how the SDK has been designed by SCS. When a telemetry value has changed the SDK will immediately call a handler. This plug-in implements this handler which stores the data to the right field inside the data structure.
 There is no "sample ticker" yet. This must be done at the client side, by regularly checking if the timestamp has been updated.

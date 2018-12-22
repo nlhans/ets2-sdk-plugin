@@ -90,13 +90,12 @@ void log_line(const char*const text, ...) {
 // Function: log_configs
 // It print every config event that appears to the in game log
 // careful, create a lot of logs so that fast parts are not readable anymore in the log window
-void log_configs(const scs_telemetry_configuration_t* info) {
-    // TODO: create string that will be printed so it doesn't need so many lines
+void log_configs(const scs_telemetry_configuration_t* info) { 
     log_line("Configuration: %s", info->id);
     for (auto current = info->attributes; current->name; ++current) {
 
         if (current->index != SCS_U32_NIL) {
-            log_line("[%u]", static_cast<unsigned>(current->index));
+           // log_line("[%u]", static_cast<unsigned>(current->index));
         }
         switch (current->value.type) {
         case SCS_VALUE_TYPE_INVALID: {
@@ -199,6 +198,27 @@ scs_timestamp_t last_timestamp = static_cast<scs_timestamp_t>(-1);
 scs_timestamp_t timestamp;
 static auto clear_job_ticker = 0;
 
+void set_job_values_zero() {
+	telem_ptr->config_o.jobIncome = 0;
+	telem_ptr->config_ui.time_abs_delivery = 0;
+	telem_ptr->config_f.cargoMass = 0;
+	memset(telem_ptr->config_s.compDstId, 0, stringsize);
+	memset(telem_ptr->config_s.compSrcId, 0, stringsize);
+	memset(telem_ptr->config_s.cityDstId, 0, stringsize);
+	memset(telem_ptr->config_s.citySrcId, 0, stringsize);
+	memset(telem_ptr->config_s.citySrc, 0, stringsize);
+	memset(telem_ptr->config_s.cityDst, 0, stringsize);
+	memset(telem_ptr->config_s.compSrc, 0, stringsize);
+	memset(telem_ptr->config_s.compDst, 0, stringsize);
+	memset(telem_ptr->config_s.cargoId, 0, stringsize);
+	memset(telem_ptr->config_s.cargoAcessoryId, 0, stringsize);
+	memset(telem_ptr->config_s.cargo, 0, stringsize);
+    //TODO: check if every hjob and cargo value is zero
+}
+void set_trailer_values_zero() {
+    //TODO: set trailer values zero
+
+}
 // Function: telemetry_frame_start
 // Register telemetry values
 SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*const event_info,
@@ -239,20 +259,7 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*co
             clear_job_ticker++;
 
             if (clear_job_ticker > 10) {
-                telem_ptr->config_o.jobIncome = 0;
-                telem_ptr->config_ui.time_abs_delivery = 0;
-                telem_ptr->config_f.trailerMass = 0;
-                memset(telem_ptr->config_s.trailerId, 0, stringsize);
-                memset(telem_ptr->config_s.trailerName, 0, stringsize);
-                memset(telem_ptr->config_s.compDstId, 0, stringsize);
-                memset(telem_ptr->config_s.compSrcId, 0, stringsize);
-                memset(telem_ptr->config_s.cityDstId, 0, stringsize);
-                memset(telem_ptr->config_s.citySrcId, 0, stringsize);
-                memset(telem_ptr->config_s.citySrc, 0, stringsize);
-                memset(telem_ptr->config_s.cityDst, 0, stringsize);
-                memset(telem_ptr->config_s.compSrc, 0, stringsize);
-                memset(telem_ptr->config_s.compDst, 0, stringsize);
-                memset(telem_ptr->config_s.Cargo, 0, stringsize);
+				set_job_values_zero();
                 telem_ptr->special_b.jobFinished = false;
             }
         }
@@ -300,6 +307,7 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*co
 
 }
 
+
 SCSAPI_VOID telemetry_pause(const scs_event_t event, const void*const UNUSED(event_info),
                             const scs_context_t UNUSED(context)) {
     if (telem_ptr != nullptr) {
@@ -313,26 +321,48 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
     const auto info = static_cast<const scs_telemetry_configuration_t *>(
         event_info);
 
+	configType type = {};
+    if(strcmp(info->id,"substances")==0) {
+		type = substances;
+    }else if (strcmp(info->id, "controls") == 0) {
+		type = controls;
+	}else if (strcmp(info->id, "hshifter") == 0) {
+		type = hshifter;
+	}else if (strcmp(info->id, "truck") == 0) {
+		type = truck;
+	}else if (strcmp(info->id, "trailer") == 0) {
+		type = trailer;
+	}else if (strcmp(info->id, "job") == 0) {
+		type = job;
+	}else {
+		log_line(SCS_LOG_TYPE_warning, "Something went wrong with this %s",info->id);
+	}
+
     // uncomment to log every config, should work but with function not tested ^^`
-    // log_configs(info); 
+    //log_configs(info); 
 
     // attribute is a pointer array that is never null so ... i have no clue how to check it on another way than this
     // if for loop can't loop it is empty so simple 
     auto isEmpty = true;
 
-    for (auto current = info->attributes; current->name; ++current) {
-        handleCfg(current);
+    for ( auto current = info->attributes; current->name; ++current) {
+        if(!handleCfg(current, type)) {
+			log_line("attribute not handled id: %i attribute: %s", type, current->name);
+        } 
         isEmpty = false;
     }
     // if id of config is "job" but without element and we are on a job -> we finished it now
-    if (strcmp(info->id, "job") == 0 && isEmpty && telem_ptr->special_b.onJob) {
+    if (type==job && isEmpty && telem_ptr->special_b.onJob) {
         telem_ptr->special_b.onJob = false;
         telem_ptr->special_b.jobFinished = true;
         clear_job_ticker = 0;
     }
-    else if (!telem_ptr->special_b.onJob && strcmp(info->id, "job") == 0 && !isEmpty) {
+    else if (!telem_ptr->special_b.onJob && type == job && !isEmpty) {
         // oh hey no job but now we have fields in this array so we start a new job
         telem_ptr->special_b.onJob = true;
+    }
+    if(type==trailer && isEmpty) {
+		set_trailer_values_zero();
     }
 }
 

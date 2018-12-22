@@ -7,7 +7,7 @@
 // - Shared memory map struct layout
 // - [..]
 
-#define PLUGIN_REVID					8
+#define PLUGIN_REVID					9
 
 #define ETS2_PLUGIN_LOGGING_ON				0
 #define ETS2_PLUGIN_LOGGING_SHAREDMEMORY	0
@@ -30,6 +30,9 @@
   */
 #define WHEEL_SIZE 14
 
+// macro: SUBSTANCE_SIZE
+// The maximum number of substances that are saved to the memory
+#define SUBSTANCE_SIZE 25
 
   /**
    *  \brief Telemetry object
@@ -85,9 +88,10 @@ typedef struct scsTelemetryMap_s
 		unsigned int gears;
 		unsigned int gears_reverse;
 		unsigned int retarderStepCount;
-		unsigned int wheelCount;
+		unsigned int truckWheelCount;
 		unsigned int selectorCount;
 		unsigned int time_abs_delivery;
+		unsigned int trailerWheelCount;
 	}config_ui;
 
 	// Contains trailer/truck channel unsigned integers
@@ -98,12 +102,14 @@ typedef struct scsTelemetryMap_s
 		unsigned int lightsAuxRoof;
 		unsigned int trailer_wheelSubstance[16];
 		unsigned int truck_wheelSubstance[16];
+		unsigned int hshifterPosition[32];
+		unsigned int hshifterBitmask[32];
 	}truck_ui;
 
-	char buffer_ui[44];
-	//----- END OF SECOND ZONE AT OFFSET 279 -----//
+	char buffer_ui[4];
+	//----- END OF SECOND ZONE AT OFFSET 499 -----//
 
-	//----- START OF Third ZONE AT OFFSET 280 -----//
+	//----- START OF Third ZONE AT OFFSET 500 -----//
 	// The third zone contains integers and it sorted in sub structures
 
 	struct {
@@ -113,12 +119,13 @@ typedef struct scsTelemetryMap_s
 	struct {
 		int gear;
 		int gearDashboard;
+		int hshifterResulting[32];
 	}truck_i;
 
-	char buffer_i[28];
-	//----- END OF third ZONE AT OFFSET 319 -----//
+	char buffer_i[60];
+	//----- END OF third ZONE AT OFFSET 699 -----//
 
-	//----- START OF FOURTH ZONE AT OFFSET 320 -----//
+	//----- START OF FOURTH ZONE AT OFFSET 700 -----//
 	// The fourth zone contains floats and it sorted in sub structures
 
 	struct {
@@ -137,8 +144,9 @@ typedef struct scsTelemetryMap_s
 		float batteryVoltageWarning;
 		float engineRpmMax;
 		float gearDifferential;
-		float trailerMass;
-		float wheelRadius[16];
+		float cargoMass;
+		float truckWheelRadius[16];
+		float trailerWheelRadius[16];
 		float gearRatiosForward[24];
 		float gearRatiosReverse[8];
 	}config_f;
@@ -187,17 +195,21 @@ typedef struct scsTelemetryMap_s
 		float truck_wheelLift[16];
 		float truck_wheelLiftOffset[16];
 	}truck_f;
-	char buffer_f[68];
-	//----- END OF FOURTH ZONE AT OFFSET 1399 -----//
+	char buffer_f[24];
+	//----- END OF FOURTH ZONE AT OFFSET 1799 -----//
 
-	//----- START OF FIFTH ZONE AT OFFSET 1400 -----//
+	//----- START OF FIFTH ZONE AT OFFSET 1800 -----//
 	// The fifth zone contains bool and it sorted in sub structures
 
 	struct {
-		bool wheelSteerable[16];
-		bool wheelSimulated[16];
-		bool wheelPowered[16];
-		bool wheelLiftable[16];
+		bool truckWheelSteerable[16];
+		bool truckWheelSimulated[16];
+		bool truckWheelPowered[16];
+		bool truckWheelLiftable[16];
+		bool trailerWheelSteerable[16];
+		bool trailerWheelSimulated[16];
+		bool trailerWheelPowered[16];
+		bool trailerWheelLiftable[16];
 	}config_b;
 
 	struct {
@@ -229,10 +241,10 @@ typedef struct scsTelemetryMap_s
 		bool truck_wheelOnGround[16];
 		bool shifterToggle[2];
 	}truck_b;
-	char buffer_b[78];
-	//----- END OF FIFTH ZONE AT OFFSET 1599 -----//
+	char buffer_b[14];
+	//----- END OF FIFTH ZONE AT OFFSET 1999 -----//
 
-	//----- START OF SIXTH ZONE AT OFFSET 1600 -----//
+	//----- START OF SIXTH ZONE AT OFFSET 2000 -----//
 	// The sixth zone contains fvector and it sorted in sub structures
 
 	struct {
@@ -242,12 +254,18 @@ typedef struct scsTelemetryMap_s
 		float headPositionX;
 		float headPositionY;
 		float headPositionZ;
-		float hookPositionX;
-		float hookPositionY;
-		float hookPositionZ;
-		float wheelPositionX[16];
-		float wheelPositionY[16];
-		float wheelPositionZ[16];
+		float truckHookPositionX;
+		float truckHookPositionY;
+		float truckHookPositionZ;
+		float truckWheelPositionX[16];
+		float truckWheelPositionY[16];
+		float truckWheelPositionZ[16];
+		float trailerHookPositionX;
+		float trailerHookPositionY;
+		float trailerHookPositionZ;
+		float trailerWheelPositionX[16];
+		float trailerWheelPositionY[16];
+		float TrailerWheelPositionZ[16];
 	}config_fv;
 	struct {
 		float trailer_lv_accelerationX;
@@ -281,10 +299,10 @@ typedef struct scsTelemetryMap_s
 		float cabinAAY;
 		float cabinAAZ;
 	}truck_fv;
-	char buffer_fv[52];
-	//----- END OF SIXTH ZONE AT OFFSET 1999 -----//
+	char buffer_fv[48];
+	//----- END OF SIXTH ZONE AT OFFSET 2599 -----//
 
-	//----- START OF 7TH ZONE AT OFFSET 2000 -----//
+	//----- START OF 7TH ZONE AT OFFSET 2600 -----//
 	// The 7th zone contains fplacement and it sorted in sub structures
 	struct {
 		float cabinOffsetX;
@@ -301,9 +319,9 @@ typedef struct scsTelemetryMap_s
 	    float headOffsetrotationZ;
 	}truck_fp;
 	char buffer_fp[152];
-	//----- END OF 7TH ZONE AT OFFSET 2199 -----//
+	//----- END OF 7TH ZONE AT OFFSET 2799 -----//
 
-	//----- START OF 8TH ZONE AT OFFSET 2200 -----//
+	//----- START OF 8TH ZONE AT OFFSET 2800 -----//
 	// The 8th zone contains dplacement and it sorted in sub structures
 
 	struct {
@@ -321,20 +339,20 @@ typedef struct scsTelemetryMap_s
 		double trailer_rotationZ;
 	}truck_dp;
 	char buffer_dp[104];
-	//----- END OF 8TH ZONE AT OFFSET 2399 -----//
+	//----- END OF 8TH ZONE AT OFFSET 2999 -----//
 
-	//----- START OF 9TH ZONE AT OFFSET 2400 -----//
+	//----- START OF 9TH ZONE AT OFFSET 3000 -----//
 	// The 9th zone contains strings and it sorted in sub structures
 
 	struct {
-		char truckMakeId[stringsize];
-		char truckMake[stringsize];
-		char Vehicle[stringsize];
-		char Chassis[stringsize];
-		char Cargo[stringsize];
-		char truckModel[stringsize];
+		char truckBrandId[stringsize];
+		char truckBrand[stringsize];
+		char truckId[stringsize];
 		char trailerId[stringsize];
-		char trailerName[stringsize];
+		char cargoAcessoryId[stringsize];
+		char truckName[stringsize];
+		char cargoId[stringsize];
+		char cargo[stringsize];
 		char cityDstId[stringsize];
 		char cityDst[stringsize];
 		char compDstId[stringsize];
@@ -344,20 +362,21 @@ typedef struct scsTelemetryMap_s
 		char compSrcId[stringsize];
 		char compSrc[stringsize];
 		char shifterType[16];
+
 	}config_s;
 	char buffer_s[760];
-	//----- END OF 9TH ZONE AT OFFSET 4199 -----//
+	//----- END OF 9TH ZONE AT OFFSET 4799 -----//
 
-	//----- START OF 10TH ZONE AT OFFSET 4200 -----//
+	//----- START OF 10TH ZONE AT OFFSET 4800 -----//
 	// The 10th zone contains unsigned long long and it sorted in sub structures
 
     struct {
 		unsigned long long jobIncome;
     }config_o;
 	char buffer_o[192];
-	//----- END OF 10TH ZONE AT OFFSET 4399 -----//
+	//----- END OF 10TH ZONE AT OFFSET 4999 -----//
 
-	//----- START OF 111TH ZONE AT OFFSET 4400 -----//
+	//----- START OF 11TH ZONE AT OFFSET 5000 -----//
 	// The 11th zone contains special events and it sorted in sub structures
 
     struct {
@@ -365,7 +384,16 @@ typedef struct scsTelemetryMap_s
 		bool jobFinished;
     }special_b;
 	char buffer_special[198];
-	//----- END OF 11TH ZONE AT OFFSET 4599 -----//
+	//----- END OF 11TH ZONE AT OFFSET 5199 -----//
+
+	//----- START OF 12TH ZONE AT OFFSET 5200 -----//
+	// The 12th zone contains substances, place for 25 of them
+
+	struct {
+		char substance[SUBSTANCE_SIZE][stringsize];
+
+	}substances;
+	//----- END OF 12TH ZONE AT OFFSET 6800 -----//
 } scsTelemetryMap_t;
 
 #endif

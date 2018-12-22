@@ -41,7 +41,7 @@ namespace SCSSdkClient.Object {
             public FVector Head { get; internal set; }
 
             /// <summary>
-            ///     Default position of the head in vehicle space
+            ///     Default position of the hook in vehicle space
             /// </summary>
             public FVector Hook { get; internal set; }
 

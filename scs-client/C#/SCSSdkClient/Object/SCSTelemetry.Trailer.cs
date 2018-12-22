@@ -9,9 +9,9 @@ namespace SCSSdkClient.Object {
             public Trailer()
             {
                 Wheelvalues = new Wheels();
-                CargoValues = new Cargo();
                 AccelerationValues = new Acceleration();
-             
+                WheelsConstants = new WheelsConstants();
+                Hook = new FVector();
             }
 
             /// <summary>
@@ -24,27 +24,20 @@ namespace SCSSdkClient.Object {
             /// </summary>
             public float Damage { get; internal set; }
 
+            /// <summary>
+            ///     Default position of the hook in vehicle space
+            /// </summary>
+            public FVector Hook { get; internal set; }
             public Wheels Wheelvalues { get; internal set; }
-            public Cargo CargoValues { get; internal set; }
+            public WheelsConstants WheelsConstants { get; internal set; }
             public Acceleration AccelerationValues { get; internal set; }
             public DPlacement Position { get; internal set; }
-            /// <summary>
-            ///     Name for internal use by code.
-            ///     Limited to C-identifier characters and dots.
-            /// </summary>
-            public string Chassis { get; internal set; }
 
             /// <summary>
-            ///     Id of the cargo for internal use by code.
+            ///     Id for internal use by code.
             ///     Limited to C-identifier characters and dots
             /// </summary>
             public string Id { get; internal set; }
-
-            /// <summary>
-            ///     Name of the cargo for display purposes.
-            ///     Localized using the current in-game language.
-            /// </summary>
-            public string Name { get; internal set; }
 
             /// <summary>
             ///     States of the Wheels
@@ -117,22 +110,7 @@ namespace SCSSdkClient.Object {
                 public bool[] OnGround { get; internal set; }
             }
 
-            /// <summary>
-            ///     Cargo Values
-            /// </summary>
-            public class Cargo {
-                /// <summary>
-                ///     Mass in kilograms
-                /// </summary>
-                public float Mass { get; internal set; }
-
-                /// <summary>
-                ///     Name of cargo accessory for internal use by code.
-                ///     Limited to C-identifier characters and dots.
-                /// </summary>
-                public string Name { get; internal set; }
-            }
-
+          
             public class Acceleration {
                 /// <summary>
                 ///     Represents vehicle space linear velocity of the trailer measured in m/s

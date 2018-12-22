@@ -46,6 +46,8 @@
             this.control = new System.Windows.Forms.RichTextBox();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.navigation = new System.Windows.Forms.RichTextBox();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.substances = new System.Windows.Forms.RichTextBox();
             this.hgf.SuspendLayout();
             this.tabAbout.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -54,6 +56,7 @@
             this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
+            this.tabPage7.SuspendLayout();
             this.SuspendLayout();
             // 
             // hgf
@@ -65,6 +68,7 @@
             this.hgf.Controls.Add(this.tabPage4);
             this.hgf.Controls.Add(this.tabPage5);
             this.hgf.Controls.Add(this.tabPage6);
+            this.hgf.Controls.Add(this.tabPage7);
             this.hgf.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hgf.Location = new System.Drawing.Point(0, 0);
             this.hgf.Name = "hgf";
@@ -231,6 +235,26 @@
             this.navigation.TabIndex = 4;
             this.navigation.Text = "";
             // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.substances);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage7.Size = new System.Drawing.Size(587, 595);
+            this.tabPage7.TabIndex = 7;
+            this.tabPage7.Text = "Substances";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // substances
+            // 
+            this.substances.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.substances.Location = new System.Drawing.Point(3, 3);
+            this.substances.Name = "substances";
+            this.substances.Size = new System.Drawing.Size(581, 589);
+            this.substances.TabIndex = 5;
+            this.substances.Text = "";
+            // 
             // SCSSdkClientDemo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -249,6 +273,7 @@
             this.tabPage4.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
+            this.tabPage7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -272,6 +297,8 @@
         private System.Windows.Forms.RichTextBox job;
         private System.Windows.Forms.RichTextBox control;
         private System.Windows.Forms.RichTextBox navigation;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.RichTextBox substances;
     }
 }
 

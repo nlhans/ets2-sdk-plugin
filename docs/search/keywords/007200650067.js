@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("reg",["Information"],[["region",,[[,"#pragma region",,,0,"File4:c++code.txt:_pragma_region"]]]]);

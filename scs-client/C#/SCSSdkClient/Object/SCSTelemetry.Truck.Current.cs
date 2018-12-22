@@ -140,8 +140,7 @@ namespace SCSSdkClient.Object {
                         FuelValue = new Fuel();
                         WarningValues = new Warnings(); 
                         Speed = new Movement();
-                        CruiseControlSpeed = new Movement();
-                        AccelerationValues = new Acceleration();
+                        CruiseControlSpeed = new Movement(); 
                     }
 
                     /// About: Speed
@@ -231,8 +230,7 @@ namespace SCSSdkClient.Object {
                     ///     Is the CruiseControl active?
                     /// </summary>
                     public bool CruiseControl { get; internal set; }
-
-                    public Acceleration AccelerationValues { get; internal set; }
+                     
 
                     /// <summary>
                     ///     Contains Fuel values

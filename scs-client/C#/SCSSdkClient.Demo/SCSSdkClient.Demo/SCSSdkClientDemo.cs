@@ -61,6 +61,7 @@ namespace SCSSdkClient.Demo {
                 job.Text = JsonConvert.SerializeObject(data.JobValues, Formatting.Indented);
                 control.Text = JsonConvert.SerializeObject(data.ControlValues, Formatting.Indented);
                 navigation.Text = JsonConvert.SerializeObject(data.NavigationValues, Formatting.Indented);
+                substances.Text = JsonConvert.SerializeObject(data.Substances, Formatting.Indented);
             } catch (Exception ex) {
                 // ignored
                 Console.WriteLine(ex);

@@ -1,4 +1,6 @@
-﻿#pragma warning disable 1570
+﻿using System.Collections.Generic;
+
+#pragma warning disable 1570
 
 namespace SCSSdkClient.Object {
     /// <summary>
@@ -19,6 +21,7 @@ namespace SCSSdkClient.Object {
             ControlValues = new Control();
             NavigationValues = new Navigation();
             SpecialEventsValues = new SpecialEvents();
+            Substances = new List<Substance>();
         }
 
 
@@ -125,5 +128,10 @@ namespace SCSSdkClient.Object {
         ///     Contains special Event Values like onJob and JobFinished
         /// </summary>
         public SpecialEvents SpecialEventsValues { get; internal set; }
+
+        /// <summary>
+        ///     Contains string values to the substances used in values like Truck.Current.Wheels.Substance
+        /// </summary>
+        public List<Substance> Substances { get; internal set; }
     }
 }

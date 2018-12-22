@@ -10,6 +10,7 @@ namespace SCSSdkClient.Object {
             {
                 DeliveryTime = new Time();
                 RemainingDeliveryTime = new Frequency();
+                CargoValues = new Cargo();
             }
 
             public Time DeliveryTime { get; internal set; }
@@ -21,7 +22,7 @@ namespace SCSSdkClient.Object {
             /// Negative if the delivery is to late
             /// <!----> **INFORMATION** <!---->
             public Frequency RemainingDeliveryTime { get; protected internal set; }
-
+            public Cargo CargoValues { get; internal set; }
             public string CityDestinationId { get; internal set; }
             public string CityDestination { get; internal set; }
             public string CompanyDestinationId { get; internal set; }
@@ -36,8 +37,38 @@ namespace SCSSdkClient.Object {
             ///     Reward in internal game-specific currency.
             /// </summary>
             public long Income { get; internal set; }
+            /// <summary>
+            ///     Cargo Values
+            /// </summary>
+            public class Cargo
+            {
+                /// <summary>
+                ///     Mass in kilograms
+                /// </summary>
+                public float Mass { get; internal set; }
 
-            
+                /// <summary>
+                ///     Name for internal use by code.
+                ///     Limited to C-identifier characters and dots.
+                /// </summary>
+                public string Id { get; internal set; }
+
+                /// <summary>
+                ///     Name for display purposes.
+                ///     Localized using the current in-game language.
+                /// </summary>
+                public string Name { get; internal set; }
+
+                /// <summary>
+                ///     Name of cargo accessory for internal use by code.
+                ///     Limited to C-identifier characters and dots.
+                /// </summary>
+                public string AccessoryId { get; internal set; }
+
+
+            }
+
+
         }
     }
 }

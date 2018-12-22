@@ -2,6 +2,7 @@
 // Ets2SdkClient
 // Ets2SdkDataAlt.cs
 // 22:51
+
 using System;
 using System.Text;
 using SCSSdkClient.Object;
@@ -13,10 +14,15 @@ namespace SCSSdkClient {
     public class SCSSdkConvert {
         private byte[] _data;
         private int _offset;
-        private readonly int[] _offsetAreas = new[] {0,40,280,320,1400,1600,2000,2200,2400,4200,4400 };
+
+        private readonly int[] _offsetAreas =
+            new[] {0, 40, 500, 700, 1800, 2000, 2600, 2800, 3000, 4800, 5000, 5200, 6800};
+
         private int _offsetArea;
         private const int StringSize = 64;
-        public static  int WheelSize = 16;
+        public static int WheelSize = 16;
+        private const int Substances = 25;
+
         /// <summary>
         /// Convert the Shared Memory Byte data structure in a C# object
         /// </summary>
@@ -27,7 +33,7 @@ namespace SCSSdkClient {
         /// C# object with game data of the shared memory
         /// </returns>
         public SCSTelemetry Convert(byte[] structureDataBytes) {
-            _offsetArea=0;
+            _offsetArea = 0;
             SetOffset();
 
 
@@ -35,14 +41,17 @@ namespace SCSSdkClient {
             var retData = new SCSTelemetry();
 
             #region FIRST ZONE 
+
             retData.Timestamp = GetUint();
             retData.Paused = GetBool();
 
-            
+
             NextOffsetArea();
+
             #endregion
 
             #region SECOND ZONE
+
             retData.DllVersion = GetUint();
             retData.GameVersion.Major = GetUint();
             retData.GameVersion.Minor = GetUint();
@@ -58,6 +67,7 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.MotorValues.SelectorCount = GetUint();
             retData.JobValues.DeliveryTime.Value = GetUint();
             retData.SetGameTime(temp);
+            retData.TrailerValues.WheelsConstants.Count = GetUint();
 
             retData.TruckValues.CurrentValues.MotorValues.GearValues.HShifterSlot = GetUint();
             retData.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel = GetUint();
@@ -65,8 +75,12 @@ namespace SCSSdkClient {
             retData.TruckValues.CurrentValues.LightsValues.AuxRoof = GetUint().ToEnum<AuxLevel>();
             retData.TrailerValues.Wheelvalues.Substance = GetUintArray(WheelSize);
             retData.TruckValues.CurrentValues.WheelsValues.Substance = GetUintArray(WheelSize);
-            
+
+            retData.TruckValues.ConstantsValues.MotorValues.SlotHandlePosition = GetUintArray(32); 
+            retData.TruckValues.ConstantsValues.MotorValues.SlotSelectors = GetUintArray(32); 
+
             NextOffsetArea();
+
             #endregion
 
             #region THIRD ZONE
@@ -75,9 +89,10 @@ namespace SCSSdkClient {
 
             retData.TruckValues.CurrentValues.MotorValues.GearValues.Selected = GetInt();
             retData.TruckValues.CurrentValues.DashboardValues.GearDashboards = GetInt();
-
+            retData.TruckValues.ConstantsValues.MotorValues.SlotGear =  GetIntArray(32); 
 
             NextOffsetArea();
+
             #endregion
 
             #region 4TH ZONE
@@ -94,8 +109,9 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.WarningFactorValues.BatteryVoltage = GetFloat();
             retData.TruckValues.ConstantsValues.MotorValues.EngineRpmMax = GetFloat();
             retData.TruckValues.ConstantsValues.MotorValues.DifferentialRation = GetFloat();
-            retData.TrailerValues.CargoValues.Mass = GetFloat();
+            retData.JobValues.CargoValues.Mass = GetFloat();
             retData.TruckValues.ConstantsValues.WheelsValues.Radius = GetFloatArray(WheelSize);
+            retData.TrailerValues.WheelsConstants.Radius=  GetFloatArray(WheelSize); 
             retData.TruckValues.ConstantsValues.MotorValues.GearRatiosForward = GetFloatArray(24);
             retData.TruckValues.ConstantsValues.MotorValues.GearRatiosReverse = GetFloatArray(8);
 
@@ -147,6 +163,7 @@ namespace SCSSdkClient {
 
 
             NextOffsetArea();
+
             #endregion
 
             #region 5Th ZONE
@@ -155,6 +172,11 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.WheelsValues.Simulated = GetBoolArray(WheelSize);
             retData.TruckValues.ConstantsValues.WheelsValues.Powered = GetBoolArray(WheelSize);
             retData.TruckValues.ConstantsValues.WheelsValues.Liftable = GetBoolArray(WheelSize);
+            
+            retData.TrailerValues.WheelsConstants.Steerable = GetBoolArray(WheelSize);
+            retData.TrailerValues.WheelsConstants.Simulated = GetBoolArray(WheelSize);
+            retData.TrailerValues.WheelsConstants.Powered = GetBoolArray(WheelSize);
+            retData.TrailerValues.WheelsConstants.Liftable = GetBoolArray(WheelSize);
 
             retData.TrailerValues.Attached = GetBool();
             retData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake = GetBool();
@@ -187,6 +209,7 @@ namespace SCSSdkClient {
 
 
             NextOffsetArea();
+
             #endregion
 
             #region 6TH ZONE
@@ -198,16 +221,34 @@ namespace SCSSdkClient {
             for (var j = 0; j < WheelSize; j++) {
                 tempPos[j] = new SCSTelemetry.FVector {X = GetFloat()};
             }
-            for (var j = 0; j < WheelSize; j++)
-            {
+
+            for (var j = 0; j < WheelSize; j++) {
                 tempPos[j].Y = GetFloat();
             }
-            for (var j = 0; j < WheelSize; j++)
-            {
+
+            for (var j = 0; j < WheelSize; j++) {
                 tempPos[j].Z = GetFloat();
             }
 
             retData.TruckValues.ConstantsValues.WheelsValues.PositionValues = tempPos;
+
+         retData.TrailerValues.Hook=  GetFVector(); 
+             tempPos = new SCSTelemetry.FVector[WheelSize];
+            for (var j = 0; j < WheelSize; j++)
+            {
+                tempPos[j] = new SCSTelemetry.FVector { X = GetFloat() };
+            }
+
+            for (var j = 0; j < WheelSize; j++)
+            {
+                tempPos[j].Y = GetFloat();
+            }
+
+            for (var j = 0; j < WheelSize; j++)
+            {
+                tempPos[j].Z = GetFloat();
+            }
+            retData.TrailerValues.WheelsConstants.PositionValues = tempPos; 
 
             retData.TrailerValues.AccelerationValues.LinearVelocity = GetFVector();
             retData.TruckValues.CurrentValues.AccelerationValues.LinearVelocity = GetFVector();
@@ -219,8 +260,9 @@ namespace SCSSdkClient {
             retData.TruckValues.CurrentValues.AccelerationValues.AngularAcceleration = GetFVector();
             retData.TruckValues.CurrentValues.AccelerationValues.CabinAngularVelocity = GetFVector();
             retData.TruckValues.CurrentValues.AccelerationValues.CabinAngularAcceleration = GetFVector();
-            
+
             NextOffsetArea();
+
             #endregion
 
             #region 7TH ZONE
@@ -230,6 +272,7 @@ namespace SCSSdkClient {
 
 
             NextOffsetArea();
+
             #endregion
 
             #region 8TH ZONE 
@@ -237,9 +280,9 @@ namespace SCSSdkClient {
             retData.SetTruckPosition(GetDPlacement());
             retData.TrailerValues.Position = GetDPlacement();
 
-            
 
             NextOffsetArea();
+
             #endregion
 
             #region 9TH ZONE
@@ -247,11 +290,11 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.BrandId = GetString();
             retData.TruckValues.ConstantsValues.Brand = GetString();
             retData.TruckValues.ConstantsValues.Id = GetString();
-            retData.TrailerValues.Chassis = GetString();
-            retData.TrailerValues.CargoValues.Name = GetString();
+            retData.TrailerValues.Id = GetString(StringSize);
+            retData.JobValues.CargoValues.AccessoryId = GetString();
             retData.TruckValues.ConstantsValues.Name = GetString();
-            retData.TrailerValues.Id = GetString();
-            retData.TrailerValues.Name = GetString();
+            retData.JobValues.CargoValues.Id = GetString();
+            retData.JobValues.CargoValues.Name = GetString();
             retData.JobValues.CityDestinationId = GetString();
             retData.JobValues.CityDestination = GetString();
             retData.JobValues.CompanyDestinationId = GetString();
@@ -264,26 +307,39 @@ namespace SCSSdkClient {
             if (tempShift?.Length > 0) {
                 retData.TruckValues.ConstantsValues.MotorValues.ShifterTypeValue = tempShift.ToEnum<ShifterType>();
             }
-            
+
 
             NextOffsetArea();
+
             #endregion
 
             #region 10TH ZONE
 
             retData.JobValues.Income = GetLong();
-            
+
             NextOffsetArea();
+
             #endregion
 
             #region 11TH ZONE
 
             retData.SpecialEventsValues.OnJob = GetBool();
             retData.SpecialEventsValues.JobFinished = GetBool();
+            NextOffsetArea();
 
             #endregion
 
+            #region 12TH ZONE
 
+            for (var i = 0; i < Substances; i++) {
+                var tempSubstance = GetString();
+                if (tempSubstance.Length != 0) {
+                    retData.Substances.Add(new SCSTelemetry.Substance{Index =i, Value = tempSubstance});
+                }
+            }
+
+            NextOffsetArea();
+            #endregion
 
             return retData;
         }
@@ -291,46 +347,59 @@ namespace SCSSdkClient {
         private bool GetBool() {
             var temp = _data[_offset];
             _offset++;
-            return temp>0;
-        } 
+            return temp > 0;
+        }
+
         private uint GetUint() {
             while (_offset % 4 != 0) {
                 _offset++;
             }
-            var temp =  (uint)((_data[_offset+3] << 24) | (_data[_offset + 2] << 16) | (_data[_offset + 1] << 8) | (_data[_offset]));
-            _offset += 4;
-            return temp;
-        } 
-        private float GetFloat() {
-            while (_offset % 4 != 0)
-            {
-                _offset++;
-            }
-            var temp = new[]{_data[_offset], _data[_offset + 1], _data[_offset + 2], _data[_offset + 3]};
-            _offset += 4;
-            return BitConverter.ToSingle(temp,0);
-        }
-        private double GetDouble()
-        {
-            while (_offset % 4 != 0)
-            {
-                _offset++;
-            }
-            var temp = new[] { _data[_offset], _data[_offset + 1], _data[_offset + 2], _data[_offset + 3], _data[_offset + 4], _data[_offset +5], _data[_offset + 6], _data[_offset + 7] };
-            _offset += 8;
-            return BitConverter.ToDouble(temp, 0);
-        }
-        private int GetInt() {
-            while (_offset % 4 != 0)
-            {
-                _offset++;
-            }
-            var temp = (_data[_offset + 3] << 24) | (_data[_offset + 2] << 16) | (_data[_offset + 1] << 8) | (_data[_offset]);
+
+            var temp = (uint) ((_data[_offset + 3] << 24) |
+                               (_data[_offset + 2] << 16) |
+                               (_data[_offset + 1] << 8) |
+                               (_data[_offset]));
             _offset += 4;
             return temp;
         }
 
-        private byte[] GetSubArray( int length) {
+        private float GetFloat() {
+            while (_offset % 4 != 0) {
+                _offset++;
+            }
+
+            var temp = new[] {_data[_offset], _data[_offset + 1], _data[_offset + 2], _data[_offset + 3]};
+            _offset += 4;
+            return BitConverter.ToSingle(temp, 0);
+        }
+
+        private double GetDouble() {
+            while (_offset % 4 != 0) {
+                _offset++;
+            }
+
+            var temp = new[] {
+                                 _data[_offset], _data[_offset + 1], _data[_offset + 2], _data[_offset + 3],
+                                 _data[_offset + 4], _data[_offset + 5], _data[_offset + 6], _data[_offset + 7]
+                             };
+            _offset += 8;
+            return BitConverter.ToDouble(temp, 0);
+        }
+
+        private int GetInt() {
+            while (_offset % 4 != 0) {
+                _offset++;
+            }
+
+            var temp = (_data[_offset + 3] << 24) |
+                       (_data[_offset + 2] << 16) |
+                       (_data[_offset + 1] << 8) |
+                       (_data[_offset]);
+            _offset += 4;
+            return temp;
+        }
+
+        private byte[] GetSubArray(int length) {
             var ret = new byte[length];
             for (var i = 0; i < length; i++) {
                 ret[i] = _data[_offset + i];
@@ -339,7 +408,7 @@ namespace SCSSdkClient {
             _offset += length;
             return ret;
         }
-       
+
 
         private void NextOffsetArea() {
             _offsetArea++;
@@ -350,7 +419,6 @@ namespace SCSSdkClient {
             // Debug Fix?
             if (_offsetArea >= _offsetAreas.Length) {
                 return;
-
             }
 
             _offset = _offsetAreas[_offsetArea];
@@ -368,21 +436,28 @@ namespace SCSSdkClient {
 
             return res;
         }
-        private float[] GetFloatArray(int length)
+        private int[] GetIntArray(int length)
         {
-            var res = new float[length];
+            var res = new int[length];
             for (var i = 0; i < length; i++)
             {
+                res[i] = GetInt();
+            }
+
+            return res;
+        }
+        private float[] GetFloatArray(int length) {
+            var res = new float[length];
+            for (var i = 0; i < length; i++) {
                 res[i] = GetFloat();
             }
 
             return res;
         }
-        private bool[] GetBoolArray(int length)
-        {
+
+        private bool[] GetBoolArray(int length) {
             var res = new bool[length];
-            for (var i = 0; i < length; i++)
-            {
+            for (var i = 0; i < length; i++) {
                 res[i] = GetBool();
             }
 
@@ -390,30 +465,35 @@ namespace SCSSdkClient {
         }
 
         private SCSTelemetry.FVector GetFVector() {
-            return  new SCSTelemetry.FVector{ X = GetFloat(), Y = GetFloat(), Z = GetFloat() };
+            return new SCSTelemetry.FVector {X = GetFloat(), Y = GetFloat(), Z = GetFloat()};
         }
-        private SCSTelemetry.DVector GetDVector()
-        {
-            return new SCSTelemetry.DVector { X = GetDouble(), Y = GetDouble(), Z = GetDouble() };
+
+        private SCSTelemetry.DVector GetDVector() {
+            return new SCSTelemetry.DVector {X = GetDouble(), Y = GetDouble(), Z = GetDouble()};
         }
+
         private SCSTelemetry.Euler GetEuler() {
-            return  new SCSTelemetry.Euler{ Heading = GetFloat(), Pitch = GetFloat(), Roll = GetFloat() };
+            return new SCSTelemetry.Euler {Heading = GetFloat(), Pitch = GetFloat(), Roll = GetFloat()};
         }
-        private SCSTelemetry.Euler GetDEuler()
-        {
-            return new SCSTelemetry.Euler { Heading = (float)GetDouble(), Pitch = (float)GetDouble(), Roll = (float)GetDouble() };
+
+        private SCSTelemetry.Euler GetDEuler() {
+            return new SCSTelemetry.Euler
+                   {Heading = (float) GetDouble(), Pitch = (float) GetDouble(), Roll = (float) GetDouble()};
         }
+
         private SCSTelemetry.FPlacement GetFPlacement() {
-            return new SCSTelemetry.FPlacement{Position =  GetFVector(), Orientation = GetEuler()};
+            return new SCSTelemetry.FPlacement {Position = GetFVector(), Orientation = GetEuler()};
         }
-        private SCSTelemetry.DPlacement GetDPlacement()
-        {
-            return new SCSTelemetry.DPlacement { Position = GetDVector(), Orientation = GetDEuler() };
+
+        private SCSTelemetry.DPlacement GetDPlacement() {
+            return new SCSTelemetry.DPlacement {Position = GetDVector(), Orientation = GetDEuler()};
         }
 
         private long GetLong() {
-           
-            var temp = new[] { _data[_offset], _data[_offset + 1], _data[_offset + 2], _data[_offset + 3], _data[_offset + 4], _data[_offset + 5], _data[_offset + 6], _data[_offset + 7] };
+            var temp = new[] {
+                                 _data[_offset], _data[_offset + 1], _data[_offset + 2], _data[_offset + 3],
+                                 _data[_offset + 4], _data[_offset + 5], _data[_offset + 6], _data[_offset + 7]
+                             };
             _offset += 8;
             return BitConverter.ToInt64(temp, 0);
         }

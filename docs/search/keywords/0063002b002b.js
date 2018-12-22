@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("c++",["Information","Section"],[["C++",,[[,,,,0,"File4:Guides.txt:C++"],[,"C++ Code",,"c++code",1,"File4:c++code.txt:C++Code"]]]]);
