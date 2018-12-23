@@ -100,12 +100,12 @@ const scsConfigHandler_t job_config[] = {
 };
 
 const int length_configs[] = {
-    sizeof(substances_config) / sizeof(*substances_config),
-    sizeof(controls_config) / sizeof(*controls_config),
-    sizeof(hshifter_config) / sizeof(*hshifter_config),
-    sizeof(truck_config) / sizeof(*truck_config),
-    sizeof(trailer_config) / sizeof(*trailer_config),
-    sizeof(job_config) / sizeof(*job_config)
+    sizeof substances_config / sizeof*substances_config,
+    sizeof controls_config / sizeof*controls_config,
+    sizeof hshifter_config / sizeof*hshifter_config,
+    sizeof truck_config / sizeof*truck_config,
+    sizeof trailer_config / sizeof*trailer_config,
+    sizeof job_config / sizeof*job_config
 };
 #pragma endregion Contains all handler arrays
 

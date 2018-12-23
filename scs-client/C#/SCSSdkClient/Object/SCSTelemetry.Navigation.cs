@@ -6,16 +6,14 @@ namespace SCSSdkClient.Object {
         ///     Advisor Values
         /// </summary>
         public class Navigation {
-            public Navigation()
-            {
-              
-                SpeedLimit = new Movement();
-            }
+            /// <summary>
+            ///     Initialise a navigation object
+            /// </summary>
+            public Navigation() => SpeedLimit = new Movement();
 
             /// About: SpeedLimit
             /// Respects the current state of the "Route Advisor speed limit" option
-
-
+           
             /// <summary>
             ///     The value of truck's navigation distance (in meters)
             /// </summary>
@@ -29,9 +27,13 @@ namespace SCSSdkClient.Object {
             /// <summary>
             ///     The value of truck's navigation speed limit (in m/s)
             /// </summary>
-            /// <!----> **INFORMATION** <!---->
+            /// <!---->
+            /// **INFORMATION**
+            /// <!---->
             /// Respects the current state of the "Route Advisor speed limit" option
-            /// <!----> **INFORMATION** <!---->
+            /// <!---->
+            /// **INFORMATION**
+            /// <!---->
             public Movement SpeedLimit { get; internal set; }
         }
     }

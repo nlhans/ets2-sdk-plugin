@@ -8,6 +8,9 @@ namespace SCSSdkClient.Object {
         ///     User Input value and value used by the game
         /// </summary>
         public class Control {
+            /// <summary>
+            /// Initialise a Control object
+            /// </summary>
             public Control()
             {
                 InputValues = new Input();
@@ -23,6 +26,8 @@ namespace SCSSdkClient.Object {
             /// </summary>
             public Game GameValues { get; internal set; }
 
+
+            /// <inheritdoc />
             public override string ToString() {
                 return $"Input Values:\n\t{InputValues.ToString().StringFormater()}\nGame Values:\n\t{GameValues.ToString().StringFormater()}";
             }

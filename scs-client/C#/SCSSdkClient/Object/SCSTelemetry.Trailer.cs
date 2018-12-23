@@ -6,11 +6,13 @@ namespace SCSSdkClient.Object {
         ///     Trailer Values
         /// </summary>
         public class Trailer {
-            public Trailer()
-            {
+            /// <summary>
+            ///     Initialise a trailer object
+            /// </summary>
+            public Trailer() {
                 Wheelvalues = new Wheels();
                 AccelerationValues = new Acceleration();
-                WheelsConstants = new WheelsConstants();
+                WheelsConstant = new WheelsConstants();
                 Hook = new FVector();
             }
 
@@ -28,9 +30,28 @@ namespace SCSSdkClient.Object {
             ///     Default position of the hook in vehicle space
             /// </summary>
             public FVector Hook { get; internal set; }
+
+            /// <summary>
+            ///     Current wheel values of the trailer, like rotation , substance, ...
+            ///     <seealso cref="Wheels" /> for more information
+            /// </summary>
             public Wheels Wheelvalues { get; internal set; }
-            public WheelsConstants WheelsConstants { get; internal set; }
+
+            /// <summary>
+            ///     Constant wheel values like Count, Radius,  ...
+            ///     <seealso cref="WheelsConstants" /> for more information
+            /// </summary>
+            public WheelsConstants WheelsConstant { get; internal set; }
+
+            /// <summary>
+            ///     Acceleration values of the trailer
+            ///     <seealso cref="Acceleration" /> for more informaiton
+            /// </summary>
             public Acceleration AccelerationValues { get; internal set; }
+
+            /// <summary>
+            ///     Position of the trailer
+            /// </summary>
             public DPlacement Position { get; internal set; }
 
             /// <summary>
@@ -43,31 +64,32 @@ namespace SCSSdkClient.Object {
             ///     States of the Wheels
             /// </summary>
             public class Wheels {
-              
-
-
                 /// About: Velocity
                 /// Positive velocity corresponds to forward movement
-                /// 
+                 
                 /// About: Steering
-                /// Value is from <0.25,0.25> range in counterclockwise direction
+                /// Value is from
+                /// <0.25, 0.25>
+                /// range in counterclockwise direction
                 /// when looking from top (e.g. 0.25 corresponds to left and -0.25 corresponds to right)
                 /// 
                 /// Set to zero for non-steered wheels
-                /// 
+                 
                 /// About: Rotation
                 /// Value is from
-                /// <0.0,1.0) range in which value increase corresponds to forward movement
-                ///     About: Lift
+                /// <0.0, 1.0) range in which value increase corresponds to forward movement
+                
+                /// About: Lift
                 ///     For use with simple lifted/ non-lifted test or logical visualization of the lifting progress.
                 ///  
                 ///     - Value of 0 corresponds to non-lifted axle.
                 ///     - Value of 1 corresponds to fully lifted axle.
                 ///     Set to zero or not provided for non-liftable axles.
+                
                 ///     About: LiftOffset
                 ///     Might have non-linear relation to lift ratio.
                 ///     Set to zero or not provided for non-liftable axles.
-
+                
                 /// <summary>
                 ///     Substance below the wheel
                 /// </summary>
@@ -81,36 +103,48 @@ namespace SCSSdkClient.Object {
                 /// <summary>
                 ///     Angular velocity of the wheel in rotations per second
                 /// </summary>
-                /// <!----> **INFORMATION** <!---->
+                /// <!---->
+                /// **INFORMATION**
+                /// <!---->
                 /// Positive velocity corresponds to forward movement
-                /// <!----> **INFORMATION** <!---->
+                /// <!---->
+                /// **INFORMATION**
+                /// <!---->
                 public float[] Velocity { get; internal set; }
 
                 /// <summary>
                 ///     Steering rotation of the wheel in rotations
                 /// </summary>
-                /// <!----> **INFORMATION** <!---->
+                /// <!---->
+                /// **INFORMATION**
+                /// <!---->
                 /// Value is from &lt;0.25,0.25&gt; range in counterclockwise direction when looking from top (e.g. 0.25 corresponds to left and -0.25 corresponds to right)
                 /// 
                 /// Set to zero for non-steered wheels
-                /// <!----> **INFORMATION** <!---->
+                /// <!---->
+                /// **INFORMATION**
+                /// <!---->
                 public float[] Steering { get; internal set; }
 
                 /// <summary>
                 ///     Rolling rotation of the wheel in rotations
                 /// </summary>
-                /// <!----> **INFORMATION** <!---->
+                /// <!---->
+                /// **INFORMATION**
+                /// <!---->
                 /// Value is from &lt;0.0,1.0) range in which value increase corresponds to forward movement
-                /// <!----> **INFORMATION** <!---->
+                /// <!---->
+                /// **INFORMATION**
+                /// <!---->
                 public float[] Rotation { get; internal set; }
 
                 /// <summary>
-                ///     Is the wheel in contact with ground?
+                ///     Is true if the wheel contacts the ground
                 /// </summary>
                 public bool[] OnGround { get; internal set; }
             }
 
-          
+
             public class Acceleration {
                 /// <summary>
                 ///     Represents vehicle space linear velocity of the trailer measured in m/s

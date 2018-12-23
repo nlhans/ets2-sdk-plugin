@@ -63,7 +63,7 @@ SharedMemory::SharedMemory(LPCWSTR newNamePtr, unsigned int size) {
 }
 
 
-void SharedMemory::Close(void) {
+void SharedMemory::Close() {
 #ifdef SHAREDMEM_LOGGING
 		if (logFilePtr != NULL)
 		{

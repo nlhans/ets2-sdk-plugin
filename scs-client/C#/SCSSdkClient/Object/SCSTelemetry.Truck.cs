@@ -4,6 +4,9 @@
         ///     Truck telemetry specific values
         /// </summary>
         public partial class Truck {
+            /// <summary>
+            ///     Initialise a truck object
+            /// </summary>
             public Truck()
             {
                 ConstantsValues = new Constants();

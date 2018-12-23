@@ -6,6 +6,9 @@ namespace SCSSdkClient.Object {
             ///     Values that are changing a lot oftener
             /// </summary>
             public class Current {
+                /// <summary>
+                ///     Initialise a current truck object
+                /// </summary>
                 public Current()
                 {
                     MotorValues = new Motor();
@@ -26,12 +29,34 @@ namespace SCSSdkClient.Object {
                 ///     Is the engine enabled?
                 /// </summary>
                 public bool EngineEnabled { get; internal set; }
-
+                /// <summary>
+                ///     Current values of the motor
+                ///     <seealso cref="Motor"/> for more information
+                /// </summary>
                 public Motor MotorValues { get; internal set; }
+                /// <summary>
+                ///     Values that are displayed at the dashboard like rpm, fuelValue, ...
+                ///     <seealso cref="Dashboard"/> for more information
+                /// </summary>
                 public Dashboard DashboardValues { get; internal set; }
+                /// <summary>
+                ///     Information about the Lights of the truck
+                ///     <seealso cref="Lights"/> for more information
+                /// </summary>
                 public Lights LightsValues { get; internal set; }
+                /// <summary>
+                ///     Current values of the wheels like rotation, substance, ...
+                ///     <seealso cref="Wheels"/>
+                /// </summary>
                 public Wheels WheelsValues { get; internal set; }
+                /// <summary>
+                ///     Wear of the Truck
+                /// </summary>
                 public Damage DamageValues { get; internal set; }
+                /// <summary>
+                ///     Acceleration of the Truck
+                ///     <seealso cref="Acceleration"/> for more information
+                /// </summary>
                 public  Acceleration AccelerationValues { get; internal set; }
 
                 /// <summary>
@@ -43,13 +68,21 @@ namespace SCSSdkClient.Object {
                 ///     Gear, Retarder, etc.
                 /// </summary>
                 public class Motor {
+                    /// <summary>
+                    ///     Initialise a motor object
+                    /// </summary>
                     public Motor()
                     {
                         GearValues = new Gear();
                         BrakeValues = new Brakes();
                     }
-
+                    /// <summary>
+                    ///     Information to the current gears
+                    /// </summary>
                     public Gear GearValues { get; internal set; }
+                    /// <summary>
+                    ///     Information around the brake state
+                    /// </summary>
                     public Brakes BrakeValues { get; internal set; }
 
                     /// <summary>
@@ -135,6 +168,9 @@ namespace SCSSdkClient.Object {
                 ///     Speed, RPM, Pressures, Temperatures
                 /// </summary>
                 public class Dashboard {
+                    /// <summary>
+                    ///     Initialise a dashboard object
+                    /// </summary>
                     public Dashboard()
                     {
                         FuelValue = new Fuel();
@@ -155,8 +191,13 @@ namespace SCSSdkClient.Object {
                     /// -    0  - Neutral
                     /// - < 0  - Reverse gears
 
+                    ///<summary>
+                    ///     Information about fuel: amount, range, average consumption
+                    /// </summary>
                     public Fuel FuelValue { get; internal set; }
-
+                    /// <summary>
+                    ///     Display active warnings
+                    /// </summary>
                     public Warnings WarningValues { get; internal set; }
 
 

@@ -1,16 +1,31 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace SCSSdkClient {
+    /// <summary>
+    ///     Some useful extensions
+    /// </summary>
     public static class Extension {
-        public static T ToEnum<T>(this uint enumInt) {
-            return (T)Enum.ToObject(typeof(T), enumInt);
-        }
-        public static T ToEnum<T>(this string enumString)
-        {
-            return (T)Enum.Parse(typeof(T), enumString,ignoreCase:true);
-        }
+        /// <summary>
+        ///     Converts an uint to an given enum type
+        /// </summary>
+        /// <param name="enumInt">uint to convert</param>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <returns>uint as enum</returns>
+        public static T ToEnum<T>(this uint enumInt) => (T) Enum.ToObject(typeof(T), enumInt);
 
+        /// <summary>
+        ///     Converts an string to an given enum type
+        /// </summary>
+        /// <typeparam name="T">string to convert</typeparam>
+        /// <param name="enumString">type of the enum</param>
+        /// <returns>string as enum</returns>
+        public static T ToEnum<T>(this string enumString) => (T) Enum.Parse(typeof(T), enumString, true);
+
+        /// <summary>
+        ///     A string formatter for an nested datatype
+        /// </summary>
+        /// <param name="choob"></param>
+        /// <returns></returns>
         public static string StringFormater(this string choob) {
             var result = "";
             for (var index = 0; index < choob.Length; index++) {
@@ -19,9 +34,9 @@ namespace SCSSdkClient {
                 if (cha != '\n') {
                     continue;
                 }
-                
-                
-                while (cha=='\n'||cha=='\t') {
+
+
+                while (cha == '\n' || cha == '\t') {
                     index++;
                     cha = choob[index];
                     if (cha == '\n' || cha == '\t') {
@@ -30,10 +45,7 @@ namespace SCSSdkClient {
                         result += '\t';
                         result += cha;
                     }
-                   
                 }
-
-                
             }
 
             return result;

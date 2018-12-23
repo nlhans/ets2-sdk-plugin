@@ -1,7 +1,7 @@
 //Windows stuff.
 
 #define WINVER 0x0500
-#define _WIN32_WINNT 0x0500
+#define WIN32_WINNT 0x0500
 #include <Windows.h>
 #include <cassert>
 #include <cstdarg>
@@ -199,6 +199,8 @@ scs_timestamp_t last_timestamp = static_cast<scs_timestamp_t>(-1);
 scs_timestamp_t timestamp;
 static auto clear_job_ticker = 0;
 
+// Function: set_job_values_zero
+// set every job (cargo) values to 0/empty string
 void set_job_values_zero() {
 	telem_ptr->config_o.jobIncome = 0;
 	telem_ptr->config_ui.time_abs_delivery = 0;
@@ -215,6 +217,8 @@ void set_job_values_zero() {
 	memset(telem_ptr->config_s.cargoAcessoryId, 0, stringsize);
 	memset(telem_ptr->config_s.cargo, 0, stringsize);
 }
+// Function: set_trailer_values_zero
+// set every trailer value 0/empty string 
 void set_trailer_values_zero() {
     
 	telem_ptr->truck_f.wearTrailer = 0;
@@ -266,10 +270,11 @@ void set_trailer_values_zero() {
 
 	memset(telem_ptr->config_s.trailerId, 0, stringsize);
 }
+
 // Function: telemetry_frame_start
 // Register telemetry values
 SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*const event_info,
-                                  const scs_context_t UNUSED(context)) {
+                                    scs_context_t UNUSED(context)) {
 
     const auto info = static_cast<const scs_telemetry_frame_start_t *>(event_info);
 
@@ -310,64 +315,28 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*co
                 telem_ptr->special_b.jobFinished = false;
             }
         }
-
-        // Sadly with Version 1.9 there is do way to find every job correctly  <- that's incorrect but actually it's here for a while as backup, so it's a information that is in this way correct but with the new detection not anymore
-        // why? 
-        // We have different problems for the job types we have
-        // 4 Job types we have: 
-        //                      - 1 loan Truck and loan Trailer,
-        //                      - 2 own Truck and loan Trailer,
-        //                      - 3 own Truck and  own Trailer,
-        //                      - 4 Online, own Truck and loan Trailer
-        //
-        // 1 -> For both as loan, we start a job one after each, so we may now we are on a job, but to find the end is not that easy, because values are not updated.
-        // 1 -> but as good point this should simple detectable when you save the values and check by hand if navigatordistance was near 0 and trailer change
-        //
-        // 2 -> own Truck and loan trailer, we can detect a job and should find also the end of an job through Trailer detached attribute
-        // 2 -> a problem here could be change to loan Truck and loan Trailer(1), but i don't think that happens that mutch
-        //
-        // 3 -> own Truck and own Trailer we should still detect a job, but to find the end we have problems (no trailer detached, only on route distance)
-        // 3 -> but route distance can be set manual and eg. directly after the job without going back to the simulation, also again change to loan truck (1) create problem 
-        //
-        // 4 -> for online job the detecting is still possible (but currently without delivery time) that lead to nearly the same problems with some additional ike for the own truck+loan trailer  (2)
-        //
-        // For Developer means this the Events are fired, but there is no guarantee atm that the finish event is correct (on job should work correct, if game start or not on a job)
-        // if a trailer attached we could be on a job, but with trailer ownership it doesn't have to
-        // if (telem_ptr->truck_b.trailer_attached) {
-        // because online jobs currently don't have a delivery time  we can't use that field, instead we will use the income field
-        // but for that we need to reset at finishing this field that's not every time possible but we can't do more. As idea you could use that field to detect changing of jobs. With history data you could check if a job is finsihed.
-        // Sadly that there is no way with the SDK to detect the profile that is loaded.
-        //     if (telem_ptr->config_o.jobIncome != 0) {
-        // when we are here -> on JOb == true
-        //          telem_ptr->special_b.onJob = true;
-        //      }
-        //  }
-        //  else {
-        // without a trailer we can't (not 100% correct, but we have no better way to check and you can't finish without a trailer)
-        //     if (telem_ptr->special_b.onJob) {
-        // that can't be correct anymore. Sure now we lead into problems -> Trailer detached doesn't mean job finished, but routeDistance can be set manually at lead to problems
-        //          telem_ptr->special_b.onJob = false;
-        //         telem_ptr->special_b.jobFinished = true;
-        //         clear_job_ticker = 0;
-        //     }
     }
 
 }
 
-
+// Function: telemetry_pause
+// called if the game fires the event start/pause. Used to set the paused value
 SCSAPI_VOID telemetry_pause(const scs_event_t event, const void*const UNUSED(event_info),
-                            const scs_context_t UNUSED(context)) {
+                             scs_context_t UNUSED(context)) {
     if (telem_ptr != nullptr) {
         telem_ptr->paused = event == SCS_TELEMETRY_EVENT_paused;
     }
 }
 
+// Function: telemetry_configuration
+// called if the game fires the event configuration. Used to handle all the configuration values
 SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const event_info,
-                                    const scs_context_t UNUSED(context)) {
+                                     scs_context_t UNUSED(context)) {
     // On configuration change, this function is called.
     const auto info = static_cast<const scs_telemetry_configuration_t *>(
         event_info);
 
+    // check which type the event has
 	configType type = {};
     if(strcmp(info->id,"substances")==0) {
 		type = substances;
@@ -390,32 +359,39 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
 
     // attribute is a pointer array that is never null so ... i have no clue how to check it on another way than this
     // if for loop can't loop it is empty so simple 
-    auto isEmpty = true;
+    auto is_empty = true;
 
     for ( auto current = info->attributes; current->name; ++current) {
         if(!handleCfg(current, type)) {
+            // actually only for testing/debug purpose, so should there be a message in game with that line there is missed something
 			log_line("attribute not handled id: %i attribute: %s", type, current->name);
         } 
-        isEmpty = false;
+        is_empty = false;
     }
     // if id of config is "job" but without element and we are on a job -> we finished it now
-    if (type==job && isEmpty && telem_ptr->special_b.onJob) {
+    if (type==job && is_empty && telem_ptr->special_b.onJob) {
         telem_ptr->special_b.onJob = false;
         telem_ptr->special_b.jobFinished = true;
         clear_job_ticker = 0;
     }
-    else if (!telem_ptr->special_b.onJob && type == job && !isEmpty) {
+    else if (!telem_ptr->special_b.onJob && type == job && !is_empty) {
         // oh hey no job but now we have fields in this array so we start a new job
         telem_ptr->special_b.onJob = true;
     }
-    if(type==trailer && isEmpty) {
+    // no trailer which is connected with us? than delete information of the sdk and say there is no connected trailer
+    if(type==trailer && is_empty) {
 		set_trailer_values_zero();
+		telem_ptr->special_b.trailerConnected = false;
+    }else if(type == trailer && !is_empty && !telem_ptr->special_b.trailerConnected) {
+        // there exist trailer information and actually we say there is no connected trailer. That can't be true anymore
+        // so say we are connected to a trailer
+		telem_ptr->special_b.trailerConnected = true;
     }
 }
 
 /******* STORING OF SEVERAL SCS DATA TYPES *******/
 SCSAPI_VOID telemetry_store_float(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
-                                  const scs_context_t context) {
+                                    scs_context_t  context) {
     if (!value) return;
     assert(value);
     assert(value->type == SCS_VALUE_TYPE_float);
@@ -424,7 +400,7 @@ SCSAPI_VOID telemetry_store_float(const scs_string_t name, const scs_u32_t index
 }
 
 SCSAPI_VOID telemetry_store_s32(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
-                                const scs_context_t context) {
+                                 scs_context_t context) {
     if (!value) return;
     assert(value);
     assert(value->type == SCS_VALUE_TYPE_s32);
@@ -433,7 +409,7 @@ SCSAPI_VOID telemetry_store_s32(const scs_string_t name, const scs_u32_t index, 
 }
 
 SCSAPI_VOID telemetry_store_u32(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
-                                const scs_context_t context) {
+                                 scs_context_t context) {
     if (!value) return;
     assert(value);
     assert(value->type == SCS_VALUE_TYPE_u32);
@@ -442,7 +418,7 @@ SCSAPI_VOID telemetry_store_u32(const scs_string_t name, const scs_u32_t index, 
 }
 
 SCSAPI_VOID telemetry_store_bool(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
-                                 const scs_context_t context) {
+                                  scs_context_t context) {
     if (!context) return;
     if (value) {
         if (value->value_bool.value == 0) {
@@ -458,7 +434,7 @@ SCSAPI_VOID telemetry_store_bool(const scs_string_t name, const scs_u32_t index,
 }
 
 SCSAPI_VOID telemetry_store_fvector(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
-                                    const scs_context_t context) {
+                                     scs_context_t context) {
     if (!value) return;
     assert(value);
     assert(value->type == SCS_VALUE_TYPE_fvector);
@@ -469,7 +445,7 @@ SCSAPI_VOID telemetry_store_fvector(const scs_string_t name, const scs_u32_t ind
 }
 
 SCSAPI_VOID telemetry_store_dplacement(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
-                                       const scs_context_t context) {
+                                        scs_context_t context) {
     if (!value) return;
     assert(value);
     assert(value->type == SCS_VALUE_TYPE_dplacement);
@@ -488,7 +464,7 @@ SCSAPI_VOID telemetry_store_dplacement(const scs_string_t name, const scs_u32_t 
 }
 
 SCSAPI_VOID telemetry_store_fplacement(const scs_string_t name, const scs_u32_t index, const scs_value_t*const value,
-                                       const scs_context_t context) {
+                                        scs_context_t context) {
     if (!value) return;
     assert(value);
     assert(value->type == SCS_VALUE_TYPE_fplacement);
@@ -518,9 +494,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
         return SCS_RESULT_unsupported;
     }
 
-    const auto version_params = static_cast<const scs_telemetry_init_params_v100_t *>(
-        // NOLINT(cppcoreguidelines-pro-type-static-cast-downcast)
-        params);
+    const auto version_params = static_cast<const scs_telemetry_init_params_v100_t *>(params);  // NOLINT(cppcoreguidelines-pro-type-static-cast-downcast)
     game_log = version_params->common.log;
     if (version_params == nullptr) {
         return SCS_RESULT_generic_error;
@@ -739,7 +713,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
  *
  * See scssdk_telemetry.h
  */
-SCSAPI_VOID scs_telemetry_shutdown(void) {
+SCSAPI_VOID scs_telemetry_shutdown() {
     // Close MemoryMap
     if (telem_mem != nullptr) {
         telem_mem->Close();
@@ -748,6 +722,7 @@ SCSAPI_VOID scs_telemetry_shutdown(void) {
 
 // Telemetry api.
 
+// ReSharper disable once CppInconsistentNaming
 BOOL APIENTRY DllMain(
     HMODULE module,
     DWORD reason_for_call,

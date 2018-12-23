@@ -20,7 +20,7 @@ namespace SCSSdkClient {
 
         private int _offsetArea;
         private const int StringSize = 64;
-        public static int WheelSize = 16;
+        private const int WheelSize = 16;
         private const int Substances = 25;
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.MotorValues.SelectorCount = GetUint();
             retData.JobValues.DeliveryTime.Value = GetUint();
             retData.SetGameTime(temp);
-            retData.TrailerValues.WheelsConstants.Count = GetUint();
+            retData.TrailerValues.WheelsConstant.Count = GetUint();
 
             retData.TruckValues.CurrentValues.MotorValues.GearValues.HShifterSlot = GetUint();
             retData.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel = GetUint();
@@ -111,7 +111,7 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.MotorValues.DifferentialRation = GetFloat();
             retData.JobValues.CargoValues.Mass = GetFloat();
             retData.TruckValues.ConstantsValues.WheelsValues.Radius = GetFloatArray(WheelSize);
-            retData.TrailerValues.WheelsConstants.Radius=  GetFloatArray(WheelSize); 
+            retData.TrailerValues.WheelsConstant.Radius=  GetFloatArray(WheelSize); 
             retData.TruckValues.ConstantsValues.MotorValues.GearRatiosForward = GetFloatArray(24);
             retData.TruckValues.ConstantsValues.MotorValues.GearRatiosReverse = GetFloatArray(8);
 
@@ -173,10 +173,10 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.WheelsValues.Powered = GetBoolArray(WheelSize);
             retData.TruckValues.ConstantsValues.WheelsValues.Liftable = GetBoolArray(WheelSize);
             
-            retData.TrailerValues.WheelsConstants.Steerable = GetBoolArray(WheelSize);
-            retData.TrailerValues.WheelsConstants.Simulated = GetBoolArray(WheelSize);
-            retData.TrailerValues.WheelsConstants.Powered = GetBoolArray(WheelSize);
-            retData.TrailerValues.WheelsConstants.Liftable = GetBoolArray(WheelSize);
+            retData.TrailerValues.WheelsConstant.Steerable = GetBoolArray(WheelSize);
+            retData.TrailerValues.WheelsConstant.Simulated = GetBoolArray(WheelSize);
+            retData.TrailerValues.WheelsConstant.Powered = GetBoolArray(WheelSize);
+            retData.TrailerValues.WheelsConstant.Liftable = GetBoolArray(WheelSize);
 
             retData.TrailerValues.Attached = GetBool();
             retData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake = GetBool();
@@ -248,7 +248,7 @@ namespace SCSSdkClient {
             {
                 tempPos[j].Z = GetFloat();
             }
-            retData.TrailerValues.WheelsConstants.PositionValues = tempPos; 
+            retData.TrailerValues.WheelsConstant.PositionValues = tempPos; 
 
             retData.TrailerValues.AccelerationValues.LinearVelocity = GetFVector();
             retData.TruckValues.CurrentValues.AccelerationValues.LinearVelocity = GetFVector();
@@ -290,7 +290,7 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.BrandId = GetString();
             retData.TruckValues.ConstantsValues.Brand = GetString();
             retData.TruckValues.ConstantsValues.Id = GetString();
-            retData.TrailerValues.Id = GetString(StringSize);
+            retData.TrailerValues.Id = GetString();
             retData.JobValues.CargoValues.AccessoryId = GetString();
             retData.TruckValues.ConstantsValues.Name = GetString();
             retData.JobValues.CargoValues.Id = GetString();
@@ -325,6 +325,7 @@ namespace SCSSdkClient {
 
             retData.SpecialEventsValues.OnJob = GetBool();
             retData.SpecialEventsValues.JobFinished = GetBool();
+            retData.SpecialEventsValues.TrailerConnected = GetBool();
             NextOffsetArea();
 
             #endregion

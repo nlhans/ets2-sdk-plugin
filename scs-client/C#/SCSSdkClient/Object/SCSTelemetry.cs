@@ -4,12 +4,15 @@
 
 namespace SCSSdkClient.Object {
     /// <summary>
-    ///     Telemetry Data of SCS SDK's
+    ///     Telemetry Data of SCS SDK's 
     /// </summary>
     //
     public partial class SCSTelemetry {
         private const float PiTimes2 = 6.2831853071795864769252867665590058f;
 
+        /// <summary>
+        /// initialise an SCSTelemetry object
+        /// </summary>
         public SCSTelemetry()
         {
             GameVersion = new Version();

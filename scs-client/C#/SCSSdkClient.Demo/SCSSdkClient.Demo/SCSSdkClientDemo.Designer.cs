@@ -93,7 +93,7 @@
             // 
             this.lbGeneral.Location = new System.Drawing.Point(20, 210);
             this.lbGeneral.Name = "lbGeneral";
-            this.lbGeneral.Size = new System.Drawing.Size(549, 243);
+            this.lbGeneral.Size = new System.Drawing.Size(549, 295);
             this.lbGeneral.TabIndex = 2;
             this.lbGeneral.Text = "";
             // 

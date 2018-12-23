@@ -6,22 +6,28 @@ namespace SCSSdkClient.Object {
         ///     Telemetry specific channels which might be used by more than one game.
         /// </summary>
         public class Common {
-            public Common()
-            {
+            /// <summary>
+            ///     initialise a Common object
+            /// </summary>
+            public Common() {
                 GameTime = new Time();
                 NextRestStop = new Frequency();
             }
 
             /// About: Scale
             /// Games which use real 1:1 maps will not provide this channel
-
+            
             /// <summary>
             ///     Scale applied to distance and time to compensate for the scale of the map(e.g. 1s of real time corresponds to
             ///     local_scale minutes of simulated game time).
             /// </summary>
-            /// <!----> **INFORMATION** <!---->
+            /// <!---->
+            /// **INFORMATION**
+            /// <!---->
             /// Games which use real 1:1 maps will not provide this channel.
-            /// <!----> **INFORMATION** <!---->
+            /// <!---->
+            /// **INFORMATION**
+            /// <!---->
             public float Scale { get; internal set; }
 
             /// <summary>
@@ -64,8 +70,6 @@ namespace SCSSdkClient.Object {
             /// </code>
             /// </example>
             public Time NextRestStopTime => new Time {Value = (uint) ((int) GameTime.Value + NextRestStop.Value)};
-
-   
         }
     }
 }

@@ -6,6 +6,10 @@ using SCSSdkClient.Object;
 namespace SCSSdkClient {
     public delegate void TelemetryData(SCSTelemetry data, bool newTimestamp);
 
+    /// <summary>
+    ///     Handle the SCSSdkTelemetry.
+    ///     Currently IDisposable. Was implemented because of an error 
+    /// </summary>
     public class SCSSdkTelemetry : IDisposable {
         private const string DefaultSharedMemoryMap = "Local\\SimTelemetrySCS";
         private const int DefaultUpdateInterval = 25;
@@ -20,6 +24,7 @@ namespace SCSSdkClient {
         private bool wasFinishingJob;
 
         private bool wasOnJob;
+        private bool wasConnected;
 
         public SCSSdkTelemetry() => Setup(DefaultSharedMemoryMap, DefaultUpdateInterval);
 
@@ -36,7 +41,9 @@ namespace SCSSdkClient {
         public event TelemetryData Data;
 
         public event EventHandler JobStarted;
-        public event EventHandler JobFinished; 
+        public event EventHandler JobFinished;
+        public event EventHandler TrailerConnected;
+        public event EventHandler TrailerDisconnected;
 
         /// <summary>
         ///     Set up SCS telemetry provider.
@@ -82,6 +89,18 @@ namespace SCSSdkClient {
                 }
             }
 
+            if (wasConnected != scsTelemetry.SpecialEventsValues.TrailerConnected)
+            {
+                wasConnected = scsTelemetry.SpecialEventsValues.TrailerConnected;
+                if (scsTelemetry.SpecialEventsValues.TrailerConnected)
+                {
+                    TrailerConnected?.Invoke(this, new EventArgs());
+                } else {
+                    TrailerDisconnected?.Invoke(this, new EventArgs());
+                }
+            }
+
+            
             lastTime = time;
         }
     }

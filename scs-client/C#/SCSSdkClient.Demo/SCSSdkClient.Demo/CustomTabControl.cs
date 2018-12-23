@@ -5,13 +5,12 @@
 using System.Windows.Forms;
 
 namespace SCSSdkClient.Demo {
+    /// <summary>
+    /// Custom TabPage Settings to reduce flicker
+    /// </summary>
     public class CustomTabPage : TabPage
     {
-        public CustomTabPage(string txt) : base(txt)
-        {
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-        }
+        /// <inheritdoc />
         public CustomTabPage()
         {
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);

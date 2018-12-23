@@ -382,8 +382,9 @@ typedef struct scsTelemetryMap_s
     struct {
 		bool onJob;
 		bool jobFinished;
+		bool trailerConnected;
     }special_b;
-	char buffer_special[198];
+	char buffer_special[197];
 	//----- END OF 11TH ZONE AT OFFSET 5199 -----//
 
 	//----- START OF 12TH ZONE AT OFFSET 5200 -----//

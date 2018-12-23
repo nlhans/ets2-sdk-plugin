@@ -6,6 +6,9 @@ namespace SCSSdkClient.Object {
         ///     Position of the Cabin, head and hook
         /// </summary>
         public class PositionData {
+            /// <summary>
+            ///     Initialise a positionData object
+            /// </summary>
             public PositionData()
             {
                 Cabin = new FVector();
@@ -57,24 +60,38 @@ namespace SCSSdkClient.Object {
             /// </summary>
             public FPlacement CabinOffset { get; internal set; }
 
+
             internal DPlacement TruckPosition { get; set; }
+            /// <summary>    
+            ///     Position values for the Head in Cabin Space.
+            ///     More interesting for the calculation head in world space.
+            ///     <seealso cref="HeadPositionInWorldSpace"/>
+            /// </summary>
             public FVector HeadPositionInCabinSpace => Add(Head, HeadOffset.Position);
 
+            /// <summary>
+            ///     Head position in the Vehicle Space
+            ///     <seealso cref="HeadPositionInWorldSpace"/>
+            /// </summary>
             public FVector HeadPositionInVehicleSpace =>
                 Add(Add(Cabin, CabinOffset.Position), Rotate(CabinOffset.Orientation, HeadPositionInCabinSpace));
-
+            /// <summary>
+            ///     Head position in the World Space. Head is the Player models (viewable e.g. in camera perspective 2) head.
+            /// </summary>
             public DVector HeadPositionInWorldSpace => Add(TruckPosition.Position,
                                                            Rotate(TruckPosition.Orientation,
                                                                   HeadPositionInVehicleSpace));
 
             /// <summary>
             ///     At The MOMENT ONLY A TEST
+            ///     Position values of the Cabin in world space
             /// </summary>
             public DVector CabinPositionInWorlSpace =>
                 Add(TruckPosition.Position, Rotate(TruckPosition.Orientation, Cabin));
 
             /// <summary>
             ///     AT THE MOMENT ONLY A TEST
+            ///     Hook position of the truck in world space
             /// </summary>
             public DVector HookPositionInWorldSpace =>
                 Add(TruckPosition.Position, Rotate(TruckPosition.Orientation, Hook));
