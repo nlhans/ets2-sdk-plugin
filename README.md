@@ -265,6 +265,8 @@ The following telemetry fields are supported, structure is like the c# object:
 		SpecialEvents:
 			- On Job 
 			- Job Finished (flag that disappears after some time)
+			- TrailerConnected
+			- TrailerDisconnected (Both trailer events use the same flag, trailerConnected, from the memory)
 
 
 Also there are a few more fields you can use:
