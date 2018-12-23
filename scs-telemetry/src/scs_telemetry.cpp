@@ -2,7 +2,7 @@
 
 #define WINVER 0x0500
 #define _WIN32_WINNT 0x0500
-#include <windows.h>
+#include <Windows.h>
 #include <cassert>
 #include <cstdarg>
 #include <algorithm>
@@ -219,10 +219,10 @@ void set_trailer_values_zero() {
     
 	telem_ptr->truck_f.wearTrailer = 0;
 	std::fill(telem_ptr->truck_ui.trailer_wheelSubstance, telem_ptr->truck_ui.trailer_wheelSubstance+16, 0u);
-	std::fill(telem_ptr->truck_f.trailer_wheelSuspDeflection, telem_ptr->truck_f.trailer_wheelSuspDeflection + 16, 0);
-	std::fill(telem_ptr->truck_f.trailer_wheelVelocity, telem_ptr->truck_f.trailer_wheelVelocity + 16, 0);
-	std::fill(telem_ptr->truck_f.trailer_wheelSteering, telem_ptr->truck_f.trailer_wheelSteering + 16, 0);
-	std::fill(telem_ptr->truck_f.trailer_wheelRotation, telem_ptr->truck_f.trailer_wheelRotation + 16, 0);
+	std::fill(telem_ptr->truck_f.trailer_wheelSuspDeflection, telem_ptr->truck_f.trailer_wheelSuspDeflection + 16, 0.0f);
+	std::fill(telem_ptr->truck_f.trailer_wheelVelocity, telem_ptr->truck_f.trailer_wheelVelocity + 16, 0.0f);
+	std::fill(telem_ptr->truck_f.trailer_wheelSteering, telem_ptr->truck_f.trailer_wheelSteering + 16, 0.0f);
+	std::fill(telem_ptr->truck_f.trailer_wheelRotation, telem_ptr->truck_f.trailer_wheelRotation + 16, 0.0f);
 	std::fill(telem_ptr->truck_b.trailer_wheelOnGround, telem_ptr->truck_b.trailer_wheelOnGround + 16, false);
 
 	telem_ptr->truck_fv.trailer_lv_accelerationX = 0;
@@ -255,14 +255,14 @@ void set_trailer_values_zero() {
 
 	telem_ptr->config_ui.trailerWheelCount = 0; 
 
-	std::fill(telem_ptr->config_f.trailerWheelRadius, telem_ptr->config_f.trailerWheelRadius + 16, 0u);
+	std::fill(telem_ptr->config_f.trailerWheelRadius, telem_ptr->config_f.trailerWheelRadius + 16, 0.0f);
 	std::fill(telem_ptr->config_b.trailerWheelSimulated, telem_ptr->config_b.trailerWheelSimulated + 16, false);
 	std::fill(telem_ptr->config_b.trailerWheelLiftable, telem_ptr->config_b.trailerWheelLiftable + 16, false);
 	std::fill(telem_ptr->config_b.trailerWheelPowered, telem_ptr->config_b.trailerWheelPowered + 16, false);
 	std::fill(telem_ptr->config_b.trailerWheelSteerable, telem_ptr->config_b.trailerWheelSteerable + 16, false);
-	std::fill(telem_ptr->config_fv.trailerWheelPositionX, telem_ptr->config_fv.trailerWheelPositionX + 16, 0);
-	std::fill(telem_ptr->config_fv.trailerWheelPositionY, telem_ptr->config_fv.trailerWheelPositionY + 16, 0);
-	std::fill(telem_ptr->config_fv.trailerWheelPositionZ, telem_ptr->config_fv.trailerWheelPositionZ + 16, 0);
+	std::fill(telem_ptr->config_fv.trailerWheelPositionX, telem_ptr->config_fv.trailerWheelPositionX + 16, 0.0f);
+	std::fill(telem_ptr->config_fv.trailerWheelPositionY, telem_ptr->config_fv.trailerWheelPositionY + 16, 0.0f);
+	std::fill(telem_ptr->config_fv.trailerWheelPositionZ, telem_ptr->config_fv.trailerWheelPositionZ + 16, 0.0f);
 
 	memset(telem_ptr->config_s.trailerId, 0, stringsize);
 }
