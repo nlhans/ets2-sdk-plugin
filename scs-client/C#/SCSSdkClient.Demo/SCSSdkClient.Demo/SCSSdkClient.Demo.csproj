@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomTabControl.cs">
+    <Compile Include="CustomTabPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="SCSSdkClientDemo.cs">

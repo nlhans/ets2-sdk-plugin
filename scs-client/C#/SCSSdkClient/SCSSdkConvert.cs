@@ -4,6 +4,9 @@
 // 22:51
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using SCSSdkClient.Object;
 
@@ -14,9 +17,10 @@ namespace SCSSdkClient {
     public class SCSSdkConvert {
         private byte[] _data;
         private int _offset;
+ 
 
         private readonly int[] _offsetAreas =
-            new[] {0, 40, 500, 700, 1800, 2000, 2600, 2800, 3000, 4800, 5000, 5200, 6800};
+            {0, 40, 500, 700, 1800, 2000, 2600, 2800, 3000, 4800, 5000, 5200, 6800};
 
         private int _offsetArea;
         private const int StringSize = 64;
@@ -33,6 +37,7 @@ namespace SCSSdkClient {
         /// C# object with game data of the shared memory
         /// </returns>
         public SCSTelemetry Convert(byte[] structureDataBytes) {
+ 
             _offsetArea = 0;
             SetOffset();
 
@@ -41,7 +46,7 @@ namespace SCSSdkClient {
             var retData = new SCSTelemetry();
 
             #region FIRST ZONE 
-
+ 
             retData.Timestamp = GetUint();
             retData.Paused = GetBool();
 
@@ -314,7 +319,6 @@ namespace SCSSdkClient {
             #endregion
 
             #region 10TH ZONE
-
             retData.JobValues.Income = GetLong();
 
             NextOffsetArea();
@@ -426,7 +430,8 @@ namespace SCSSdkClient {
         }
 
         private string GetString(int length = StringSize) {
-            return Encoding.UTF8.GetString(GetSubArray(length)).Replace('\0', ' ').Trim();
+            var area = GetSubArray(length);
+            return Encoding.UTF8.GetString(area).Replace('\0', ' ').Trim();
         }
 
         private uint[] GetUintArray(int length) {

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\log.cpp" />
     <ClCompile Include="..\src\scs_telemetry.cpp" />
     <ClCompile Include="..\src\scs_config_handlers.cpp" />
     <ClCompile Include="..\src\sharedmemory.cpp" />

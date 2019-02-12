@@ -5,6 +5,7 @@
 #include "scs-telemetry-common.hpp"
 #include "sharedmemory.hpp"
 
+#include "log.hpp"
 
 extern SharedMemory* telem_mem;
 extern scsTelemetryMap_t* telem_ptr;
@@ -158,7 +159,15 @@ bool handleCfg(const scs_named_value_t* current, const configType type) {
 // It write up to <SUBSTANCE_SIZE> substances into the memory
 scsConfigHandle(Substances, Id) {
     if (current->index < SUBSTANCE_SIZE) {
+#if LOGGING
+		logger::out << "Substance log" << '\n';
+		logger::out << "current value of that substance " <<  telem_ptr->substances.substance[current->index] << '\n';
+#endif
         strncpy_s(telem_ptr->substances.substance[current->index], current->value.value_string.value, stringsize);
+#if LOGGING
+		logger::out << "new value of that substance " <<  telem_ptr->substances.substance[current->index] << '\n';
+		logger::out << "field value of that substance " << current->value.value_string.value << '\n';
+#endif
     }
 }
 

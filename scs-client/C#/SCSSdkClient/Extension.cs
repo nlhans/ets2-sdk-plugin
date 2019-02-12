@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 
 namespace SCSSdkClient {
     /// <summary>
@@ -19,7 +20,12 @@ namespace SCSSdkClient {
         /// <typeparam name="T">string to convert</typeparam>
         /// <param name="enumString">type of the enum</param>
         /// <returns>string as enum</returns>
-        public static T ToEnum<T>(this string enumString) => (T) Enum.Parse(typeof(T), enumString, true);
+        public static T ToEnum<T>(this string enumString) where T : struct {
+            if (Enum.TryParse(enumString, true, out T result)) {
+                return result;
+            }
+            return (T) Enum.Parse(typeof(T), enumString, true);
+        }
 
         /// <summary>
         ///     A string formatter for an nested datatype

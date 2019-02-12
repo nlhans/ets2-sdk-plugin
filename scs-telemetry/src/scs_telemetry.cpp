@@ -1,8 +1,10 @@
 //Windows stuff.
 
+
 #define WINVER 0x0500
 #define WIN32_WINNT 0x0500
-#include <Windows.h>
+ 
+#include <windows.h>
 #include <cassert>
 #include <cstdarg>
 #include <algorithm>
@@ -18,6 +20,7 @@
 #include "scs-telemetry-common.hpp"
 #include "sharedmemory.hpp"
 #include "scs_config_handlers.hpp"
+#include <log.hpp>
 
 #define UNUSED(x)
 /**
@@ -323,6 +326,9 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*co
 // called if the game fires the event start/pause. Used to set the paused value
 SCSAPI_VOID telemetry_pause(const scs_event_t event, const void*const UNUSED(event_info),
                              scs_context_t UNUSED(context)) {
+#if LOGGING
+	logger::flush();
+#endif
     if (telem_ptr != nullptr) {
         telem_ptr->paused = event == SCS_TELEMETRY_EVENT_paused;
     }
@@ -499,6 +505,10 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
     if (version_params == nullptr) {
         return SCS_RESULT_generic_error;
     }
+#if LOGGING
+	log_line("LOGGING is active find at %s", logger::path.c_str());
+	logger::out << "start logging" << '\n';
+#endif
 
     /*** ACQUIRE SHARED MEMORY BUFFER ***/
     telem_mem = new SharedMemory(scs_mmf_name, SCS_PLUGIN_MMF_SIZE);
@@ -714,6 +724,9 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
  * See scssdk_telemetry.h
  */
 SCSAPI_VOID scs_telemetry_shutdown() {
+#if LOGGING
+	logger::flush();
+#endif
     // Close MemoryMap
     if (telem_mem != nullptr) {
         telem_mem->Close();
