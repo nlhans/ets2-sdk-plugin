@@ -58,10 +58,34 @@
  <div class="CBody"><p>It print every config event that appears to the in game log careful, create a lot of logs so that fast parts are not readable anymore in the log window</p></div>
 </div>
 
-<a name="telemetry_frame_start"></a><a name="Topic134"></a><div class="CTopic TFunction LC last">
+<a name="set_job_values_zero"></a><a name="Topic32"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">set_job_values_zero</div>
+ <div id="NDPrototype32" class="NDPrototype NoParameterForm"><span class="SHKeyword">void</span> set_job_values_zero()</div>
+ <div class="CBody"><p>set every job (cargo) values to 0/empty string</p></div>
+</div>
+
+<a name="set_trailer_values_zero"></a><a name="Topic42"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">set_trailer_values_zero</div>
+ <div id="NDPrototype42" class="NDPrototype NoParameterForm"><span class="SHKeyword">void</span> set_trailer_values_zero()</div>
+ <div class="CBody"><p>set every trailer value 0/empty string</p></div>
+</div>
+
+<a name="telemetry_frame_start"></a><a name="Topic134"></a><div class="CTopic TFunction LC">
  <div class="CTitle">telemetry_frame_start</div>
  <div id="NDPrototype134" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">SCSAPI_VOID telemetry_frame_start(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">scs_event_t&nbsp;</td><td class="PName last">UNUSED(event),</td></tr><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><span class="SHKeyword">void</span>*<span class="SHKeyword">const</span>&nbsp;</td><td class="PName last">event_info,</td></tr><tr><td class="first"></td><td class="PType">scs_context_t&nbsp;</td><td class="PName last">UNUSED(context)</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Register telemetry values</p></div>
+</div>
+
+<a name="telemetry_pause"></a><a name="Topic254"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">telemetry_pause</div>
+ <div id="NDPrototype254" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">SCSAPI_VOID telemetry_pause(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">scs_event_t&nbsp;</td><td class="PName last">event,</td></tr><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><span class="SHKeyword">void</span>*<span class="SHKeyword">const</span>&nbsp;</td><td class="PName last">UNUSED(event_info),</td></tr><tr><td class="first"></td><td class="PType">scs_context_t&nbsp;</td><td class="PName last">UNUSED(context)</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>called if the game fires the event start/pause. Used to set the paused value</p></div>
+</div>
+
+<a name="telemetry_configuration"></a><a name="Topic354"></a><div class="CTopic TFunction LC last">
+ <div class="CTitle">telemetry_configuration</div>
+ <div id="NDPrototype354" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">SCSAPI_VOID telemetry_configuration(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">scs_event_t&nbsp;</td><td class="PName last">event,</td></tr><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType"><span class="SHKeyword">void</span>*<span class="SHKeyword">const</span>&nbsp;</td><td class="PName last">event_info,</td></tr><tr><td class="first"></td><td class="PType">scs_context_t&nbsp;</td><td class="PName last">UNUSED(context)</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>called if the game fires the event configuration. Used to handle all the configuration values</p></div>
 </div>
 
 </body></html>

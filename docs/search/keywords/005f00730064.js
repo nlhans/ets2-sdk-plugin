@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("_sd",["Variable"],[["_sdkconvert",,[["SCSSdkClient.SharedMemory",,,,0,"File:SharedMemory.cs:SCSSdkClient.SharedMemory._sdkconvert","CSharpClass:SCSSdkClient.SharedMemory:_sdkconvert"]]]]);

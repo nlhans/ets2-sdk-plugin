@@ -331,6 +331,7 @@ SCSAPI_VOID telemetry_pause(const scs_event_t event, const void*const UNUSED(eve
 #endif
     if (telem_ptr != nullptr) {
         telem_ptr->paused = event == SCS_TELEMETRY_EVENT_paused;
+     
     }
 }
 

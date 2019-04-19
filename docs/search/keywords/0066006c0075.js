@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("flu",["Function"],[["flush",,[[,,,,0,"File3:log.cpp:flush"]]]]);

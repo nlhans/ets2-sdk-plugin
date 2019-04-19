@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("res",["Function"],[["resume",,[["SCSSdkClient.SCSSdkTelemetry",,,,0,"File:SCSSdkTelemetry.cs:SCSSdkClient.SCSSdkTelemetry.resume","CSharpClass:SCSSdkClient.SCSSdkTelemetry:resume"]]]]);

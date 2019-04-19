@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("lab",["Variable"],[["label1",,[["SCSSdkClient.Demo.SCSSdkClientDemo",,,,0,"File2:SCSSdkClient.Demo/SCSSdkClientDemo.Designer.cs:SCSSdkClient.Demo.SCSSdkClientDemo.label1","CSharpClass:SCSSdkClient.Demo.SCSSdkClientDemo:label1"]]]]);
