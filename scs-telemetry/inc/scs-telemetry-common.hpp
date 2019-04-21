@@ -219,7 +219,10 @@ typedef struct scsTelemetryMap_s
 		float jobDeliveredDistanceKm;
 	}gameplay_f;
 
-	char buffer_f[16];
+	struct{
+		float cargoDamage;
+	}job_f;
+	char buffer_f[12];
 	//----- END OF FOURTH ZONE AT OFFSET 1899 -----//
 
 	//----- START OF FIFTH ZONE AT OFFSET 1900 -----//

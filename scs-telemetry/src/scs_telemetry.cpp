@@ -782,7 +782,13 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
     REGISTER_CHANNEL(TRUCK_CHANNEL_cabin_angular_acceleration, fvector, telem_ptr->truck_fv.cabinAAX);
     REGISTER_CHANNEL(CHANNEL_next_rest_stop, s32, telem_ptr->common_i.restStop);
     REGISTER_CHANNEL(CHANNEL_local_scale, float, telem_ptr->common_f.scale);
-    REGISTER_CHANNEL(TRUCK_CHANNEL_head_offset, fplacement, telem_ptr->truck_fp.headOffsetX); 
+    REGISTER_CHANNEL(TRUCK_CHANNEL_head_offset, fplacement, telem_ptr->truck_fp.headOffsetX);
+
+    // new in 1.35 so ets2 1.14 and ats 1.01
+    if(check_version(14,1)) {
+        // could be loaded don't know actually in the sdk not loaded in ets2 but in ats so may only need to add this and than it should work but need to test this for both
+		REGISTER_CHANNEL(SCS_TELEMETRY_JOB_CHANNEL_cargo_damage, float, telem_ptr->job_f.cargoDamage);
+    }
 
     // Set the structure with defaults.
 
