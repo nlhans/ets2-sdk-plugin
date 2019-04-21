@@ -59,6 +59,9 @@ scsConfigHandle(Truck, WheelLiftable);
 scsConfigHandle(Truck, GearDifferential);
 scsConfigHandle(Truck, GearForwardRatio);
 scsConfigHandle(Truck, GearReverseRatio);
+scsConfigHandle(Truck, LicensePlate);
+scsConfigHandle(Truck, LicensePlateCountry);
+scsConfigHandle(Truck, LicensePlateCountryId);
 
 // Trailer
 scsConfigHandle(Trailer, Id);
@@ -86,6 +89,10 @@ scsConfigHandle(Job, CompSrcId);
 scsConfigHandle(Job, CompSrc);
 scsConfigHandle(Job, Income);
 scsConfigHandle(Job, DeliveryTime);
+scsConfigHandle(Job, IsCargoLoaded);
+scsConfigHandle(Job, JobMarket);
+scsConfigHandle(Job, SpecialJob);
+scsConfigHandle(Job, UnitCount);
 
 
 

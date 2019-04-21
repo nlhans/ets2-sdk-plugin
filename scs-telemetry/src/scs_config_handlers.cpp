@@ -64,7 +64,10 @@ const scsConfigHandler_t truck_config[] = {
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_liftable, handleTruckWheelLiftable},
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_differential_ratio, handleTruckGearDifferential},
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_forward_ratio, handleTruckGearForwardRatio},
-        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_reverse_ratio, handleTruckGearReverseRatio}
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_reverse_ratio, handleTruckGearReverseRatio},
+	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate, handleTruckLicensePlate},
+	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country, handleTruckLicensePlateCountry},
+	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country_id, handleTruckLicensePlateCountryId}
 };
 
 // const: trailer_config
@@ -98,6 +101,10 @@ const scsConfigHandler_t job_config[] = {
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_company, handleJobCompSrc},
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_income, handleJobIncome},
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_delivery_time, handleJobDeliveryTime},
+	{SCS_TELEMETRY_CONFIG_ATTRIBUTE_is_cargo_loaded, handleJobIsCargoLoaded},
+    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_job_market, handleJobJobMarket},
+	{SCS_TELEMETRY_CONFIG_ATTRIBUTE_special_job, handleJobSpecialJob},
+	{SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_unit_count, handleJobUnitCount},
 };
 
 const int length_configs[] = {
@@ -386,6 +393,18 @@ scsConfigHandle(Truck, GearReverseRatio) {
         telem_ptr->config_f.gearRatiosReverse[gear] = ratio;
     }
 }
+
+scsConfigHandle(Truck, LicensePlate) {
+	strncpy_s(telem_ptr->config_s.truckLicensePlate, current->value.value_string.value, stringsize);
+}
+
+scsConfigHandle(Truck, LicensePlateCountry) {
+	strncpy_s(telem_ptr->config_s.truckLicensePlateCountry, current->value.value_string.value, stringsize);
+}
+
+scsConfigHandle(Truck, LicensePlateCountryId) {
+	strncpy_s(telem_ptr->config_s.truckLicensePlateCountryId, current->value.value_string.value, stringsize);
+}
 #pragma endregion  All handler of the id truck
 
 #pragma region handleTrailer
@@ -519,5 +538,18 @@ scsConfigHandle(Job, Income) {
 
 scsConfigHandle(Job, DeliveryTime) {
     telem_ptr->config_ui.time_abs_delivery = current->value.value_u32.value;
+}
+
+scsConfigHandle(Job, IsCargoLoaded) {
+	telem_ptr->config_b.isCargoLoaded = current->value.value_bool.value;
+}
+scsConfigHandle(Job, JobMarket) {
+	strncpy_s(telem_ptr->config_s.jobMarket, current->value.value_string.value, 20);
+}
+scsConfigHandle(Job, SpecialJob) {
+	telem_ptr->config_b.specialJob = current->value.value_bool.value;
+}
+scsConfigHandle(Job, UnitCount) {
+	telem_ptr->config_ui.unitCount = current->value.value_u32.value;
 }
 #pragma endregion All handler of the id job

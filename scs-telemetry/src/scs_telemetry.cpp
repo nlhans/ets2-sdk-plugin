@@ -20,6 +20,7 @@
 #include "scs-telemetry-common.hpp"
 #include "sharedmemory.hpp"
 #include "scs_config_handlers.hpp"
+#include "scs_gameplay_event_handlers.hpp"
 #include <log.hpp>
 
 #define UNUSED(x)
@@ -381,31 +382,11 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event, const void*const event_i
 	auto is_empty = true;
 
 	for (auto current = info->attributes; current->name; ++current) {
-		if (!handleCfg(current, type)) {
+		if (!handleGpe(current, type)) {
 			// actually only for testing/debug purpose, so should there be a message in game with that line there is missed something
 			log_line("attribute not handled id: %i attribute: %s", type, current->name);
 		}
 		is_empty = false;
-	}
-	// if id of config is "job" but without element and we are on a job -> we finished it now
-	if (type == job && is_empty && telem_ptr->special_b.onJob) {
-		telem_ptr->special_b.onJob = false;
-		telem_ptr->special_b.jobFinished = true;
-		clear_job_ticker = 0;
-	}
-	else if (!telem_ptr->special_b.onJob && type == job && !is_empty) {
-		// oh hey no job but now we have fields in this array so we start a new job
-		telem_ptr->special_b.onJob = true;
-	}
-	// no trailer which is connected with us? than delete information of the sdk and say there is no connected trailer
-	if (type == trailer && is_empty) {
-		set_trailer_values_zero();
-		telem_ptr->special_b.trailerConnected = false;
-	}
-	else if (type == trailer && !is_empty && !telem_ptr->special_b.trailerConnected) {
-		// there exist trailer information and actually we say there is no connected trailer. That can't be true anymore
-		// so say we are connected to a trailer
-		telem_ptr->special_b.trailerConnected = true;
 	}
 
 
@@ -572,12 +553,19 @@ SCSAPI_VOID telemetry_store_fplacement(const scs_string_t name, const scs_u32_t 
  */
 
 SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_init_params_t*const params) {
-    // We currently support only one version.
-    if (version != SCS_TELEMETRY_VERSION_1_00) {
-        return SCS_RESULT_unsupported;
-    }
 
-    const auto version_params = static_cast<const scs_telemetry_init_params_v100_t *>(params);  // NOLINT(cppcoreguidelines-pro-type-static-cast-downcast)
+    // We currently support only two version.
+    //TODO test this 
+    const scs_telemetry_init_params_v100_t* version_params;
+    if (version == SCS_TELEMETRY_VERSION_1_00 ) {
+		 version_params = static_cast<const scs_telemetry_init_params_v100_t *>(params);  // NOLINT(cppcoreguidelines-pro-type-static-cast-downcast)
+	}else if(version == SCS_TELEMETRY_VERSION_1_01) {
+		 version_params = static_cast<const scs_telemetry_init_params_v101_t *>(params);  // NOLINT(cppcoreguidelines-pro-type-static-cast-downcast)
+	}else {
+		return SCS_RESULT_unsupported;
+	}
+
+  
     game_log = version_params->common.log;
     if (version_params == nullptr) {
         return SCS_RESULT_generic_error;
@@ -651,10 +639,15 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
     // Register configuration event, because it sends data like truck make, etc.
     version_params->register_for_event(SCS_TELEMETRY_EVENT_configuration, telemetry_configuration, nullptr);
 
+    
+    
+
     if(check_version(14,1)) {        
 
         // Register gameplay event, for event such as job finish or canceled
 	    version_params->register_for_event(SCS_TELEMETRY_EVENT_gameplay, telemetry_gameplay, nullptr);
+		// this seems to be a constant so fetch it here? need to test this
+		telem_ptr->config_ui.maxTrailerCount = SCS_TELEMETRY_trailers_count;
 	}
 
     if (!events_registered) {
