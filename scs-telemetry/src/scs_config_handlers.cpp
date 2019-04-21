@@ -514,7 +514,7 @@ scsConfigHandle(Job, CompSrc) {
 }
 
 scsConfigHandle(Job, Income) {
-    telem_ptr->config_o.jobIncome = current->value.value_u64.value;
+    telem_ptr->config_ull.jobIncome = current->value.value_u64.value;
 }
 
 scsConfigHandle(Job, DeliveryTime) {

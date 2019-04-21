@@ -24,6 +24,9 @@
     <ClCompile Include="..\src\scs_config_handlers.cpp" />
     <ClCompile Include="..\src\sharedmemory.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\scs_gameplay_event_handlers.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0B739935-E779-415A-B76C-0073EAE72A81}</ProjectGuid>
     <RootNamespace>scs-telemetry</RootNamespace>
@@ -176,7 +179,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\scs_sdk_1_9\include;..\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\scs_sdk_1_10\include;..\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TELEMETRY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>

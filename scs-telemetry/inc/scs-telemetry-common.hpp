@@ -7,7 +7,11 @@
 // - Shared memory map struct layout
 // - [..]
 
-#define PLUGIN_REVID					9
+#define PLUGIN_REVID					10
+
+#define ETS2                            1
+#define ATS                             2
+#define UnknownGame                     0
 
 #define ETS2_PLUGIN_LOGGING_ON				0
 #define ETS2_PLUGIN_LOGGING_SHAREDMEMORY	0
@@ -34,7 +38,10 @@
 // The maximum number of substances that are saved to the memory
 #define SUBSTANCE_SIZE 25
 
-  /**
+bool check_version(unsigned const int min_ets2, unsigned const int min_ats);
+enum configType { substances, controls, hshifter, truck, trailer, job };
+enum gameplayType { cancelled, delivered, fined, tollgate, ferry, train };
+/**
    *  \brief Telemetry object
    *
    * instead to use a clear object like that in c# we want to create this one easy to parse and modifyable
@@ -106,11 +113,14 @@ typedef struct scsTelemetryMap_s
 		unsigned int hshifterBitmask[32];
 	}truck_ui;
 
-	char buffer_ui[4];
+	struct{
+		unsigned int jobDeliveredDeliveryTime;
+	}gameplay_ui;
+	//char buffer_ui[0]; // no more buffer here
 	//----- END OF SECOND ZONE AT OFFSET 499 -----//
 
 	//----- START OF Third ZONE AT OFFSET 500 -----//
-	// The third zone contains integers and it sorted in sub structures
+	// The third zone contains integers and is sorted in sub structures
 
 	struct {
 		int restStop;
@@ -122,11 +132,15 @@ typedef struct scsTelemetryMap_s
 		int hshifterResulting[32];
 	}truck_i;
 
-	char buffer_i[60];
+	struct{
+		int jobDeliveredEarnedXp;
+	}gameplay_i;
+
+	char buffer_i[56];
 	//----- END OF third ZONE AT OFFSET 699 -----//
 
 	//----- START OF FOURTH ZONE AT OFFSET 700 -----//
-	// The fourth zone contains floats and it sorted in sub structures
+	// The fourth zone contains floats and is sorted in sub structures
 
 	struct {
 		float scale;
@@ -195,11 +209,17 @@ typedef struct scsTelemetryMap_s
 		float truck_wheelLift[16];
 		float truck_wheelLiftOffset[16];
 	}truck_f;
-	char buffer_f[24];
+
+	struct{
+		float jobDeliveredCargoDamage;
+		float jobDeliveredDistanceKm;
+	}gameplay_f;
+
+	char buffer_f[16];
 	//----- END OF FOURTH ZONE AT OFFSET 1799 -----//
 
 	//----- START OF FIFTH ZONE AT OFFSET 1800 -----//
-	// The fifth zone contains bool and it sorted in sub structures
+	// The fifth zone contains bool and is sorted in sub structures
 
 	struct {
 		bool truckWheelSteerable[16];
@@ -241,11 +261,18 @@ typedef struct scsTelemetryMap_s
 		bool truck_wheelOnGround[16];
 		bool shifterToggle[2];
 	}truck_b;
-	char buffer_b[14];
+
+	struct  
+	{
+		bool jobDeliveredAutoparkUsed;
+		bool jobDeliveredAutoloadUsed;
+	}gameplay_b;
+	
+	char buffer_b[12];
 	//----- END OF FIFTH ZONE AT OFFSET 1999 -----//
 
 	//----- START OF SIXTH ZONE AT OFFSET 2000 -----//
-	// The sixth zone contains fvector and it sorted in sub structures
+	// The sixth zone contains fvector and is sorted in sub structures
 
 	struct {
 		float cabinPositionX;
@@ -303,7 +330,7 @@ typedef struct scsTelemetryMap_s
 	//----- END OF SIXTH ZONE AT OFFSET 2599 -----//
 
 	//----- START OF 7TH ZONE AT OFFSET 2600 -----//
-	// The 7th zone contains fplacement and it sorted in sub structures
+	// The 7th zone contains fplacement and is sorted in sub structures
 	struct {
 		float cabinOffsetX;
 	    float cabinOffsetY;
@@ -322,7 +349,7 @@ typedef struct scsTelemetryMap_s
 	//----- END OF 7TH ZONE AT OFFSET 2799 -----//
 
 	//----- START OF 8TH ZONE AT OFFSET 2800 -----//
-	// The 8th zone contains dplacement and it sorted in sub structures
+	// The 8th zone contains dplacement and is sorted in sub structures
 
 	struct {
 		double coordinateX;
@@ -342,7 +369,7 @@ typedef struct scsTelemetryMap_s
 	//----- END OF 8TH ZONE AT OFFSET 2999 -----//
 
 	//----- START OF 9TH ZONE AT OFFSET 3000 -----//
-	// The 9th zone contains strings and it sorted in sub structures
+	// The 9th zone contains strings and is sorted in sub structures
 
 	struct {
 		char truckBrandId[stringsize];
@@ -364,20 +391,46 @@ typedef struct scsTelemetryMap_s
 		char shifterType[16];
 
 	}config_s;
-	char buffer_s[760];
+struct{
+	char fineOffence[16];
+	char ferrySourceName[stringsize];
+	char ferryTargetName[stringsize];
+	char ferrySourceId[stringsize];
+	char ferryTargetId[stringsize];
+	char trainSourceName[stringsize];
+	char trainTargetName[stringsize];
+	char trainSourceId[stringsize];
+	char trainTargetId[stringsize];
+}gameplay_s;
+
+	char buffer_s[232];
 	//----- END OF 9TH ZONE AT OFFSET 4799 -----//
 
 	//----- START OF 10TH ZONE AT OFFSET 4800 -----//
-	// The 10th zone contains unsigned long long and it sorted in sub structures
+	// The 10th zone contains unsigned long long and is sorted in sub structures
 
     struct {
 		unsigned long long jobIncome;
-    }config_o;
-	char buffer_o[192];
+    }config_ull;
+	char buffer_ull[192];
 	//----- END OF 10TH ZONE AT OFFSET 4999 -----//
 
-	//----- START OF 11TH ZONE AT OFFSET 5000 -----//
-	// The 11th zone contains special events and it sorted in sub structures
+		//----- START OF 11TH ZONE AT OFFSET 5000 -----//
+	// The 11th zone contains long long and is sorted in sub structures
+
+    struct {
+		long long jobCancelledPenalty;
+		long long jobDeliveredRevenue;
+		long long fineAmount;
+		long long tollgatePayAmount;
+	  long long ferryPayAmount;
+		long long trainPayAmount;
+    }gameplay_ll;
+	char buffer_ll[152];
+	//----- END OF 10TH ZONE AT OFFSET 5199 -----//
+
+	//----- START OF 12TH ZONE AT OFFSET 5200 -----//
+	// The 12th zone contains special events and is sorted in sub structures
 
     struct {
 		bool onJob;
@@ -385,16 +438,16 @@ typedef struct scsTelemetryMap_s
 		bool trailerConnected;
     }special_b;
 	char buffer_special[197];
-	//----- END OF 11TH ZONE AT OFFSET 5199 -----//
+	//----- END OF 11TH ZONE AT OFFSET 5399 -----//
 
-	//----- START OF 12TH ZONE AT OFFSET 5200 -----//
-	// The 12th zone contains substances, place for 25 of them
+	//----- START OF 13TH ZONE AT OFFSET 5400 -----//
+	// The 13th zone contains substances, place for 25 of them
 
 	struct {
 		char substance[SUBSTANCE_SIZE][stringsize];
 
 	}substances;
-	//----- END OF 12TH ZONE AT OFFSET 6800 -----//
+	//----- END OF 13TH ZONE AT OFFSET 6999 -----//
 } scsTelemetryMap_t;
 
 #endif

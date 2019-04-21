@@ -96,7 +96,7 @@ scsConfigHandle(Job, DeliveryTime);
 
 
 
-enum configType { substances, controls, hshifter, truck, trailer, job };
+
 
 bool handleCfg(const scs_named_value_t* info,const configType type );
 void log_line(scs_log_type_t type, const char* text, ...);

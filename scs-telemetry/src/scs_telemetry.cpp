@@ -90,6 +90,13 @@ void log_line(const char*const text, ...) {
     game_log(SCS_LOG_TYPE_error, formated);
 }
 
+// check if the version is correct
+bool check_version(unsigned const int min_ets2, unsigned const int min_ats) {
+	 
+		return telem_ptr->scs_values.game == ETS2 && telem_ptr->scs_values.telemetry_version_game_minor >= min_ets2 || telem_ptr->scs_values.game == ATS && telem_ptr->scs_values.telemetry_version_game_minor >= min_ats;
+ 
+}
+
 
 // Function: log_configs
 // It print every config event that appears to the in game log
@@ -205,7 +212,7 @@ static auto clear_job_ticker = 0;
 // Function: set_job_values_zero
 // set every job (cargo) values to 0/empty string
 void set_job_values_zero() {
-	telem_ptr->config_o.jobIncome = 0;
+	telem_ptr->config_ull.jobIncome = 0;
 	telem_ptr->config_ui.time_abs_delivery = 0;
 	telem_ptr->config_f.cargoMass = 0;
 	memset(telem_ptr->config_s.compDstId, 0, stringsize);
@@ -335,6 +342,75 @@ SCSAPI_VOID telemetry_pause(const scs_event_t event, const void*const UNUSED(eve
     }
 }
 
+
+SCSAPI_VOID telemetry_gameplay(const scs_event_t event, const void*const event_info, scs_context_t UNUSED(context)) {
+	//  An event called when a gameplay event such as job finish happens
+	const auto info = static_cast<const scs_telemetry_gameplay_event_t *>(
+		event_info);
+
+	// check which type the event has
+	gameplayType type = {};
+	if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_cancelled) == 0) {
+		type = cancelled;
+	}
+	else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_delivered) == 0) {
+		type = delivered;
+	}
+	else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_fined) == 0) {
+		type = fined;
+	}
+	else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_tollgate_paid) == 0) {
+		type = tollgate;
+	}
+	else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_use_ferry) == 0) {
+		type = ferry;
+	}
+	else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_use_train) == 0) {
+		type = train;
+	}
+	else {
+		log_line(SCS_LOG_TYPE_warning, "Something went wrong with this gameplay event %s", info->id);
+	}
+
+
+	// uncomment to log every config, should work but with function not tested ^^`
+	// TODO: ADD LOGgIN for that type
+
+	// attribute is a pointer array that is never null so ... i have no clue how to check it on another way than this
+	// if for loop can't loop it is empty so simple 
+	auto is_empty = true;
+
+	for (auto current = info->attributes; current->name; ++current) {
+		if (!handleCfg(current, type)) {
+			// actually only for testing/debug purpose, so should there be a message in game with that line there is missed something
+			log_line("attribute not handled id: %i attribute: %s", type, current->name);
+		}
+		is_empty = false;
+	}
+	// if id of config is "job" but without element and we are on a job -> we finished it now
+	if (type == job && is_empty && telem_ptr->special_b.onJob) {
+		telem_ptr->special_b.onJob = false;
+		telem_ptr->special_b.jobFinished = true;
+		clear_job_ticker = 0;
+	}
+	else if (!telem_ptr->special_b.onJob && type == job && !is_empty) {
+		// oh hey no job but now we have fields in this array so we start a new job
+		telem_ptr->special_b.onJob = true;
+	}
+	// no trailer which is connected with us? than delete information of the sdk and say there is no connected trailer
+	if (type == trailer && is_empty) {
+		set_trailer_values_zero();
+		telem_ptr->special_b.trailerConnected = false;
+	}
+	else if (type == trailer && !is_empty && !telem_ptr->special_b.trailerConnected) {
+		// there exist trailer information and actually we say there is no connected trailer. That can't be true anymore
+		// so say we are connected to a trailer
+		telem_ptr->special_b.trailerConnected = true;
+	}
+
+
+}
+
 // Function: telemetry_configuration
 // called if the game fires the event configuration. Used to handle all the configuration values
 SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const event_info,
@@ -345,20 +421,20 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
 
     // check which type the event has
 	configType type = {};
-    if(strcmp(info->id,"substances")==0) {
+    if(strcmp(info->id, SCS_TELEMETRY_CONFIG_substances)==0) {
 		type = substances;
-    }else if (strcmp(info->id, "controls") == 0) {
+    }else if (strcmp(info->id, SCS_TELEMETRY_CONFIG_controls) == 0) {
 		type = controls;
-	}else if (strcmp(info->id, "hshifter") == 0) {
+	}else if (strcmp(info->id, SCS_TELEMETRY_CONFIG_hshifter) == 0) {
 		type = hshifter;
-	}else if (strcmp(info->id, "truck") == 0) {
+	}else if (strcmp(info->id, SCS_TELEMETRY_CONFIG_truck) == 0) {
 		type = truck;
-	}else if (strcmp(info->id, "trailer") == 0) {
+	}else if (strcmp(info->id, SCS_TELEMETRY_CONFIG_trailer) == 0) {
 		type = trailer;
-	}else if (strcmp(info->id, "job") == 0) {
+	}else if (strcmp(info->id, SCS_TELEMETRY_CONFIG_job) == 0) {
 		type = job;
 	}else {
-		log_line(SCS_LOG_TYPE_warning, "Something went wrong with this %s",info->id);
+		log_line(SCS_LOG_TYPE_warning, "Something went wrong with this configuration %s",info->id);
 	}
 
     // uncomment to log every config, should work but with function not tested ^^`
@@ -540,14 +616,14 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 
     // Set Game ID 
     if (strcmp(version_params->common.game_id, SCS_GAME_ID_EUT2) == 0) {
-        telem_ptr->scs_values.game = 1;
+        telem_ptr->scs_values.game = ETS2;
         telem_ptr->scs_values.telemetry_version_game_major = SCS_GET_MAJOR_VERSION(
             SCS_TELEMETRY_EUT2_GAME_VERSION_CURRENT);
         telem_ptr->scs_values.telemetry_version_game_minor = SCS_GET_MINOR_VERSION(
             SCS_TELEMETRY_EUT2_GAME_VERSION_CURRENT);
     }
     else if (strcmp(version_params->common.game_id, SCS_GAME_ID_ATS) == 0) {
-        telem_ptr->scs_values.game = 2;
+        telem_ptr->scs_values.game = ATS;
         telem_ptr->scs_values.telemetry_version_game_major = SCS_GET_MAJOR_VERSION(
             SCS_TELEMETRY_ATS_GAME_VERSION_CURRENT);
         telem_ptr->scs_values.telemetry_version_game_minor = SCS_GET_MINOR_VERSION(
@@ -557,11 +633,10 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
         // unknown game
 
         log_line(SCS_LOG_TYPE_error, "Unknown Game SDK will not work correctly");
-        telem_ptr->scs_values.game = 0;
+        telem_ptr->scs_values.game = UnknownGame;
         telem_ptr->scs_values.telemetry_version_game_major = 0;
         telem_ptr->scs_values.telemetry_version_game_minor = 0;
     }
-
 
     // Model & trailer type are stored in configuration event.
 
@@ -576,10 +651,17 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
     // Register configuration event, because it sends data like truck make, etc.
     version_params->register_for_event(SCS_TELEMETRY_EVENT_configuration, telemetry_configuration, nullptr);
 
+    if(check_version(14,1)) {        
+
+        // Register gameplay event, for event such as job finish or canceled
+	    version_params->register_for_event(SCS_TELEMETRY_EVENT_gameplay, telemetry_gameplay, nullptr);
+	}
+
     if (!events_registered) {
         return SCS_RESULT_generic_error;
     }
 
+	// ETS Version 1.0 - 1.13 (up to patch 1.34) and ATS Version 1.0 (up to patch 1.34) or simple SDK version 1.0
     /*** REGISTER ALL TELEMETRY CHANNELS TO OUR SHARED MEMORY MAP ***/
     REGISTER_CHANNEL(CHANNEL_game_time, u32, telem_ptr->common_ui.time_abs);
     REGISTER_CHANNEL(TRAILER_CHANNEL_connected, bool, telem_ptr->truck_b.trailer_attached);
@@ -646,6 +728,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
     REGISTER_CHANNEL(TRUCK_CHANNEL_brake_temperature, float, telem_ptr->truck_f.brakeTemperature);
     REGISTER_CHANNEL(TRUCK_CHANNEL_fuel_warning, bool, telem_ptr->truck_b.fuelWarning);
     REGISTER_CHANNEL(TRUCK_CHANNEL_adblue, float, telem_ptr->truck_f.adblue);
+
     //registerChannel(TRUCK_CHANNEL_adblue_average_consumption, float, telem_ptr->tel_rev3.adblueConsumption); // seems not to work in ets2/ATS at 19/10 skd 1.9 and actual game versions
     REGISTER_CHANNEL(TRUCK_CHANNEL_oil_pressure, float, telem_ptr->truck_f.oilPressure);
     REGISTER_CHANNEL(TRUCK_CHANNEL_oil_temperature, float, telem_ptr->truck_f.oilTemperature);
@@ -706,9 +789,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
     REGISTER_CHANNEL(TRUCK_CHANNEL_cabin_angular_acceleration, fvector, telem_ptr->truck_fv.cabinAAX);
     REGISTER_CHANNEL(CHANNEL_next_rest_stop, s32, telem_ptr->common_i.restStop);
     REGISTER_CHANNEL(CHANNEL_local_scale, float, telem_ptr->common_f.scale);
-    REGISTER_CHANNEL(TRUCK_CHANNEL_head_offset, fplacement, telem_ptr->truck_fp.headOffsetX);
-    // MISSING: (Will be added on wish) see also on config handler
-    // actually should nothing miss here (1.9)
+    REGISTER_CHANNEL(TRUCK_CHANNEL_head_offset, fplacement, telem_ptr->truck_fp.headOffsetX); 
 
     // Set the structure with defaults.
 
