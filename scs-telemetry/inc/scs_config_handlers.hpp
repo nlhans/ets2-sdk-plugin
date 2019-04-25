@@ -9,10 +9,10 @@
 typedef struct scsConfigHandler_s
 {
 	char const *id;
-	void (*handle) (const scs_named_value_t* current);
+	void (*handle) (const scs_named_value_t* current, const unsigned int trailer_id);
 } scsConfigHandler_t;
 
-#define scsConfigHandle(id, attribute) void handle##id##attribute (const scs_named_value_t* current)
+#define scsConfigHandle(id, attribute) void handle##id##attribute (const scs_named_value_t* current, const unsigned int trailer_id  )
 
 // Define prototypes for all the various handlers
 
@@ -105,6 +105,6 @@ scsConfigHandle(Job, UnitCount);
 
 
 
-bool handleCfg(const scs_named_value_t* info,const configType type );
+bool handleCfg(const scs_named_value_t* info,const configType type , const unsigned int trailer_id=NULL);
 void log_line(scs_log_type_t type, const char* text, ...);
 #endif

@@ -82,7 +82,15 @@ const scsConfigHandler_t trailer_config[] = {
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_simulated, handleTrailerWheelSimulated},
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_radius, handleTrailerWheelRadius},
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_powered, handleTrailerWheelPowered},
-        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_liftable, handleTrailerWheelLiftable}
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_liftable, handleTrailerWheelLiftable},
+		{SCS_TELEMETRY_CONFIG_ATTRIBUTE_body_type, handleTrailerBodyType},
+	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand_id, handleTrailerBrandId},
+	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand, handleTrailerBrand},
+	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_name, handleTrailerName},
+	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_chain_type, handleTrailerChainType},
+	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate, handleTrailerLicensePlate},
+		{SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country, handleTrailerLicensePlateCountry},
+		{SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country_id, handleTrailerLicensePlateCountryId}
 };
 
 // const: job_config
@@ -120,7 +128,7 @@ const int length_configs[] = {
 
 // Function: handleCfg
 // brings the config attributes to the correct function
-bool handleCfg(const scs_named_value_t* current, const configType type) {
+bool handleCfg(const scs_named_value_t* current, const configType type, const unsigned int trailer_id = NULL) {
     const scsConfigHandler_t* configs = nullptr;
     switch (type) {
     case substances:
@@ -151,7 +159,8 @@ bool handleCfg(const scs_named_value_t* current, const configType type) {
             if (telem_ptr) {
                 // Equal ID's; then handle this configuration
                 if (i->handle)
-                    i->handle(current);
+                    // TODO: FIND A BETTER WAY TO HANDLE THE TRAILER ID
+                    i->handle(current, trailer_id);
             }
             return true;
         }

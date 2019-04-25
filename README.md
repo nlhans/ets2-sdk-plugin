@@ -10,7 +10,7 @@
  
 fork of [nlhans](https://github.com/nlhans/ets2-sdk-plugin) work
 
-**.dll and c# object is complete new and won't work with old code. Why change? A lot of missing values are added, job fire event complete change and should now detect every job and th ending of an job (delivered, canceled,...).**
+**New Revision -> not compatible with old files. SM and C# object changed a lot, because of new values**
  
 # SCS Telemetry for EuroTruckSimulator 2 and AmericanTruckSimulator
 
@@ -39,7 +39,7 @@ Sadly the usage of the documentation generating syntax leads to a lot of `warnin
 This plug-in stores it's data inside a Memory Mapped File, or "Shared Memory". This allows it to operate without any access to harddrive, or configuration hassle by the user to locate the memory map.
 
 ### Telemetry fields and the c# object
-The following telemetry fields are supported, structure is like the c# object:
+The following telemetry fields are supported, structure is like the c# object. Starting with sdk 1.10, game patch 1.35 and ETS2 1.14, ATS 1.01 code for some part of the need different versions of the sdk. The plugin handles this. If a game lower than 1.35 is used, only the values without (1.14/1.01) are possible:
 
 	Basic Game Independent Values:
 		- Telemetry Timestamp (not the in-game time, only for usage in code, see documentation for more information #todo add link)
@@ -295,4 +295,4 @@ There is no "sample ticker" yet. This must be done at the client side, by regula
 Actually I'm not fully happy with the actual demo. But I didn't reached my plan that works like the old one. Later I will change the current demo so that they will be a lot times better.
 
 ### Other
-For other languages you need to create/find a library that can open and read MemoryMapped files. The data storage format is binary and can be found in "scs-telemetry/inc/scs-telemetry-common.hpp". The shared memory map name is "Local\SCSTelemetry".
+For other languages you need to create/find a library that can open and read MemoryMapped files. The data storage format is binary and can be found in "scs-telemetry/inc/scs-telemetry-common.hpp". The shared memory map name is "Local\SCSTelemetry". I will add some more documentary in this header later.
