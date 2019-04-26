@@ -9,7 +9,6 @@
 #include <cstdarg>
 #include <algorithm>
 // SDK
-
 #include "scssdk_telemetry.h"
 #include "eurotrucks2/scssdk_eut2.h"
 #include "eurotrucks2/scssdk_telemetry_eut2.h"
@@ -94,19 +93,14 @@ void log_line(const char*const text, ...) {
 }
 
 // check if the version is correct
-bool check_version(unsigned const int min_ets2, unsigned const int min_ats) {
-	 
-		return telem_ptr->scs_values.game == ETS2 && telem_ptr->scs_values.telemetry_version_game_minor >= min_ets2 || telem_ptr->scs_values.game == ATS && telem_ptr->scs_values.telemetry_version_game_minor >= min_ats;
- 
-}
 bool check_min_version(unsigned const int min_ets2, unsigned const int min_ats) {
 
-	return telem_ptr->scs_values.game == ETS2 && telem_ptr->scs_values.telemetry_version_game_minor >= min_ets2 || telem_ptr->scs_values.game == ATS && telem_ptr->scs_values.telemetry_version_game_minor >= min_ats;
+	return telem_ptr->scs_values.game == ETS2 && telem_ptr->scs_values.version_minor >= min_ets2 || telem_ptr->scs_values.game == ATS && telem_ptr->scs_values.version_minor >= min_ats;
 
 }
 bool check_max_version(unsigned const int max_ets2, unsigned const int max_ats) {
 
-	return telem_ptr->scs_values.game == ETS2 && telem_ptr->scs_values.telemetry_version_game_minor <= max_ets2 || telem_ptr->scs_values.game == ATS && telem_ptr->scs_values.telemetry_version_game_minor <= max_ats;
+	return telem_ptr->scs_values.game == ETS2 && telem_ptr->scs_values.version_minor <= max_ets2 || telem_ptr->scs_values.game == ATS && telem_ptr->scs_values.version_minor <= max_ats;
 
 }
 
@@ -400,6 +394,7 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event, const void*const event_i
 	auto is_empty = true;
 
 	for (auto current = info->attributes; current->name; ++current) {
+	
 		if (!handleGpe(current, type)) {
 			// actually only for testing/debug purpose, so should there be a message in game with that line there is missed something
 			log_line("attribute not handled id: %i attribute: %s", type, current->name);
@@ -409,6 +404,7 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event, const void*const event_i
 
 
 }
+
 
 // Function: telemetry_configuration
 // called if the game fires the event configuration. Used to handle all the configuration values
@@ -680,7 +676,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
     
     
 
-    if(check_version(14,1)) {        
+    if(check_min_version(14,1)) {        
 
         // Register gameplay event, for event such as job finish or canceled
 	    version_params->register_for_event(SCS_TELEMETRY_EVENT_gameplay, telemetry_gameplay, nullptr);
@@ -808,7 +804,6 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
         
     
 	REGISTER_CHANNEL(TRAILER_CHANNEL_connected, bool, telem_ptr->trailer.trailer[0].com_b.attached);
-	REGISTER_CHANNEL(TRAILER_CHANNEL_cargo_damage, float, telem_ptr->trailer.trailer[0].com_f.cargoDamage);
 
 
 
@@ -822,7 +817,6 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	);
 
 	REGISTER_CHANNEL(TRAILER_CHANNEL_wear_chassis, float, telem_ptr->trailer.trailer[0].com_f.wearChassis);
-	REGISTER_CHANNEL(TRAILER_CHANNEL_wear_wheels, float, telem_ptr->trailer.trailer[0].com_f.wearWheels);
 	for (auto i = scs_u32_t(0); i < WHEEL_SIZE; i++) {
 		REGISTER_CHANNEL_INDEX(TRAILER_CHANNEL_wheel_susp_deflection, float, telem_ptr->trailer.trailer[0].com_f.wheelSuspDeflection[i], i);
 		REGISTER_CHANNEL_INDEX(TRAILER_CHANNEL_wheel_on_ground, bool, telem_ptr->trailer.trailer[0].com_b.wheelOnGround[i], i
@@ -839,7 +833,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	}
 	}
     // new in 1.35 so ets2 1.14 and ats 1.01
-    if(check_version(14,1)) {
+    if(check_min_version(14,1)) {
 		REGISTER_CHANNEL(TRUCK_CHANNEL_adblue_average_consumption, float, telem_ptr->addblueConsumption); //check if it is now working ;)
         // could be loaded don't know actually in the sdk not loaded in ets2 but in ats so may only need to add this and than it should work but need to test this for both
 		REGISTER_CHANNEL(JOB_CHANNEL_cargo_damage, float, telem_ptr->job_f.cargoDamage);

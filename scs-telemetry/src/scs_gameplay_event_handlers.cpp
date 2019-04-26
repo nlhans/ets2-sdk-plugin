@@ -77,7 +77,7 @@ const int length_gameplays[] = {
 
 // Function: handleGpe
 // brings the config attributes to the correct function
-bool handleGPE(const scs_named_value_t* current, const gameplayType type) {
+bool handleGpe(const scs_named_value_t* info, const gameplayType type) {
     const scsGameplayEventHandler_t* gameplay = nullptr;
     switch (type) {
     case cancelled:
@@ -104,11 +104,11 @@ bool handleGPE(const scs_named_value_t* current, const gameplayType type) {
     }
     auto i = gameplay;
     for (auto index = 0; index < length_gameplays[type]; index++) {
-        if (strcmp(i->id, current->name) == 0) {
+        if (strcmp(i->id, info->name) == 0) {
             if (telem_ptr) {
                 // Equal ID's; then handle this configuration
                 if (i->handle)
-                    i->handle(current);
+                    i->handle(info);
             }
             return true;
         }

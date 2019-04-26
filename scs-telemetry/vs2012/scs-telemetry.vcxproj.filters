@@ -27,10 +27,8 @@
     <ClCompile Include="..\src\log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\src\scs_gameplay_event_handlers.cpp">
+    <ClCompile Include="..\src\scs_gameplay_event_handlers.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -22,6 +22,7 @@
 #endif
 
 
+#include "scssdk.h"
 #define SCS_PLUGIN_MMF_NAME TEXT("Local\\SimTelemetrySCS")
 #define SCS_PLUGIN_MMF_SIZE (32*1024)
 /**
@@ -42,7 +43,7 @@ bool check_min_version(unsigned const int min_ets2, unsigned const int min_ats);
 bool check_max_version(unsigned const int min_ets2, unsigned const int min_ats);
 enum configType { substances, controls, hshifter, truck, trailer, job };
 enum gameplayType { cancelled, delivered, fined, tollgate, ferry, train };
-
+void log_line(scs_log_type_t type, const char* text, ...);
 typedef struct scsTrailer_s{ // Size: 1528
 	//----- START OF FIRST ZONE AT OFFSET 0 -----//	
 	struct{

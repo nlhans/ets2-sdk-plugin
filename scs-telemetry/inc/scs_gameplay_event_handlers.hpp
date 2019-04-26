@@ -1,11 +1,11 @@
-#ifndef SCS_GPE_HANDLERS_H
-#define SCS_GPE_HANDLERS_H
+#ifndef SCS_GPE_HANDLERS_HPP
+#define SCS_GPE_HANDLERS_HPP
 
 // SDK
 #include "scssdk_telemetry.h"
 #include "eurotrucks2/scssdk_eut2.h"
 #include "eurotrucks2/scssdk_telemetry_eut2.h"
-
+#include "scs-telemetry-common.hpp"
 
 
 typedef struct scsGameplayEventHandler_s
@@ -54,5 +54,5 @@ scsGameplayEventHandle(Train, TargetId);
 
 
 bool handleGpe(const scs_named_value_t* info,const gameplayType type );
-void log_line(scs_log_type_t type, const char* text, ...);
+
 #endif

@@ -20,12 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\log.cpp" />
+    <ClCompile Include="..\src\scs_gameplay_event_handlers.cpp" />
     <ClCompile Include="..\src\scs_telemetry.cpp" />
     <ClCompile Include="..\src\scs_config_handlers.cpp" />
     <ClCompile Include="..\src\sharedmemory.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\src\scs_gameplay_event_handlers.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0B739935-E779-415A-B76C-0073EAE72A81}</ProjectGuid>

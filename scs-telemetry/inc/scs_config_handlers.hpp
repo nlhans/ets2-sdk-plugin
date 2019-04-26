@@ -5,7 +5,7 @@
 #include "scssdk_telemetry.h"
 #include "eurotrucks2/scssdk_eut2.h"
 #include "eurotrucks2/scssdk_telemetry_eut2.h"
-
+#include "scs-telemetry-common.hpp"
 typedef struct scsConfigHandler_s
 {
 	char const *id;
@@ -104,16 +104,5 @@ scsConfigHandle(Job, SpecialJob);
 scsConfigHandle(Job, UnitCount);
 
 
-
-
-
-
-
-
-
-
-
-
-bool handleCfg(const scs_named_value_t* info,const configType type , const unsigned int trailer_id=NULL);
-void log_line(scs_log_type_t type, const char* text, ...);
+bool handleCfg(const scs_named_value_t* info,const configType type, const unsigned int trailer_id);
 #endif

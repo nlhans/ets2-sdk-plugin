@@ -128,7 +128,7 @@ const int length_configs[] = {
 
 // Function: handleCfg
 // brings the config attributes to the correct function
-bool handleCfg(const scs_named_value_t* current, const configType type, const unsigned int trailer_id = NULL) {
+bool handleCfg(const scs_named_value_t* info, const configType type, const unsigned int trailer_id ) {
     const scsConfigHandler_t* configs = nullptr;
     switch (type) {
     case substances:
@@ -155,12 +155,12 @@ bool handleCfg(const scs_named_value_t* current, const configType type, const un
     }
     auto i = configs;
     for (auto index = 0; index < length_configs[type]; index++) {
-        if (strcmp(i->id, current->name) == 0) {
+        if (strcmp(i->id, info->name) == 0) {
             if (telem_ptr) {
                 // Equal ID's; then handle this configuration
                 if (i->handle)
                     // TODO: FIND A BETTER WAY TO HANDLE THE TRAILER ID
-                    i->handle(current, trailer_id);
+                    i->handle(info, trailer_id);
             }
             return true;
         }
