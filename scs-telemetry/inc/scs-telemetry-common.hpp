@@ -528,7 +528,9 @@ struct{
 			scsTrailer_t trailer[10];
 		}trailer;
 
-	//----- END OF 14TH ZONE AT OFFSET 21180 -----//
+	//----- END OF 14TH ZONE AT OFFSET 21179 -----//
+	// TODO TEST SPACE
+	float addblueConsumption;
 } scsTelemetryMap_t;
 
 #endif

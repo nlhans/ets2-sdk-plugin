@@ -480,6 +480,7 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
         telem_ptr->special_b.onJob = true;
     }
     // no trailer which is connected with us? than delete information of the sdk and say there is no connected trailer
+    // TODO: update for new sdk (multiple trailers)
     if(type==trailer && is_empty) {
 		set_trailer_values_zero();
 		telem_ptr->special_b.trailerConnected = false;
@@ -839,6 +840,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	}
     // new in 1.35 so ets2 1.14 and ats 1.01
     if(check_version(14,1)) {
+		REGISTER_CHANNEL(TRUCK_CHANNEL_adblue_average_consumption, float, telem_ptr->addblueConsumption); //check if it is now working ;)
         // could be loaded don't know actually in the sdk not loaded in ets2 but in ats so may only need to add this and than it should work but need to test this for both
 		REGISTER_CHANNEL(JOB_CHANNEL_cargo_damage, float, telem_ptr->job_f.cargoDamage);
 

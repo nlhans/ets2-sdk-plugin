@@ -418,21 +418,21 @@ scsConfigHandle(Truck, LicensePlateCountryId) {
 
 #pragma region handleTrailer
 scsConfigHandle(Trailer, Id) {
-    strncpy_s(telem_ptr->config_s.trailerId, current->value.value_string.value, stringsize);
+    strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.id, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Trailer, CargoAccessoryId) {
-    strncpy_s(telem_ptr->config_s.cargoAcessoryId, current->value.value_string.value, stringsize);
+    strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.cargoAcessoryId, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Trailer, HookPosition) {
-    telem_ptr->config_fv.trailerHookPositionX = current->value.value_fvector.x;
-    telem_ptr->config_fv.trailerHookPositionY = current->value.value_fvector.y;
-    telem_ptr->config_fv.trailerHookPositionZ = current->value.value_fvector.z;
+    telem_ptr->trailer.trailer[trailer_id].con_fv.hookPositionX = current->value.value_fvector.x;
+    telem_ptr->trailer.trailer[trailer_id].con_fv.hookPositionY = current->value.value_fvector.y;
+    telem_ptr->trailer.trailer[trailer_id].con_fv.hookPositionZ = current->value.value_fvector.z;
 }
 
 scsConfigHandle(Trailer, WheelCount) {
-    telem_ptr->config_ui.trailerWheelCount = current->value.value_u32.value;
+    telem_ptr->trailer.trailer[trailer_id].con_ui.wheelCount = current->value.value_u32.value;
 }
 
 scsConfigHandle(Trailer, WheelOffset) {
@@ -440,9 +440,9 @@ scsConfigHandle(Trailer, WheelOffset) {
     const auto position = current->index;
     const auto ratio = current->value.value_fvector;
     if (position < WHEEL_SIZE) {
-        telem_ptr->config_fv.trailerWheelPositionX[position] = ratio.x;
-        telem_ptr->config_fv.trailerWheelPositionY[position] = ratio.y;
-        telem_ptr->config_fv.trailerWheelPositionZ[position] = ratio.z;
+        telem_ptr->trailer.trailer[trailer_id].con_fv.wheelPositionX[position] = ratio.x;
+        telem_ptr->trailer.trailer[trailer_id].con_fv.wheelPositionY[position] = ratio.y;
+        telem_ptr->trailer.trailer[trailer_id].con_fv.wheelPositionZ[position] = ratio.z;
     }
 }
 
@@ -451,7 +451,7 @@ scsConfigHandle(Trailer, WheelSteerable) {
     const auto ratio = current->value.value_bool;
 
     if (position < WHEEL_SIZE) {
-        telem_ptr->config_b.trailerWheelSteerable[position] = ratio.value;
+        telem_ptr->trailer.trailer[trailer_id].con_b.wheelSteerable[position] = ratio.value;
     }
 }
 
@@ -460,7 +460,7 @@ scsConfigHandle(Trailer, WheelSimulated) {
     const auto ratio = current->value.value_bool;
 
     if (position < WHEEL_SIZE) {
-        telem_ptr->config_b.trailerWheelSimulated[position] = ratio.value;
+        telem_ptr->trailer.trailer[trailer_id].con_b.wheelSimulated[position] = ratio.value;
     }
 }
 
@@ -469,7 +469,7 @@ scsConfigHandle(Trailer, WheelRadius) {
     const auto ratio = current->value.value_float;
 
     if (position < WHEEL_SIZE) {
-        telem_ptr->config_f.trailerWheelRadius[position] = ratio.value;
+        telem_ptr->trailer.trailer[trailer_id].con_f.wheelRadius[position] = ratio.value;
     }
 }
 
@@ -479,7 +479,7 @@ scsConfigHandle(Trailer, WheelPowered) {
     const auto ratio = current->value.value_bool;
 
     if (position < WHEEL_SIZE) {
-        telem_ptr->config_b.trailerWheelPowered[position] = ratio.value;
+        telem_ptr->trailer.trailer[trailer_id].con_b.wheelPowered[position] = ratio.value;
     }
 }
 
@@ -488,9 +488,35 @@ scsConfigHandle(Trailer, WheelLiftable) {
     const auto ratio = current->value.value_bool;
 
     if (position < WHEEL_SIZE) {
-        telem_ptr->config_b.trailerWheelLiftable[position] = ratio.value;
+        telem_ptr->trailer.trailer[trailer_id].con_b.wheelLiftable[position] = ratio.value;
     }
 }
+
+scsConfigHandle(Trailer, BodyType) {
+	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.bodyType, current->value.value_string.value, stringsize);
+}
+scsConfigHandle(Trailer, BrandId) {
+	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.brandId, current->value.value_string.value, stringsize);
+}
+scsConfigHandle(Trailer, Brand) {
+	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.brand, current->value.value_string.value, stringsize);
+}
+scsConfigHandle(Trailer, Name) {
+	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.name, current->value.value_string.value, stringsize);
+}
+scsConfigHandle(Trailer, ChainType) {
+	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.chainType, current->value.value_string.value, stringsize);
+}
+scsConfigHandle(Trailer, LicensePlate) {
+	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlate, current->value.value_string.value, stringsize);
+}
+scsConfigHandle(Trailer, LicensePlateCountry) {
+	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlateCountry, current->value.value_string.value, stringsize);
+}
+scsConfigHandle(Trailer, LicensePlateCountryId) {
+	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlateCountryId, current->value.value_string.value, stringsize);
+}
+
 #pragma endregion All handler for the id trailer
 
 

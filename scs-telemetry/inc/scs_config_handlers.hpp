@@ -74,6 +74,15 @@ scsConfigHandle(Trailer, WheelSimulated);
 scsConfigHandle(Trailer, WheelRadius);
 scsConfigHandle(Trailer, WheelPowered);
 scsConfigHandle(Trailer, WheelLiftable);
+scsConfigHandle(Trailer, BodyType);
+scsConfigHandle(Trailer, BrandId);
+scsConfigHandle(Trailer, Brand);
+scsConfigHandle(Trailer, Name);
+scsConfigHandle(Trailer, ChainType);
+scsConfigHandle(Trailer, LicensePlate);
+scsConfigHandle(Trailer, LicensePlateCountry);
+scsConfigHandle(Trailer, LicensePlateCountryId);
+
 
 // Job
 scsConfigHandle(Job, CargoId);
