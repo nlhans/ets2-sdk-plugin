@@ -33,7 +33,9 @@
  * RegisterSpecificChannel allows for your own handler name, without the telemetry_store_ prefix.
  */
 #define REGISTER_CHANNEL(name, type, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ));
+#define REGISTER_CHANNEL_TRAILER(id, name, type, to) version_params->register_for_channel("trailer."#id"."#name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ));
 #define REGISTER_CHANNEL_INDEX(name, type, to, index) version_params->register_for_channel(SCS_TELEMETRY_##name, index, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ));
+#define REGISTER_CHANNEL_TRAILER_INDEX(id, name, type, to, index) version_params->register_for_channel("trailer."#id"."#name, index, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ));
 #define REGISTER_SPECIFIC_CHANNEL(name, type, handler,to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, handler, &( to ));
 
 SharedMemory* telem_mem;
@@ -832,15 +834,51 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 		);
 		REGISTER_CHANNEL_INDEX(TRAILER_CHANNEL_wheel_rotation, float, telem_ptr->trailer.trailer[0].com_f.wheelRotation[i], i
 		); 
-	    //REGISTER_CHANNEL_INDEX(TRAILER_CHANNEL_wheel_lift, float, telem_ptr->trailer.trailer[0].com_f.wheelLift[i], i);
-		//REGISTER_CHANNEL_INDEX(TRAILER_CHANNEL_wheel_lift_offset, float, telem_ptr->trailer.trailer[0].com_f.wheelLiftOffset[i], i);
 		
 	}
 	}
     // new in 1.35 so ets2 1.14 and ats 1.01
     if(check_version(14,1)) {
         // could be loaded don't know actually in the sdk not loaded in ets2 but in ats so may only need to add this and than it should work but need to test this for both
-		REGISTER_CHANNEL(SCS_TELEMETRY_JOB_CHANNEL_cargo_damage, float, telem_ptr->job_f.cargoDamage);
+		REGISTER_CHANNEL(JOB_CHANNEL_cargo_damage, float, telem_ptr->job_f.cargoDamage);
+
+        for(auto i = 0;i<10;i++) {
+			char buff[1];
+            snprintf(buff, sizeof(buff), "%i", i);
+			REGISTER_CHANNEL_TRAILER(i,"connected", bool, telem_ptr->trailer.trailer[i].com_b.attached);
+			REGISTER_CHANNEL_TRAILER(i, "cargo.damage", float, telem_ptr->trailer.trailer[i].com_f.cargoDamage);
+
+
+
+			REGISTER_CHANNEL_TRAILER(i, "world.placement", dplacement, telem_ptr->trailer.trailer[i].com_dp.worldX);
+
+			REGISTER_CHANNEL_TRAILER(i, "velocity.linear", fvector, telem_ptr->trailer.trailer[i].com_fv.linearVelocityX);
+			REGISTER_CHANNEL_TRAILER(i, "velocity.angular", fvector, telem_ptr->trailer.trailer[i].com_fv.angularVelocityX);
+			REGISTER_CHANNEL_TRAILER(i, "acceleration.linear", fvector, telem_ptr->trailer.trailer[i].com_fv.linearAccelerationX
+			);
+			REGISTER_CHANNEL_TRAILER(i, "aceleration.angular", fvector, telem_ptr->trailer.trailer[i].com_fv.angularAccelerationX
+			);
+
+			REGISTER_CHANNEL_TRAILER(i, "wear.chassis", float, telem_ptr->trailer.trailer[i].com_f.wearChassis);
+			REGISTER_CHANNEL_TRAILER(i, "wear.wheels", float, telem_ptr->trailer.trailer[i].com_f.wearWheels);
+			for (auto j = scs_u32_t(0); j < WHEEL_SIZE; j++) {
+				REGISTER_CHANNEL_TRAILER_INDEX(i,"wheel.suspensions.deflection", float, telem_ptr->trailer.trailer[i].com_f.wheelSuspDeflection[j], j);
+				REGISTER_CHANNEL_TRAILER_INDEX(i, "wheel.on_ground", bool, telem_ptr->trailer.trailer[i].com_b.wheelOnGround[j], j
+				);
+				REGISTER_CHANNEL_TRAILER_INDEX(i, "wheel.subtsancte", u32, telem_ptr->trailer.trailer[i].com_ui.wheelSubstance[j], j
+				);
+				REGISTER_CHANNEL_TRAILER_INDEX(i, "wheel.angular_velocity", float, telem_ptr->trailer.trailer[i].com_f.wheelVelocity[j], j
+				);
+				REGISTER_CHANNEL_TRAILER_INDEX(i, "wheel.steering", float, telem_ptr->trailer.trailer[i].com_f.wheelSteering[j], j
+				);
+				REGISTER_CHANNEL_TRAILER_INDEX(i, "wheel.rotation", float, telem_ptr->trailer.trailer[i].com_f.wheelRotation[j],j
+				);
+				REGISTER_CHANNEL_TRAILER_INDEX(i, "wheel.lift", float, telem_ptr->trailer.trailer[0].com_f.wheelLift[j],j);
+				REGISTER_CHANNEL_TRAILER_INDEX(i, "wheel.lift.offset", float, telem_ptr->trailer.trailer[0].com_f.wheelLiftOffset[j], j);
+
+			}
+        }
+		
     }
 
     // Set the structure with defaults.
