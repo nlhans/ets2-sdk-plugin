@@ -36,6 +36,13 @@ namespace SCSSdkClient {
 
         private bool wasOnJob;
         private bool wasConnected;
+        private bool cancelled;
+        private bool delivered;
+        private bool fined;
+        private bool tollgate;
+        private bool ferry;
+        private bool train;
+
 
         public SCSSdkTelemetry() => Setup(DefaultSharedMemoryMap, DefaultUpdateInterval);
 
@@ -55,6 +62,12 @@ namespace SCSSdkClient {
         public event EventHandler JobFinished;
         public event EventHandler TrailerConnected;
         public event EventHandler TrailerDisconnected;
+        public event EventHandler JobCancelled;
+        public event EventHandler JobDelivered;
+        public event EventHandler Fined;
+        public event EventHandler Tollgate;
+        public event EventHandler Ferry;
+        public event EventHandler Train;
 
         public void pause() {
             _updateTimer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -102,7 +115,7 @@ namespace SCSSdkClient {
             var scsTelemetry = SharedMemory.Update<SCSTelemetry>();
             var time = scsTelemetry.Timestamp;
             Data?.Invoke(scsTelemetry, time != lastTime);
-
+          //TODO: make it nicer thats a lot of code for such less work
             // Job close & start events
             if (wasFinishingJob != scsTelemetry.SpecialEventsValues.JobFinished) {
                 wasFinishingJob = scsTelemetry.SpecialEventsValues.JobFinished;
@@ -129,7 +142,61 @@ namespace SCSSdkClient {
                 }
             }
 
-            
+            if (cancelled != scsTelemetry.SpecialEventsValues.JobCancelled)
+            {
+                cancelled = scsTelemetry.SpecialEventsValues.JobCancelled;
+                if (scsTelemetry.SpecialEventsValues.JobCancelled)
+                {
+                    JobCancelled?.Invoke(this, new EventArgs());
+                }
+            }
+
+            if (delivered != scsTelemetry.SpecialEventsValues.JobDelivered)
+            {
+                delivered = scsTelemetry.SpecialEventsValues.JobDelivered;
+                if (scsTelemetry.SpecialEventsValues.JobDelivered)
+                {
+                    JobDelivered?.Invoke(this, new EventArgs());
+                }
+            }
+
+            if (fined != scsTelemetry.SpecialEventsValues.Fined)
+            {
+                fined = scsTelemetry.SpecialEventsValues.Fined;
+                if (scsTelemetry.SpecialEventsValues.Fined)
+                {
+                    Fined?.Invoke(this, new EventArgs());
+                }
+            }
+
+            if (tollgate != scsTelemetry.SpecialEventsValues.Tollgate)
+            {
+                tollgate = scsTelemetry.SpecialEventsValues.Tollgate;
+                if (scsTelemetry.SpecialEventsValues.Tollgate)
+                {
+                    Tollgate?.Invoke(this, new EventArgs());
+                }
+            }
+
+            if (ferry != scsTelemetry.SpecialEventsValues.Ferry)
+            {
+                ferry = scsTelemetry.SpecialEventsValues.Ferry;
+                if (scsTelemetry.SpecialEventsValues.Ferry)
+                {
+                    Ferry?.Invoke(this, new EventArgs());
+                }
+            }
+
+            if (train != scsTelemetry.SpecialEventsValues.Train)
+            {
+                train = scsTelemetry.SpecialEventsValues.Train;
+                if (scsTelemetry.SpecialEventsValues.Train)
+                {
+                    Train?.Invoke(this, new EventArgs());
+                }
+            }
+
+
             lastTime = time;
         }
 #if LOGGING

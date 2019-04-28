@@ -20,11 +20,12 @@ namespace SCSSdkClient.Object {
             TruckValues = new Truck();
             JobValues = new Job();
             CommonValues = new Common();
-            TrailerValues = new Trailer();
+            //TrailerValues = new Trailer();
             ControlValues = new Control();
             NavigationValues = new Navigation();
             SpecialEventsValues = new SpecialEvents();
             Substances = new List<Substance>();
+            GamePlay = new GamePlayEvents();
         }
 
 
@@ -109,9 +110,9 @@ namespace SCSSdkClient.Object {
         public Truck TruckValues { get; internal set; }
 
         /// <summary>
-        ///     Contains values of the Trailer
+        ///     Contains values of the Trailers
         /// </summary>
-        public Trailer TrailerValues { get; internal set; }
+        public Trailer[] TrailerValues { get; internal set; }
 
         /// <summary>
         ///     Contains values of the actual job
@@ -136,5 +137,9 @@ namespace SCSSdkClient.Object {
         ///     Contains string values to the substances used in values like Truck.Current.Wheels.Substance
         /// </summary>
         public List<Substance> Substances { get; internal set; }
+
+        public uint MaxTrailerCount { get; internal set; }
+
+        public GamePlayEvents GamePlay { get; internal set; }
     }
 }

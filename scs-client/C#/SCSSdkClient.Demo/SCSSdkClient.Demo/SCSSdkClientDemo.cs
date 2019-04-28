@@ -20,6 +20,7 @@ namespace SCSSdkClient.Demo {
             Telemetry.JobStarted += TelemetryOnJobStarted;
             Telemetry.TrailerConnected += TelemetryTrailerConnected;
             Telemetry.TrailerDisconnected += TelemetryTrailerDisconnected;
+         
             if (Telemetry.Error != null) {
                 lbGeneral.Text =
                     "General info:\r\nFailed to open memory map " +
@@ -40,6 +41,19 @@ namespace SCSSdkClient.Demo {
             MessageBox.Show("A Trailer is now connected to you");
         private void TelemetryTrailerDisconnected(object sender, EventArgs e) =>
             MessageBox.Show("A Trailer is now not more connected to you");
+
+        private void TelemetryJobCancelled(object sender, EventArgs e) =>
+            MessageBox.Show("Job Cancelled");
+        private void TelemetryJobDelivered(object sender, EventArgs e) =>
+            MessageBox.Show("Job Delivered");
+        private void TelemetryFined(object sender, EventArgs e) =>
+            MessageBox.Show("Fined");
+        private void TelemetryTollgate(object sender, EventArgs e) =>
+            MessageBox.Show("Tollgate");
+        private void TelemetryFerry(object sender, EventArgs e) =>
+            MessageBox.Show("Ferry");
+        private void TelemetryTrain(object sender, EventArgs e) =>
+            MessageBox.Show("Train");
 
         private void Telemetry_Data(SCSTelemetry data, bool updated) {
            

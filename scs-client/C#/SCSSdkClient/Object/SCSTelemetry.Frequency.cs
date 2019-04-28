@@ -17,6 +17,17 @@ namespace SCSSdkClient.Object {
             ///     Represented in data of in-game minutes
             /// </summary>
             public DateTime Date => MinutesToDate(Value);
+
+            public Frequency(int i) {
+                Value = i;
+            }
+
+            public Frequency() {
+
+            }
+            public static implicit operator Frequency(int i) {
+                return new Frequency(i);
+            }
  
         }
     }

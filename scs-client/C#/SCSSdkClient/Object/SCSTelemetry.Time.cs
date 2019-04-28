@@ -18,7 +18,18 @@ namespace SCSSdkClient.Object {
             /// </summary>
             public DateTime Date => MinutesToDate(Value);
 
-             
+            public Time(uint i) {
+                Value = i;
+            }
+
+            public Time() {
+
+            }
+            public static implicit operator Time(uint i) {
+                return new Time(i);
+            }
+
         }
+
     }
 }

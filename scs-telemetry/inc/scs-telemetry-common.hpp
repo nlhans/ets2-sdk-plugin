@@ -507,9 +507,17 @@ struct{
     struct {
 		bool onJob;
 		bool jobFinished;
-		bool trailerConnected;
+		bool trailerConnected; 
     }special_b;
+    struct {
+		bool jobCancelled;
+		bool jobDelivered;
+		bool fined;
+		bool tollgate;
+		bool ferry;
+		bool train;
 
+    };
 
 	char buffer_special[97];
 	//----- END OF 12TH ZONE AT OFFSET 4299 -----//

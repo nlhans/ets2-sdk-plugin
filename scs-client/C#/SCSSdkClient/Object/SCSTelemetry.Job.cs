@@ -34,6 +34,11 @@ namespace SCSSdkClient.Object {
             /// **INFORMATION**
             /// <!---->
             public Frequency RemainingDeliveryTime { get; protected internal set; }
+            public bool CargoLoaded { get; internal set; }
+            public bool SpecialJob { get; internal set; }
+            public JobMarket Market { get; internal set; }
+
+           
 
             /// <summary>
             ///     Vargo values of an job
@@ -91,7 +96,7 @@ namespace SCSSdkClient.Object {
             /// <summary>
             ///     Reward in internal game-specific currency.
             /// </summary>
-            public long Income { get; internal set; }
+            public ulong Income { get; internal set; }
 
             /// <summary>
             ///     Cargo Values
@@ -115,10 +120,13 @@ namespace SCSSdkClient.Object {
                 public string Name { get; internal set; }
 
                 /// <summary>
-                ///     Name of cargo accessory for internal use by code.
-                ///     Limited to C-identifier characters and dots.
+                ///     How many units of the cargo the job consist of.
                 /// </summary>
-                public string AccessoryId { get; internal set; }
+                public uint UnitCount { get; internal set; }
+
+                public float CargoDamage { get; internal set; }
+
+               
             }
         }
     }

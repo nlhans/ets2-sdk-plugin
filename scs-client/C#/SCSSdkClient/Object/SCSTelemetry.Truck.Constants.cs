@@ -57,6 +57,9 @@
                 /// </summary>
                 public string Name { get; internal set; }
 
+                public string LicensePlate { get; internal set; }
+                public string LicensePlateCountryId { get; internal set; }
+                public string LicensePlateCountry { get; internal set; }
                 /// <summary>
                 ///     Gear, Retarder, etc.
                 /// </summary>
