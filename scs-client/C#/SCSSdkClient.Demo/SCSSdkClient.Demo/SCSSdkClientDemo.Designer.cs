@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SCSSdkClientDemo));
             this.hgf = new System.Windows.Forms.TabControl();
             this.tabAbout = new SCSSdkClient.Demo.CustomTabPage();
+            this.label1 = new System.Windows.Forms.Label();
             this.lbGeneral = new System.Windows.Forms.RichTextBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.lblDemo = new System.Windows.Forms.Label();
@@ -48,7 +49,8 @@
             this.navigation = new System.Windows.Forms.RichTextBox();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.substances = new System.Windows.Forms.RichTextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.gameplayevent = new System.Windows.Forms.RichTextBox();
             this.hgf.SuspendLayout();
             this.tabAbout.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -58,6 +60,7 @@
             this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
+            this.tabPage8.SuspendLayout();
             this.SuspendLayout();
             // 
             // hgf
@@ -70,6 +73,7 @@
             this.hgf.Controls.Add(this.tabPage5);
             this.hgf.Controls.Add(this.tabPage6);
             this.hgf.Controls.Add(this.tabPage7);
+            this.hgf.Controls.Add(this.tabPage8);
             this.hgf.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hgf.Location = new System.Drawing.Point(0, 0);
             this.hgf.Name = "hgf";
@@ -90,6 +94,15 @@
             this.tabAbout.TabIndex = 0;
             this.tabAbout.Text = "About";
             this.tabAbout.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(30, 191);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "label1";
             // 
             // lbGeneral
             // 
@@ -257,14 +270,25 @@
             this.substances.TabIndex = 5;
             this.substances.Text = "";
             // 
-            // label1
+            // tabPage8
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 191);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "label1";
+            this.tabPage8.Controls.Add(this.gameplayevent);
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage8.Size = new System.Drawing.Size(587, 595);
+            this.tabPage8.TabIndex = 8;
+            this.tabPage8.Text = "GameplayEvents";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // gameplayevent
+            // 
+            this.gameplayevent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gameplayevent.Location = new System.Drawing.Point(3, 3);
+            this.gameplayevent.Name = "gameplayevent";
+            this.gameplayevent.Size = new System.Drawing.Size(581, 589);
+            this.gameplayevent.TabIndex = 6;
+            this.gameplayevent.Text = "";
             // 
             // SCSSdkClientDemo
             // 
@@ -285,6 +309,7 @@
             this.tabPage5.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
+            this.tabPage8.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -311,6 +336,8 @@
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.RichTextBox substances;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.RichTextBox gameplayevent;
     }
 }
 

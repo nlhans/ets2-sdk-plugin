@@ -179,7 +179,7 @@ scsConfigHandle(Substances, Id) {
 		logger::out << "Substance log" << '\n';
 		logger::out << "current value of that substance " <<  telem_ptr->substances.substance[current->index] << '\n';
 #endif
-        strncpy_s(telem_ptr->substances.substance[current->index], current->value.value_string.value, stringsize);
+        strncpy(telem_ptr->substances.substance[current->index], current->value.value_string.value, stringsize);
 #if LOGGING
 		logger::out << "new value of that substance " <<  telem_ptr->substances.substance[current->index] << '\n';
 		logger::out << "field value of that substance " << current->value.value_string.value << '\n';
@@ -194,7 +194,7 @@ scsConfigHandle(Substances, Id) {
 // Function: handleControlsShifterType
 // handle the Controls ShifterType and write it to the memory
 scsConfigHandle(Controls, ShifterType) {
-    strncpy_s(telem_ptr->config_s.shifterType, current->value.value_string.value, 10);
+    strncpy(telem_ptr->config_s.shifterType,current->value.value_string.value,16);
 }
 #pragma endregion All handler of the id controls
 
@@ -235,19 +235,19 @@ scsConfigHandle(HShifter, Bitmask) {
 
 #pragma region handleTruck
 scsConfigHandle(Truck, BrandId) {
-    strncpy_s(telem_ptr->config_s.truckBrandId, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.truckBrandId, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Truck, Brand) {
-    strncpy_s(telem_ptr->config_s.truckBrand, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.truckBrand, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Truck, Id) {
-    strncpy_s(telem_ptr->config_s.truckId, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.truckId, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Truck, Name) {
-    strncpy_s(telem_ptr->config_s.truckName, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.truckName, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Truck, FuelCapacity) {
@@ -404,25 +404,25 @@ scsConfigHandle(Truck, GearReverseRatio) {
 }
 
 scsConfigHandle(Truck, LicensePlate) {
-	strncpy_s(telem_ptr->config_s.truckLicensePlate, current->value.value_string.value, stringsize);
+	strncpy(telem_ptr->config_s.truckLicensePlate, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Truck, LicensePlateCountry) {
-	strncpy_s(telem_ptr->config_s.truckLicensePlateCountry, current->value.value_string.value, stringsize);
+	strncpy(telem_ptr->config_s.truckLicensePlateCountry, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Truck, LicensePlateCountryId) {
-	strncpy_s(telem_ptr->config_s.truckLicensePlateCountryId, current->value.value_string.value, stringsize);
+	strncpy(telem_ptr->config_s.truckLicensePlateCountryId, current->value.value_string.value, stringsize);
 }
 #pragma endregion  All handler of the id truck
 
 #pragma region handleTrailer
 scsConfigHandle(Trailer, Id) {
-    strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.id, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.id, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Trailer, CargoAccessoryId) {
-    strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.cargoAcessoryId, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.cargoAcessoryId, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Trailer, HookPosition) {
@@ -493,28 +493,28 @@ scsConfigHandle(Trailer, WheelLiftable) {
 }
 
 scsConfigHandle(Trailer, BodyType) {
-	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.bodyType, current->value.value_string.value, stringsize);
+	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.bodyType, current->value.value_string.value, stringsize);
 }
 scsConfigHandle(Trailer, BrandId) {
-	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.brandId, current->value.value_string.value, stringsize);
+	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.brandId, current->value.value_string.value, stringsize);
 }
 scsConfigHandle(Trailer, Brand) {
-	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.brand, current->value.value_string.value, stringsize);
+	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.brand, current->value.value_string.value, stringsize);
 }
 scsConfigHandle(Trailer, Name) {
-	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.name, current->value.value_string.value, stringsize);
+	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.name, current->value.value_string.value, stringsize);
 }
 scsConfigHandle(Trailer, ChainType) {
-	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.chainType, current->value.value_string.value, stringsize);
+	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.chainType, current->value.value_string.value, stringsize);
 }
 scsConfigHandle(Trailer, LicensePlate) {
-	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlate, current->value.value_string.value, stringsize);
+	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlate, current->value.value_string.value, stringsize);
 }
 scsConfigHandle(Trailer, LicensePlateCountry) {
-	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlateCountry, current->value.value_string.value, stringsize);
+	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlateCountry, current->value.value_string.value, stringsize);
 }
 scsConfigHandle(Trailer, LicensePlateCountryId) {
-	strncpy_s(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlateCountryId, current->value.value_string.value, stringsize);
+	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlateCountryId, current->value.value_string.value, stringsize);
 }
 
 #pragma endregion All handler for the id trailer
@@ -522,11 +522,11 @@ scsConfigHandle(Trailer, LicensePlateCountryId) {
 
 #pragma region handleJob
 scsConfigHandle(Job, CargoId) {
-    strncpy_s(telem_ptr->config_s.cargoId, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.cargoId, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Job, Cargo) {
-    strncpy_s(telem_ptr->config_s.cargo, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.cargo, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Job, CargoMass) {
@@ -534,37 +534,37 @@ scsConfigHandle(Job, CargoMass) {
 }
 
 scsConfigHandle(Job, CityDstId) {
-    strncpy_s(telem_ptr->config_s.cityDstId, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.cityDstId, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Job, CityDst) {
-    strncpy_s(telem_ptr->config_s.cityDst, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.cityDst, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Job, CitySrcId) {
-    strncpy_s(telem_ptr->config_s.citySrcId, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.citySrcId, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Job, CitySrc) {
-    strncpy_s(telem_ptr->config_s.citySrc, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.citySrc, current->value.value_string.value, stringsize);
 }
 
 
 scsConfigHandle(Job, CompDstId) {
-    strncpy_s(telem_ptr->config_s.compDstId, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.compDstId, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Job, CompDst) {
-    strncpy_s(telem_ptr->config_s.compDst, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.compDst, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Job, CompSrcId) {
-    strncpy_s(telem_ptr->config_s.compSrcId, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.compSrcId, current->value.value_string.value, stringsize);
 }
 
 
 scsConfigHandle(Job, CompSrc) {
-    strncpy_s(telem_ptr->config_s.compSrc, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.compSrc, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Job, Income) {
@@ -579,7 +579,7 @@ scsConfigHandle(Job, IsCargoLoaded) {
 	telem_ptr->config_b.isCargoLoaded = current->value.value_bool.value;
 }
 scsConfigHandle(Job, JobMarket) {
-	strncpy_s(telem_ptr->config_s.jobMarket, current->value.value_string.value, 20);
+	strncpy(telem_ptr->config_s.jobMarket, current->value.value_string.value, 20);
 }
 scsConfigHandle(Job, SpecialJob) {
 	telem_ptr->config_b.specialJob = current->value.value_bool.value;

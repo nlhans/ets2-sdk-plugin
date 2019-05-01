@@ -269,7 +269,11 @@ void set_trailer_values_zero(unsigned int trailer_id=0) {
 
 	telem_ptr->trailer.trailer[trailer_id].com_dp.worldX = 0;
 	telem_ptr->trailer.trailer[trailer_id].com_dp.worldY = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_dp.worldZ = 0; 
+	telem_ptr->trailer.trailer[trailer_id].com_dp.worldZ = 0;
+
+	telem_ptr->trailer.trailer[trailer_id].com_dp.rotationX = 0;
+	telem_ptr->trailer.trailer[trailer_id].com_dp.rotationY = 0;
+	telem_ptr->trailer.trailer[trailer_id].com_dp.rotationZ = 0;
 
 	telem_ptr->trailer.trailer[trailer_id].con_ui.wheelCount = 0;
 
@@ -351,8 +355,7 @@ SCSAPI_VOID telemetry_pause(const scs_event_t event, const void*const UNUSED(eve
 	logger::flush();
 #endif
     if (telem_ptr != nullptr) {
-        telem_ptr->paused = event == SCS_TELEMETRY_EVENT_paused;
-     
+        telem_ptr->paused = event == SCS_TELEMETRY_EVENT_paused;		
     }
 }
 

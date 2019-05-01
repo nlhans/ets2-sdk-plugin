@@ -104,7 +104,7 @@ namespace SCSSdkClient {
 
             var tsInterval = new TimeSpan(0, 0, 0, 0, interval);
 
-            _updateTimer = new Timer(_updateTimer_Elapsed, null, tsInterval, tsInterval);
+            _updateTimer = new Timer(_updateTimer_Elapsed, null, tsInterval.Add(tsInterval), tsInterval);
 #if LOGGING
             Log.Write("Every thing is set up correctly and the timer was started");
 #endif

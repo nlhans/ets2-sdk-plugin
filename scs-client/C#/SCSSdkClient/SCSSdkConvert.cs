@@ -20,7 +20,7 @@ namespace SCSSdkClient {
  
 
         private readonly int[] _offsetAreas =
-            {0, 40, 500, 700, 1500, 1640, 2000, 2100, 2200, 4000, 4100, 4200, 4300, 5900};
+            {0, 40, 500, 700, 1500, 1640, 2000, 2200, 2300, 4000, 4200, 4300, 4400, 6000};
 
         private int _offsetArea;
         private const int StringSize = 64;
@@ -286,7 +286,7 @@ namespace SCSSdkClient {
             retData.JobValues.CitySource = GetString();
             retData.JobValues.CompanySourceId = GetString();
             retData.JobValues.CompanySource = GetString();
-            var tempShift = GetString(16);
+            var tempShift = GetString(16); 
             if (tempShift?.Length > 0) {
                 retData.TruckValues.ConstantsValues.MotorValues.ShifterTypeValue = tempShift.ToEnum<ShifterType>();
             }
@@ -340,7 +340,7 @@ namespace SCSSdkClient {
             NextOffsetArea();
             #endregion
 
-            #region 112TH ZONE
+            #region 12TH ZONE
 
             retData.SpecialEventsValues.OnJob = GetBool();
             retData.SpecialEventsValues.JobFinished = GetBool();
@@ -630,7 +630,7 @@ namespace SCSSdkClient {
             #region double placement Region
 
             trailer.Position = GetDPlacement();
-            #endregion 5Th 864 - 887
+            #endregion 5Th 864 - 911
 
             #region string Region
 
@@ -646,7 +646,7 @@ namespace SCSSdkClient {
             trailer.LicensePlateCountryId = GetString(); 
 
 
-            #endregion 6th Zone 888 - 1527
+            #endregion 6th Zone 912 - 1551
             return trailer;
         }
     }

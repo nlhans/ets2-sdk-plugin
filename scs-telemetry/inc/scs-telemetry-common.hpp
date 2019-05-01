@@ -113,10 +113,13 @@ typedef struct scsTrailer_s{ // Size: 1528
 		double worldX;
 		double worldY;
 		double worldZ;
+		double rotationX;
+		double rotationY;
+		double rotationZ;
 	}com_dp;
 
-	//----- END OF 5TH ZONE AT OFFSET 887 -----//
-		//----- START OF 6TH ZONE AT OFFSET 888 -----//	
+	//----- END OF 5TH ZONE AT OFFSET 911 -----//
+		//----- START OF 6TH ZONE AT OFFSET 912 -----//	
 	struct{		
 		char id[stringsize];
 		char cargoAcessoryId[stringsize];
@@ -421,21 +424,24 @@ typedef struct scsTelemetryMap_s
 	    float headOffsetrotationY;
 	    float headOffsetrotationZ;
 	}truck_fp;
-	char buffer_fp[52];
-	//----- END OF 7TH ZONE AT OFFSET 2099 -----//
+	char buffer_fp[152];
+	//----- END OF 7TH ZONE AT OFFSET 2199 -----//
 
-	//----- START OF 8TH ZONE AT OFFSET 2100 -----//
+	//----- START OF 8TH ZONE AT OFFSET 2200 -----//
 	// The 8th zone contains dplacement and is sorted in sub structures
 
 	struct {
 		double coordinateX;
 		double coordinateY;
 		double coordinateZ;
+		double rotationX;
+		double rotationY;
+		double rotationZ;
 	}truck_dp;
-	char buffer_dp[76];
-	//----- END OF 8TH ZONE AT OFFSET 2199 -----//
+	char buffer_dp[52];
+	//----- END OF 8TH ZONE AT OFFSET 2299 -----//
 
-	//----- START OF 9TH ZONE AT OFFSET 2200 -----//
+	//----- START OF 9TH ZONE AT OFFSET 2300 -----//
 	// The 9th zone contains strings and is sorted in sub structures
 
 	struct {
@@ -475,7 +481,7 @@ struct{
 	char trainTargetId[stringsize];
 }gameplay_s;
 
-	char buffer_s[136];
+	char buffer_s[36];
 	//----- END OF 9TH ZONE AT OFFSET 3999 -----//
 
 	//----- START OF 10TH ZONE AT OFFSET 4000 -----//
@@ -484,10 +490,10 @@ struct{
     struct {
 		unsigned long long jobIncome;
     }config_ull;
-	char buffer_ull[92];
-	//----- END OF 10TH ZONE AT OFFSET 4099 -----//
+	char buffer_ull[192];
+	//----- END OF 10TH ZONE AT OFFSET 4199 -----//
 
-		//----- START OF 11TH ZONE AT OFFSET 4100 -----//
+		//----- START OF 11TH ZONE AT OFFSET 4200 -----//
 	// The 11th zone contains long long and is sorted in sub structures
 
     struct {
@@ -499,9 +505,9 @@ struct{
 		long long trainPayAmount;
     }gameplay_ll;
 	char buffer_ll[52];
-	//----- END OF 11TH ZONE AT OFFSET 4199 -----//
+	//----- END OF 11TH ZONE AT OFFSET 4299 -----//
 
-	//----- START OF 12TH ZONE AT OFFSET 4200 -----//
+	//----- START OF 12TH ZONE AT OFFSET 4300 -----//
 	// The 12th zone contains special events and is sorted in sub structures
 
     struct {
@@ -519,25 +525,25 @@ struct{
 
     };
 
-	char buffer_special[97];
-	//----- END OF 12TH ZONE AT OFFSET 4299 -----//
+	char buffer_special[91];
+	//----- END OF 12TH ZONE AT OFFSET 4399 -----//
 
-	//----- START OF 13TH ZONE AT OFFSET 4300 -----//
+	//----- START OF 13TH ZONE AT OFFSET 4400 -----//
 	// The 13th zone contains substances, place for 25 of them
 
 	struct {
 		char substance[SUBSTANCE_SIZE][stringsize];
 
 	}substances;
-	//----- END OF 13TH ZONE AT OFFSET 5899 -----//
+	//----- END OF 13TH ZONE AT OFFSET 5999 -----//
 
-	//----- START OF 14TH ZONE AT OFFSET 5900 -----//
-	// The 14th zone contains values of up to 10 trailers (each have a size of 1528)
+	//----- START OF 14TH ZONE AT OFFSET 6000 -----//
+	// The 14th zone contains values of up to 10 trailers (each have a size of 1552)
 		struct{
 			scsTrailer_t trailer[10];
 		}trailer;
 
-	//----- END OF 14TH ZONE AT OFFSET 21179 -----//
+	//----- END OF 14TH ZONE AT OFFSET 22420 -----//
 	// TODO TEST SPACE
 	float addblueConsumption;
 } scsTelemetryMap_t;

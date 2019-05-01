@@ -20,7 +20,15 @@ namespace SCSSdkClient.Demo {
             Telemetry.JobStarted += TelemetryOnJobStarted;
             Telemetry.TrailerConnected += TelemetryTrailerConnected;
             Telemetry.TrailerDisconnected += TelemetryTrailerDisconnected;
-         
+
+            Telemetry.JobCancelled += TelemetryJobCancelled;
+            Telemetry.JobDelivered += TelemetryJobDelivered;
+            Telemetry.Fined += TelemetryFined;
+            Telemetry.Tollgate += TelemetryTollgate;
+            Telemetry.Ferry += TelemetryFerry;
+            Telemetry.Train += TelemetryTrain;
+
+
             if (Telemetry.Error != null) {
                 lbGeneral.Text =
                     "General info:\r\nFailed to open memory map " +
@@ -90,8 +98,9 @@ namespace SCSSdkClient.Demo {
                 control.Text = JsonConvert.SerializeObject(data.ControlValues, Formatting.Indented);
                 navigation.Text = JsonConvert.SerializeObject(data.NavigationValues, Formatting.Indented);
                 substances.Text = JsonConvert.SerializeObject(data.Substances, Formatting.Indented);
+                gameplayevent.Text = JsonConvert.SerializeObject(data.GamePlay, Formatting.Indented);
 
-                 
+
             } catch (Exception ex) {
                 // ignored atm i found no proper way to shut the telemetry down and down call this anymore when this or another thing is already disposed
                 Console.WriteLine("Telemetry was closed: "+ ex); 
