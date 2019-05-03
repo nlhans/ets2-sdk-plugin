@@ -18,8 +18,6 @@ namespace SCSSdkClient.Demo {
             Telemetry.Data += Telemetry_Data;
             Telemetry.JobFinished += TelemetryOnJobFinished;
             Telemetry.JobStarted += TelemetryOnJobStarted;
-            Telemetry.TrailerConnected += TelemetryTrailerConnected;
-            Telemetry.TrailerDisconnected += TelemetryTrailerDisconnected;
 
             Telemetry.JobCancelled += TelemetryJobCancelled;
             Telemetry.JobDelivered += TelemetryJobDelivered;
@@ -45,11 +43,6 @@ namespace SCSSdkClient.Demo {
 
         private void TelemetryOnJobStarted(object sender, EventArgs e) =>
             MessageBox.Show("Just started job OR loaded game with active.");
-        private void TelemetryTrailerConnected(object sender, EventArgs e) =>
-            MessageBox.Show("A Trailer is now connected to you");
-        private void TelemetryTrailerDisconnected(object sender, EventArgs e) =>
-            MessageBox.Show("A Trailer is now not more connected to you");
-
         private void TelemetryJobCancelled(object sender, EventArgs e) =>
             MessageBox.Show("Job Cancelled");
         private void TelemetryJobDelivered(object sender, EventArgs e) =>
@@ -87,9 +80,7 @@ namespace SCSSdkClient.Demo {
                                  "\tOn Job:\n" +
                                  $"\t\t\t{data.SpecialEventsValues.OnJob}\n" +
                                  "\tJob Finished:\n" +
-                                 $"\t\t\t{data.SpecialEventsValues.JobFinished}\n" +
-                                 "\tTrailer Connected:\n" +
-                                 $"\t\t\t{data.SpecialEventsValues.TrailerConnected}\n";
+                                 $"\t\t\t{data.SpecialEventsValues.JobFinished}\n";
                
                 common.Text = JsonConvert.SerializeObject(data.CommonValues, Formatting.Indented);
                 truck.Text = JsonConvert.SerializeObject(data.TruckValues, Formatting.Indented);

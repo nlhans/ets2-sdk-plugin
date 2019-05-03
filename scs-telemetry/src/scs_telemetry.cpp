@@ -318,6 +318,7 @@ scs_timestamp_t last_timestamp = static_cast<scs_timestamp_t>(-1);
 scs_timestamp_t timestamp;
 static auto clear_job_ticker = 0;
 
+//TODO: REWORK BOTH CLEAN FUNCTION AND ADD MORE FOR SINGLE CONFIG attribute
 // Function: set_job_values_zero
 // set every job (cargo) values to 0/empty string
 void set_job_values_zero(unsigned int trailer_id = 0) {
@@ -407,7 +408,6 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*co
                                     scs_context_t UNUSED(context)) {
 
     const auto info = static_cast<const scs_telemetry_frame_start_t *>(event_info);
-
     // The following processing of the timestamps is done so the output
     // from this plugin has continuous time, it is not necessary otherwise.
 
@@ -548,9 +548,11 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
                 }
 				type = trailer;
 				auto last = info->id[strlen(info->id) - 1];
-				trailer_id = last - '0'; 
+				trailer_id = last - '0';
                 if(trailer_id>9||trailer_id<0) {
 					log_line(SCS_LOG_TYPE_warning, "Something went wrong while parsing trailer id", info->id);
+                }else {
+					log_configs(info);
                 }
 			}
 			else { 
@@ -568,7 +570,7 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
     auto is_empty = true;
 
     for ( auto current = info->attributes; current->name; ++current) {
-        if(!handleCfg(current, type, trailer)) {
+        if(!handleCfg(current, type, trailer_id)) {
             // actually only for testing/debug purpose, so should there be a message in game with that line there is missed something
 			log_line("attribute not handled id: %i attribute: %s", type, current->name);
         } 
@@ -586,14 +588,14 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
     }
     // no trailer which is connected with us? than delete information of the sdk and say there is no connected trailer
     // TODO: update for new sdk (multiple trailers)
-    if(type==trailer && is_empty) {
-		set_trailer_values_zero();
+   /* if(type==trailer && is_empty) {
+		//set_trailer_values_zero();
 		telem_ptr->special_b.trailerConnected = false;
     }else if(type == trailer && !is_empty && !telem_ptr->special_b.trailerConnected) {
         // there exist trailer information and actually we say there is no connected trailer. That can't be true anymore
         // so say we are connected to a trailer
 		telem_ptr->special_b.trailerConnected = true;
-    }
+    }*/
 }
 
 /******* STORING OF SEVERAL SCS DATA TYPES *******/
@@ -964,7 +966,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 
 			REGISTER_CHANNEL_TRAILER(i, wear.chassis, float, telem_ptr->trailer.trailer[i].com_f.wearChassis);
 			REGISTER_CHANNEL_TRAILER(i, wear.wheels, float, telem_ptr->trailer.trailer[i].com_f.wearWheels);
-			for (auto j = scs_u32_t(30); j < WHEEL_SIZE; j++) {
+			for (auto j = scs_u32_t(0); j < WHEEL_SIZE; j++) {
 				REGISTER_CHANNEL_TRAILER_INDEX(i,wheel.suspension.deflection, float, telem_ptr->trailer.trailer[i].com_f.wheelSuspDeflection[j], j);
 				REGISTER_CHANNEL_TRAILER_INDEX(i, wheel.on_ground, bool, telem_ptr->trailer.trailer[i].com_b.wheelOnGround[j], j
 				);

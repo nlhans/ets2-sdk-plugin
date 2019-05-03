@@ -343,7 +343,6 @@ namespace SCSSdkClient {
 
             retData.SpecialEventsValues.OnJob = GetBool();
             retData.SpecialEventsValues.JobFinished = GetBool();
-            retData.SpecialEventsValues.TrailerConnected = GetBool();
 
             retData.SpecialEventsValues.JobCancelled = GetBool();
             retData.SpecialEventsValues.JobDelivered = GetBool();

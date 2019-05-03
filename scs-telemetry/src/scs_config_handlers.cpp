@@ -130,6 +130,7 @@ const int length_configs[] = {
 // Function: handleCfg
 // brings the config attributes to the correct function
 bool handleCfg(const scs_named_value_t* info, const configType type, const unsigned int trailer_id ) {
+	log_line(SCS_LOG_TYPE_error, "id %i", trailer_id);
     const scsConfigHandler_t* configs = nullptr;
     switch (type) {
     case substances:
@@ -322,7 +323,8 @@ scsConfigHandle(Truck, HookPosition) {
 }
 
 scsConfigHandle(Truck, WheelCount) {
-    telem_ptr->config_ui.truckWheelCount = current->value.value_u32.value;
+     
+    telem_ptr->config_ui.truckWheelCount = current->value.value_u32.value; 
 }
 
 scsConfigHandle(Truck, WheelPosition) {
@@ -418,8 +420,8 @@ scsConfigHandle(Truck, LicensePlateCountryId) {
 #pragma endregion  All handler of the id truck
 
 #pragma region handleTrailer
-scsConfigHandle(Trailer, Id) {
-    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.id, current->value.value_string.value, stringsize);
+scsConfigHandle(Trailer, Id) { 
+    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.id, current->value.value_string.value, stringsize); 
 }
 
 scsConfigHandle(Trailer, CargoAccessoryId) {
@@ -433,7 +435,7 @@ scsConfigHandle(Trailer, HookPosition) {
 }
 
 scsConfigHandle(Trailer, WheelCount) {
-    telem_ptr->trailer.trailer[trailer_id].con_ui.wheelCount = current->value.value_u32.value;
+    telem_ptr->trailer.trailer[trailer_id].con_ui.wheelCount = current->value.value_u32.value;  
 }
 
 scsConfigHandle(Trailer, WheelOffset) {

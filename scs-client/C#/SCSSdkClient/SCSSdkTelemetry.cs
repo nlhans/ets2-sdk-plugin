@@ -60,8 +60,6 @@ namespace SCSSdkClient {
 
         public event EventHandler JobStarted;
         public event EventHandler JobFinished;
-        public event EventHandler TrailerConnected;
-        public event EventHandler TrailerDisconnected;
         public event EventHandler JobCancelled;
         public event EventHandler JobDelivered;
         public event EventHandler Fined;
@@ -131,16 +129,6 @@ namespace SCSSdkClient {
                 }
             }
 
-            if (wasConnected != scsTelemetry.SpecialEventsValues.TrailerConnected)
-            {
-                wasConnected = scsTelemetry.SpecialEventsValues.TrailerConnected;
-                if (scsTelemetry.SpecialEventsValues.TrailerConnected)
-                {
-                    TrailerConnected?.Invoke(this, new EventArgs());
-                } else {
-                    TrailerDisconnected?.Invoke(this, new EventArgs());
-                }
-            }
 
             if (cancelled != scsTelemetry.SpecialEventsValues.JobCancelled)
             {

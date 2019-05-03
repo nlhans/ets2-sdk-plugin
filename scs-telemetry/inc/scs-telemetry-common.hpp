@@ -100,7 +100,7 @@ typedef struct scsTrailer_s{ // Size: 1528
 		float angularAccelerationZ;	
 	}com_fv;
 	struct{
-			float hookPositionX;
+		float hookPositionX;
 		float hookPositionY;
 		float hookPositionZ;
 		float wheelPositionX[16];
@@ -514,7 +514,6 @@ struct{
     struct {
 		bool onJob;
 		bool jobFinished;
-		bool trailerConnected; 
     }special_b;
     struct {
 		bool jobCancelled;
@@ -526,7 +525,7 @@ struct{
 
     };
 
-	char buffer_special[91];
+	char buffer_special[92];
 	//----- END OF 12TH ZONE AT OFFSET 4399 -----//
 
 	//----- START OF 13TH ZONE AT OFFSET 4400 -----//
