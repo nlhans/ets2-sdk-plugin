@@ -371,8 +371,7 @@ namespace SCSSdkClient {
 
             retData.TrailerValues = GetTrailers();
             #endregion
-
-            //TODO TEST adblue consumption value right here
+            
 
             return retData;
         }

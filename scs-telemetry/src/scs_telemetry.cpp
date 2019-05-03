@@ -1,6 +1,6 @@
 //Windows stuff.
 
-
+//TODO: cleanup file 900 lines are to many and there is much to do in an other file or class
 #define WINVER 0x0500
 #define WIN32_WINNT 0x0500
  
@@ -518,6 +518,7 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
                                      scs_context_t UNUSED(context)) {
     // On configuration change, this function is called.
     const auto info = static_cast<const scs_telemetry_configuration_t *>(
+        // TODO: DELETE ENTRYS WHEN CALLED SO NO VALUE IS THERE to avoid wrong values when changes accour but not in arrays up to that slot or so 
         event_info);
 	unsigned int trailer_id = NULL;
     // check which type the event has
@@ -586,16 +587,7 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
         // oh hey no job but now we have fields in this array so we start a new job
         telem_ptr->special_b.onJob = true;
     }
-    // no trailer which is connected with us? than delete information of the sdk and say there is no connected trailer
-    // TODO: update for new sdk (multiple trailers)
-   /* if(type==trailer && is_empty) {
-		//set_trailer_values_zero();
-		telem_ptr->special_b.trailerConnected = false;
-    }else if(type == trailer && !is_empty && !telem_ptr->special_b.trailerConnected) {
-        // there exist trailer information and actually we say there is no connected trailer. That can't be true anymore
-        // so say we are connected to a trailer
-		telem_ptr->special_b.trailerConnected = true;
-    }*/
+   
 }
 
 /******* STORING OF SEVERAL SCS DATA TYPES *******/
@@ -701,7 +693,7 @@ SCSAPI_VOID telemetry_store_fplacement(const scs_string_t name, const scs_u32_t 
 SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_init_params_t*const params) {
 
     // We currently support only two version.
-    //TODO test this 
+    //TODO test this first test seems to work 
     const scs_telemetry_init_params_v100_t* version_params;
     if (version == SCS_TELEMETRY_VERSION_1_00 ) {
 		 version_params = static_cast<const scs_telemetry_init_params_v100_t *>(params);  // NOLINT(cppcoreguidelines-pro-type-static-cast-downcast)

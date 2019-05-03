@@ -10,7 +10,7 @@
  
 fork of [nlhans](https://github.com/nlhans/ets2-sdk-plugin) work
 
-**New Revision -> not compatible with old files. SM and C# object changed a lot, because of new values**
+**New Revision -> not compatible with old files. SM and C# object changed a lot, because of a lot new values. see update.md for more information**
  
 # SCS Telemetry for EuroTruckSimulator 2 and AmericanTruckSimulator
 
