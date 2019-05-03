@@ -72,8 +72,7 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.MotorValues.SelectorCount = GetUint();
             retData.JobValues.DeliveryTime = GetUint();
             retData.MaxTrailerCount = GetUint();
-            retData.JobValues.CargoValues.UnitCount = GetUint();
-
+            retData.JobValues.CargoValues.UnitCount = GetUint(); 
 
 
             retData.TruckValues.CurrentValues.MotorValues.GearValues.HShifterSlot = GetUint();
@@ -124,7 +123,7 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.WheelsValues.Radius = GetFloatArray(WheelSize);
             retData.TruckValues.ConstantsValues.MotorValues.GearRatiosForward = GetFloatArray(24);
             retData.TruckValues.ConstantsValues.MotorValues.GearRatiosReverse = GetFloatArray(8);
-
+            retData.JobValues.CargoValues.UnitMass = GetFloat();
 
             retData.TruckValues.CurrentValues.DashboardValues.Speed.Value = GetFloat();
             retData.TruckValues.CurrentValues.DashboardValues.RPM = GetFloat();

@@ -113,6 +113,7 @@ const scsConfigHandler_t job_config[] = {
     {SCS_TELEMETRY_CONFIG_ATTRIBUTE_job_market, handleJobJobMarket},
 	{SCS_TELEMETRY_CONFIG_ATTRIBUTE_special_job, handleJobSpecialJob},
 	{SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_unit_count, handleJobUnitCount},
+	{SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_unit_mass, handleJobUnitMass}
 };
 
 const int length_configs[] = {
@@ -398,9 +399,9 @@ scsConfigHandle(Truck, GearReverseRatio) {
     const auto gear = current->index;
     const auto ratio = current->value.value_float.value;
 
-    if (gear < 24) {
+    if (gear < 8) {
         telem_ptr->config_f.gearRatiosReverse[gear] = ratio;
-    }
+    } 
 }
 
 scsConfigHandle(Truck, LicensePlate) {
@@ -586,5 +587,8 @@ scsConfigHandle(Job, SpecialJob) {
 }
 scsConfigHandle(Job, UnitCount) {
 	telem_ptr->config_ui.unitCount = current->value.value_u32.value;
+}
+scsConfigHandle(Job, UnitMass) {
+	telem_ptr->config_f.unitMass = current->value.value_float.value;
 }
 #pragma endregion All handler of the id job

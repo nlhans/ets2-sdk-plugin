@@ -258,6 +258,7 @@ typedef struct scsTelemetryMap_s
 		float truckWheelRadius[16];
 		float gearRatiosForward[24];
 		float gearRatiosReverse[8];
+		float unitMass;
 	}config_f;
 
 	struct {
@@ -312,7 +313,7 @@ typedef struct scsTelemetryMap_s
 	struct{
 		float cargoDamage;
 	}job_f;
-	char buffer_f[36];
+	char buffer_f[32];
 	//----- END OF FOURTH ZONE AT OFFSET 1499 -----//
 
 	//----- START OF FIFTH ZONE AT OFFSET 1500 -----//
@@ -544,8 +545,7 @@ struct{
 		}trailer;
 
 	//----- END OF 14TH ZONE AT OFFSET 22420 -----//
-	// TODO TEST SPACE
-	float addblueConsumption;
+
 } scsTelemetryMap_t;
 
 #endif

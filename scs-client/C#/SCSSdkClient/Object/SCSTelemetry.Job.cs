@@ -123,6 +123,10 @@ namespace SCSSdkClient.Object {
                 ///     How many units of the cargo the job consist of.
                 /// </summary>
                 public uint UnitCount { get; internal set; }
+                /// <summary>
+                /// Mass of the single unit of the cargo in kilograms.
+                /// </summary>
+                public float UnitMass  { get; internal set; }
 
                 public float CargoDamage { get; internal set; }
 
