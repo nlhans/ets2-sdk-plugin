@@ -441,14 +441,18 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
 		    }
 		}else{
 			if (strstr(info->id, SCS_TELEMETRY_CONFIG_trailer)) {
+                if(strcmp(info->id, SCS_TELEMETRY_CONFIG_trailer) == 0) {
+					return;
+                }
 				type = trailer;
 				auto last = info->id[strlen(info->id) - 1];
-				trailer_id = last - '0';
+				trailer_id = last - '0'; 
                 if(trailer_id>9||trailer_id<0) {
 					log_line(SCS_LOG_TYPE_warning, "Something went wrong while parsing trailer id", info->id);
                 }
 			}
 			else {
+				log_line("never there ._.");
 				log_line(SCS_LOG_TYPE_warning, "Something went wrong with this configuration %s", info->id);
 			}
 		}
@@ -456,7 +460,7 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
 	}
 
     // uncomment to log every config, should work but with function not tested ^^`
-    //log_configs(info); 
+    log_configs(info); 
 
     // attribute is a pointer array that is never null so ... i have no clue how to check it on another way than this
     // if for loop can't loop it is empty so simple 
