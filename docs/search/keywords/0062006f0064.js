@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("bod",["Property"],[["BodyType",,[["SCSSdkClient.Object.SCSTelemetry.Trailer",,,,0,"File:Object/SCSTelemetry.Trailer.cs:SCSSdkClient.Object.SCSTelemetry.Trailer.BodyType","CSharpClass:SCSSdkClient.Object.SCSTelemetry.Trailer:BodyType"]]]]);

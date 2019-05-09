@@ -37,7 +37,7 @@ namespace SCSSdkClient.Object {
 
 
             /// <summary>
-            ///     Vargo values of an job
+            ///     Cargo values of an job
             /// </summary>
             public Cargo CargoValues { get; internal set; }
 

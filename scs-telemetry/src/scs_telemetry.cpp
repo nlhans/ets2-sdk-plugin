@@ -32,16 +32,11 @@
  *
  * RegisterSpecificChannel allows for your own handler name, without the telemetry_store_ prefix.
  */
-#define REGISTER_CHANNEL(name, type, to
-) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ))
-#define REGISTER_CHANNEL_TRAILER(id, name, type, to
-) version_params->register_for_channel((std::string("trailer.")+std::to_string(id)+std::string("."#name)).c_str(), SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ))
-#define REGISTER_CHANNEL_INDEX(name, type, to, index
-) version_params->register_for_channel(SCS_TELEMETRY_##name, index, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ))
-#define REGISTER_CHANNEL_TRAILER_INDEX(id, name, type, to, index
-) version_params->register_for_channel((std::string("trailer.")+std::to_string(id)+std::string("."#name)).c_str(), index, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ))
-#define REGISTER_SPECIFIC_CHANNEL(name, type, handler,to
-) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, handler, &( to ))
+#define REGISTER_CHANNEL(name, type, to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ))
+#define REGISTER_CHANNEL_TRAILER(id, name, type, to) version_params->register_for_channel((std::string("trailer.")+std::to_string(id)+std::string("."#name)).c_str(), SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ))
+#define REGISTER_CHANNEL_INDEX(name, type, to, index) version_params->register_for_channel(SCS_TELEMETRY_##name, index, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ))
+#define REGISTER_CHANNEL_TRAILER_INDEX(id, name, type, to, index) version_params->register_for_channel((std::string("trailer.")+std::to_string(id)+std::string("."#name)).c_str(), index, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ))
+#define REGISTER_SPECIFIC_CHANNEL(name, type, handler,to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, handler, &( to ))
 
 SharedMemory* telem_mem;
 scsTelemetryMap_t* telem_ptr;

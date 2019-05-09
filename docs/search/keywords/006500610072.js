@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("ear",["Variable"],[["EarnedXp",,[["SCSSdkClient.Object.SCSTelemetry.GamePlayEvents.Delivered",,,,0,"File:Object/SCSTelemetry.GamePlayEvents.cs:SCSSdkClient.Object.SCSTelemetry.GamePlayEvents.Delivered.EarnedXp","CSharpClass:SCSSdkClient.Object.SCSTelemetry.GamePlayEvents.Delivered:EarnedXp"]]]]);

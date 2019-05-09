@@ -13,3 +13,4 @@ A lot changes here: update to SDK Version 1.10
 - new events to register (tolgate, train, ferry, fine, job delivered,... ) and some removed (trailer connected, disconnected) but you could create your own connected/disconnected listener if you need it
 - a lot of other small thinks. i will start early to write update notes the next time
 - some documentation for new functions, values etc. exists already 
+- note in experimental 1.35 of ets2 (more not tested atm) some events like job cancelled or tollgate does not work

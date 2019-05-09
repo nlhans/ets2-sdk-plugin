@@ -10,6 +10,9 @@
  
 fork of [nlhans](https://github.com/nlhans/ets2-sdk-plugin) work
 
+# **EXPERIMENTAL 1.35/SDK10**
+
+
 **New Revision -> not compatible with old files. SM and C# object changed a lot, because of a lot new values. see update.md for more information**
  
 # SCS Telemetry for EuroTruckSimulator 2 and AmericanTruckSimulator
@@ -47,7 +50,9 @@ The following telemetry fields are supported, structure is like the c# object. S
 		- SCSGame identifier as enum, currently ets2/ats/unknown
 		- GameVersion and Game Telemetry Version (major.minor)
 		- Dll version (usage in code)
-		- Substances 
+		- TelemetryVersion
+		
+		Substances 
 
 		Common Values:
 			- Scale
@@ -96,6 +101,9 @@ The following telemetry fields are supported, structure is like the c# object. S
 				- Brand
 				- Id (code)
 				- Name
+				- LicensePlate (1.14/1.01)
+				- LicensePlateCountryId (1.14/1.01)
+				- LicensePlateCountry (1.14/1.01)
 
 
 			Current Values (Values that change a lot):
@@ -142,6 +150,7 @@ The following telemetry fields are supported, structure is like the c# object. S
 					- Odometer
 					- Wipers
 					- Cruise Control ("special field", same like `CruiseControlspeed == 0`)
+					  
 				Acceleration:
 					- Linear Velocity
 					- Angular Velocity
@@ -195,9 +204,9 @@ The following telemetry fields are supported, structure is like the c# object. S
 				- Contains "more fields" see at the bottom of the list
 
 
-		Trailer Values (will be set to 0,false, etc. if you have no trailer, while on job or with trailer ownership detached wont reset the values):
-			- Attached
-			- Damage
+		Trailer Values (will be set to 0,false, etc. if you have no trailer, while on job or with trailer ownership detached wont reset the values)[0-9] (array starting with 1.14/1.01 so 0 for 1 trailer or version lower than that):
+			- Attached			 
+			- Hook
 			- Position
 			Wheel Values:
 				- Substance
@@ -206,6 +215,8 @@ The following telemetry fields are supported, structure is like the c# object. S
 				- Steering
 				- Rotation
 				- On Ground
+				- Lift
+				- LiftOffset
 
 			WheelsConstants:
 					- Count
@@ -223,13 +234,30 @@ The following telemetry fields are supported, structure is like the c# object. S
 				- Linear Acceleration
 				- Angular Acceleration
 
+			DamageValues: 
+				- Cargo (1.14/1.01)
+				- Wheels
+				- Chassis
+
 			- Chassis (code)
 			- Id (code)
 			- Name
+			- CargoAccessoryId
+			- BodyType (1.14/1.01)
+			- BrandId (1.14/1.01)
+			- Brand (1.14/1.01)
+			- Name (1.14/1.01)
+			- ChainType (1.14/1.01)
+			- LicensePlate (1.14/1.01)
+			- LicensePlateCountryId (1.14/1.01)
+			- LicensePlateCountry (1.14/1.01)
 		
 		Job Values(will be reset after the job finished flag is disappeared):
 			- Delivery Time (time object -> in-game minutes and datetime object)
 			- Remaining Delivery Time (calculated)
+			- CargoLoaded (1.14/1.01)
+			- SpecialJob (1.14/1.01)
+			- Market (1.14/1.01)
 			- City Destination Id (code)
 			- City Destination
 			- Company Destination Id (code)
@@ -243,6 +271,10 @@ The following telemetry fields are supported, structure is like the c# object. S
 		 	Cargo Values:
 				- Mass 
 				- Name (code)
+				- Id (1.14/1.01)
+				- UnitCount (1.14/1.01)
+				- UnitMass (1.14/1.01)
+				- CargoDamage (1.14/1.01)
 
 		Control Values:
 			User Input:
@@ -265,8 +297,37 @@ The following telemetry fields are supported, structure is like the c# object. S
 		SpecialEvents:
 			- On Job 
 			- Job Finished (flag that disappears after some time)
-			- TrailerConnected
-			- TrailerDisconnected (Both trailer events use the same flag, trailerConnected, from the memory)
+			- ~~TrailerConnected~~ (removed)
+			- ~~TrailerDisconnected (Both trailer events use the same flag, trailerConnected, from the memory)~~ (removed)
+			- Job Cancelled (1.14/1.01) (may not work atm?)
+			- Job Delivered (1.14/1.01)
+			- Fined (1.14/1.01)
+			- Tollgate (1.14/1.01)
+			- Ferry (1.14/1.01)
+			- Train (1.14/1.01)
+			 
+	    GameplayEvents (1.14/1.01): 
+  		    Cancelled:
+  			    - Penalty
+	        Delivered:
+				- AutoLoaded
+				- AutoParked
+				- CargoDamage
+				- DeliveryTime
+				- DistanceKm
+				- EarnedXp
+				- Revenue
+			Fined:
+				- Amount
+				- Offence 
+		    Tollgate:
+				- PayAmount
+			Transport:
+				- PayAmount
+				- SourceId
+				- SourceName
+				- TargetId
+				- TargedName  
 
 
 Also there are a few more fields you can use:
@@ -284,7 +345,7 @@ Also there are a few more fields you can use:
 		- Add a FVector and a DVector
 		- Rotate: Rotates specified vector by specified orientation 
 
-May I forgot something. When you found missing values or something else create an issue that would be great.
+May I forgot something or there is a missing version information. When you found missing values or something else create an issue that would be great.
 
 The fields are updated as fast as ETS2/ATS can and will do, as this is how the SDK has been designed by SCS. When a telemetry value has changed the SDK will immediately call a handler. This plug-in implements this handler which stores the data to the right field inside the data structure.
 There is no "sample ticker" yet. This must be done at the client side, by regularly checking if the timestamp has been updated.

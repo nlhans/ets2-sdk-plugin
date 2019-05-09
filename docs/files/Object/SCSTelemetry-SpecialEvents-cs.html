@@ -29,16 +29,40 @@
  <div class="CBody"><p>Event flag that displays if a driver is doing a job</p></div>
 </div>
 
-<a name="SCSSdkClient.Object.SCSTelemetry.SpecialEvents.JobFinished"></a><a name="Topic211"></a><div class="CTopic TProperty LCSharp">
+<a name="SCSSdkClient.Object.SCSTelemetry.SpecialEvents.JobFinished"></a><a name="Topic685"></a><div class="CTopic TProperty LCSharp">
  <div class="CTitle">JobFinished</div>
- <div id="NDPrototype211" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">bool</span> JobFinished { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
- <div class="CBody"><p>Event flag that displays (for some ticks) that a job was finished, doesn't matter how (cancelled, delivered, ...)</p></div>
+ <div id="NDPrototype685" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">bool</span> JobFinished { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
+ <div class="CBody"><p>Event flag that displays (for some ticks) that a job was finished, doesn't matter how (cancelled, delivered, ...)&nbsp; Deprecated for Version 1.35 of both games. Use JobCancelled and JobDelivered Event for version starting with 1.35+ But should still work</p></div>
 </div>
 
-<a name="SCSSdkClient.Object.SCSTelemetry.SpecialEvents.TrailerConnected"></a><a name="Topic288"></a><div class="CTopic TProperty LCSharp last">
- <div class="CTitle">TrailerConnected</div>
- <div id="NDPrototype288" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">bool</span> TrailerConnected { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
- <div class="CBody"><p>Event flag that displays if the game says there is a trailer that is connected with us (so attached, detached doesn't matter for this flag).&nbsp; The event flag is true for:</p><ul><li><p>Trailer is attached</p></li><li><p>Trailer is detached, but you're on a job and doesn't cancel it</p></li><li><p>Trailer is detached, but it is your trailer and doesn't bring it back</p></li></ul><p>The event flag is false for:</p><ul><li><p>You end/cancel a job and doesn't own the trailer</p></li><li><p>Bring your own trailer back, after it detached the flag should be false</p></li></ul></div>
+<a name="SCSSdkClient.Object.SCSTelemetry.SpecialEvents.JobCancelled"></a><a name="Topic686"></a><div class="CTopic TProperty LCSharp">
+ <div class="CTitle">JobCancelled</div>
+ <div id="NDPrototype686" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">bool</span> JobCancelled { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
+</div>
+
+<a name="SCSSdkClient.Object.SCSTelemetry.SpecialEvents.JobDelivered"></a><a name="Topic687"></a><div class="CTopic TProperty LCSharp">
+ <div class="CTitle">JobDelivered</div>
+ <div id="NDPrototype687" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">bool</span> JobDelivered { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
+</div>
+
+<a name="SCSSdkClient.Object.SCSTelemetry.SpecialEvents.Fined"></a><a name="Topic688"></a><div class="CTopic TProperty LCSharp">
+ <div class="CTitle">Fined</div>
+ <div id="NDPrototype688" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">bool</span> Fined { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
+</div>
+
+<a name="SCSSdkClient.Object.SCSTelemetry.SpecialEvents.Tollgate"></a><a name="Topic689"></a><div class="CTopic TProperty LCSharp">
+ <div class="CTitle">Tollgate</div>
+ <div id="NDPrototype689" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">bool</span> Tollgate { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
+</div>
+
+<a name="SCSSdkClient.Object.SCSTelemetry.SpecialEvents.Ferry"></a><a name="Topic690"></a><div class="CTopic TProperty LCSharp">
+ <div class="CTitle">Ferry</div>
+ <div id="NDPrototype690" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">bool</span> Ferry { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
+</div>
+
+<a name="SCSSdkClient.Object.SCSTelemetry.SpecialEvents.Train"></a><a name="Topic691"></a><div class="CTopic TProperty LCSharp last">
+ <div class="CTitle">Train</div>
+ <div id="NDPrototype691" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">bool</span> Train { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
 </div>
 
 </body></html>
