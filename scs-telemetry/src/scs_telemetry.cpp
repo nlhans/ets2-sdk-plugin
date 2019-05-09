@@ -317,14 +317,25 @@ void log_events(const scs_telemetry_gameplay_event_t* info) {
 scs_timestamp_t last_timestamp = static_cast<scs_timestamp_t>(-1);
 scs_timestamp_t timestamp;
 static auto clear_job_ticker = 0;
+static auto clear_cancelled_ticker = 0;
+static auto clear_delivered_ticker = 0;
+static auto clear_fined_ticker = 0;
+static auto clear_tollgate_ticker = 0;
+static auto clear_ferry_ticker = 0;
+static auto clear_train_ticker = 0;
 
 //TODO: REWORK BOTH CLEAN FUNCTION AND ADD MORE FOR SINGLE CONFIG attribute
 // Function: set_job_values_zero
 // set every job (cargo) values to 0/empty string
-void set_job_values_zero(unsigned int trailer_id = 0) {
+void set_job_values_zero() {
 	telem_ptr->config_ull.jobIncome = 0;
 	telem_ptr->config_ui.time_abs_delivery = 0;
 	telem_ptr->config_f.cargoMass = 0;
+	telem_ptr->config_ui.unitCount = 0;
+	telem_ptr->config_f.unitMass = 0;
+	telem_ptr->job_f.cargoDamage = 0;
+	telem_ptr->config_b.isCargoLoaded = false;
+	telem_ptr->config_b.isCargoLoaded = false;
 	memset(telem_ptr->config_s.compDstId, 0, stringsize);
 	memset(telem_ptr->config_s.compSrcId, 0, stringsize);
 	memset(telem_ptr->config_s.cityDstId, 0, stringsize);
@@ -334,72 +345,14 @@ void set_job_values_zero(unsigned int trailer_id = 0) {
 	memset(telem_ptr->config_s.compSrc, 0, stringsize);
 	memset(telem_ptr->config_s.compDst, 0, stringsize);
 	memset(telem_ptr->config_s.cargoId, 0, stringsize);
-	memset(telem_ptr->trailer.trailer[trailer_id].con_s.cargoAcessoryId, 0, stringsize);
 	memset(telem_ptr->config_s.cargo, 0, stringsize);
-	telem_ptr->trailer.trailer[trailer_id].com_f.cargoDamage=0;
+	memset(telem_ptr->config_s.jobMarket, 0, 32);
 }
 // Function: set_trailer_values_zero
 // set every trailer value 0/empty string 
 void set_trailer_values_zero(unsigned int trailer_id=0) {
-	telem_ptr->trailer.trailer[trailer_id].com_f.wearChassis = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_f.wearWheels = 0;
-	std::fill(telem_ptr->trailer.trailer[trailer_id].com_ui.wheelSubstance, telem_ptr->trailer.trailer[trailer_id].com_ui.wheelSubstance +16, 0u);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].com_f.wheelSuspDeflection, telem_ptr->trailer.trailer[trailer_id].com_f.wheelSuspDeflection + 16, 0.0f);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].com_f.wheelVelocity, telem_ptr->trailer.trailer[trailer_id].com_f.wheelVelocity + 16, 0.0f);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].com_f.wheelSteering, telem_ptr->trailer.trailer[trailer_id].com_f.wheelSteering + 16, 0.0f);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].com_f.wheelRotation, telem_ptr->trailer.trailer[trailer_id].com_f.wheelRotation + 16, 0.0f);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].com_b.wheelOnGround, telem_ptr->trailer.trailer[trailer_id].com_b.wheelOnGround + 16, false);
-
-	telem_ptr->trailer.trailer[trailer_id].com_fv.linearAccelerationX = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_fv.linearAccelerationY = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_fv.linearAccelerationZ = 0;
-
-	telem_ptr->trailer.trailer[trailer_id].com_fv.angularAccelerationX = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_fv.angularAccelerationY = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_fv.angularAccelerationZ = 0;
-
-	telem_ptr->trailer.trailer[trailer_id].com_fv.linearVelocityX = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_fv.linearVelocityY = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_fv.linearVelocityZ = 0;
-
-	telem_ptr->trailer.trailer[trailer_id].com_fv.angularVelocityX = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_fv.angularVelocityY = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_fv.angularVelocityZ = 0;
-
-	telem_ptr->trailer.trailer[trailer_id].con_fv.hookPositionX = 0;
-	telem_ptr->trailer.trailer[trailer_id].con_fv.hookPositionY = 0;
-	telem_ptr->trailer.trailer[trailer_id].con_fv.hookPositionZ = 0;
-
-	telem_ptr->trailer.trailer[trailer_id].com_dp.worldX = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_dp.worldY = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_dp.worldZ = 0;
-
-	telem_ptr->trailer.trailer[trailer_id].com_dp.rotationX = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_dp.rotationY = 0;
-	telem_ptr->trailer.trailer[trailer_id].com_dp.rotationZ = 0;
-
-	telem_ptr->trailer.trailer[trailer_id].con_ui.wheelCount = 0;
-
-	std::fill(telem_ptr->trailer.trailer[trailer_id].con_f.wheelRadius, telem_ptr->trailer.trailer[trailer_id].con_f.wheelRadius + 16, 0.0f);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].com_f.wheelLift, telem_ptr->trailer.trailer[trailer_id].com_f.wheelLift + 16, 0.0f);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].com_f.wheelLiftOffset, telem_ptr->trailer.trailer[trailer_id].com_f.wheelLiftOffset + 16, 0.0f);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].con_b.wheelSimulated, telem_ptr->trailer.trailer[trailer_id].con_b.wheelSimulated + 16, false);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].con_b.wheelLiftable, telem_ptr->trailer.trailer[trailer_id].con_b.wheelLiftable + 16, false);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].con_b.wheelPowered, telem_ptr->trailer.trailer[trailer_id].con_b.wheelPowered + 16, false);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].con_b.wheelSteerable, telem_ptr->trailer.trailer[trailer_id].con_b.wheelSteerable + 16, false);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].con_fv.wheelPositionX, telem_ptr->trailer.trailer[trailer_id].con_fv.wheelPositionX + 16, 0.0f);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].con_fv.wheelPositionY, telem_ptr->trailer.trailer[trailer_id].con_fv.wheelPositionY + 16, 0.0f);
-	std::fill(telem_ptr->trailer.trailer[trailer_id].con_fv.wheelPositionZ, telem_ptr->trailer.trailer[trailer_id].con_fv.wheelPositionZ + 16, 0.0f);
-
-	memset(telem_ptr->trailer.trailer[trailer_id].con_s.id, 0, stringsize);
-	memset(telem_ptr->trailer.trailer[trailer_id].con_s.bodyType, 0, stringsize);
-	memset(telem_ptr->trailer.trailer[trailer_id].con_s.brandId, 0, stringsize);
-	memset(telem_ptr->trailer.trailer[trailer_id].con_s.brand, 0, stringsize);
-	memset(telem_ptr->trailer.trailer[trailer_id].con_s.name, 0, stringsize);
-	memset(telem_ptr->trailer.trailer[trailer_id].con_s.chainType, 0, stringsize);
-	memset(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlate, 0, stringsize);
-	memset(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlateCountry, 0, stringsize);
-	memset(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlateCountryId, 0, stringsize); 
+	//(&telem_ptr->trailer.trailer[trailer_id])->~scsTrailer_t();
+	new (&telem_ptr->trailer.trailer[trailer_id]) scsTrailer_t();
 }
 
 // Function: telemetry_frame_start
@@ -437,6 +390,7 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*co
         // Do a non-convential periodic update of this field:
         telem_ptr->truck_b.cruiseControl = telem_ptr->truck_f.cruiseControlSpeed > 0;
 
+        //TODO: better way for that mess here
         if (telem_ptr->special_b.jobFinished) {
             clear_job_ticker++;
 
@@ -445,6 +399,50 @@ SCSAPI_VOID telemetry_frame_start(const scs_event_t UNUSED(event), const void*co
                 telem_ptr->special_b.jobFinished = false;
             }
         }
+
+		if (telem_ptr->special_b.jobCancelled) {
+			clear_cancelled_ticker++;
+
+			if (clear_cancelled_ticker > 10) {
+				set_job_values_zero();
+				telem_ptr->special_b.jobCancelled = false;
+			}
+		}
+		if (telem_ptr->special_b.jobDelivered) {
+			clear_delivered_ticker++;
+
+			if (clear_delivered_ticker > 10) {
+				set_job_values_zero();
+				telem_ptr->special_b.jobDelivered = false;
+			}
+		} if (telem_ptr->special_b.fined) {
+			clear_fined_ticker++;
+
+			if (clear_fined_ticker > 10) {
+				telem_ptr->special_b.fined = false;
+			}
+		} if (telem_ptr->special_b.tollgate) {
+			clear_tollgate_ticker++;
+
+			if (clear_tollgate_ticker > 10)  {
+				telem_ptr->special_b.tollgate = false;
+			}
+		}
+		if (telem_ptr->special_b.ferry) {
+			clear_ferry_ticker++;
+
+			if (clear_ferry_ticker > 10) { 
+				telem_ptr->special_b.ferry = false;
+			}
+		}
+		if (telem_ptr->special_b.train) {
+			clear_train_ticker++;
+
+			if (clear_train_ticker > 10) {
+				set_job_values_zero();
+				telem_ptr->special_b.train = false;
+			}
+		}
     }
 
 }
@@ -473,21 +471,33 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event, const void*const event_i
 	gameplayType type = {};
 	if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_cancelled) == 0) {
 		type = cancelled;
+		telem_ptr->special_b.jobCancelled = true;
+		clear_cancelled_ticker = 0;
 	}
 	else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_delivered) == 0) {
 		type = delivered;
+		telem_ptr->special_b.jobDelivered = true;
+		clear_delivered_ticker = 0;
 	}
 	else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_fined) == 0) {
 		type = fined;
+		telem_ptr->special_b.fined = true;
+		clear_fined_ticker = 0;
 	}
 	else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_tollgate_paid) == 0) {
 		type = tollgate;
+		telem_ptr->special_b.tollgate = true;
+		clear_tollgate_ticker = 0;
 	}
 	else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_use_ferry) == 0) {
 		type = ferry;
+		telem_ptr->special_b.ferry = true;
+		clear_ferry_ticker = 0;
 	}
 	else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_use_train) == 0) {
 		type = train;
+		telem_ptr->special_b.train = true;
+		clear_train_ticker = 0;
 	}
 	else {
 		log_line(SCS_LOG_TYPE_warning, "Something went wrong with this gameplay event %s", info->id);
@@ -539,9 +549,11 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
 		    if (strcmp(info->id, SCS_TELEMETRY_CONFIG_trailer) == 0) {
 			    type = trailer;
 				trailer_id = 0;
+
 		    }else {
 				log_line(SCS_LOG_TYPE_warning, "Something went wrong with this configuration %s", info->id);
 		    }
+			set_trailer_values_zero();
 		}else{
 			if (strstr(info->id, SCS_TELEMETRY_CONFIG_trailer)) {
                 if(strcmp(info->id, SCS_TELEMETRY_CONFIG_trailer) == 0) {
@@ -552,8 +564,8 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void*const ev
 				trailer_id = last - '0';
                 if(trailer_id>9||trailer_id<0) {
 					log_line(SCS_LOG_TYPE_warning, "Something went wrong while parsing trailer id", info->id);
-                }else {
-					log_configs(info);
+                }else { 
+					set_trailer_values_zero(trailer_id);
                 }
 			}
 			else { 

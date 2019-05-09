@@ -129,8 +129,7 @@ const int length_configs[] = {
 
 // Function: handleCfg
 // brings the config attributes to the correct function
-bool handleCfg(const scs_named_value_t* info, const configType type, const unsigned int trailer_id ) {
-	log_line(SCS_LOG_TYPE_error, "id %i", trailer_id);
+bool handleCfg(const scs_named_value_t* info, const configType type, const unsigned int trailer_id ) { 
     const scsConfigHandler_t* configs = nullptr;
     switch (type) {
     case substances:

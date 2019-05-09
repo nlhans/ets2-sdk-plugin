@@ -288,13 +288,9 @@ typedef struct scsTelemetryMap_s
 		float routeDistance;
 		float routeTime;
 		float speedLimit;
-
 		float truck_wheelSuspDeflection[16];
-
 		float truck_wheelVelocity[16];
-
 		float truck_wheelSteering[16];
-
 		float truck_wheelRotation[16];
 		float truck_wheelLift[16];
 		float truck_wheelLiftOffset[16];
@@ -505,15 +501,15 @@ typedef struct scsTelemetryMap_s
 	struct {
 		bool onJob;
 		bool jobFinished;
-	}special_b;
-	struct {
+	
+ 
 		bool jobCancelled;
 		bool jobDelivered;
 		bool fined;
 		bool tollgate;
 		bool ferry;
 		bool train;
-	};
+	}special_b;
 
 	char buffer_special[92];
 	//----- END OF 12TH ZONE AT OFFSET 4399 -----//
