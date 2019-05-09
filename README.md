@@ -226,7 +226,7 @@ The following telemetry fields are supported, structure is like the c# object. S
 					- Liftable
 					- Steerable
 			
-			~~Cargo Values~~(moved to job values) 
+			~~CargoValues~~(moved to job values) 
 			
 			Acceleration:
 				- Linear Velocity
