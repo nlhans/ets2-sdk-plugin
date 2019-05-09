@@ -1,6 +1,6 @@
 
   <a href="https://rencloud.github.io/scs-sdk-plugin/docs/" title="Documentation">
-    <img alt="" src="https://img.shields.io/badge/documentation-23.10-green.svg?style=for-the-badge" />
+    <img alt="" src="https://img.shields.io/badge/documentation-09.05-green.svg?style=for-the-badge" />
   </a>
  
   <a href="https://discord.gg/JDqkZZd" title="Discord">
