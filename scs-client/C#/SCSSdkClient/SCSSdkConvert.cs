@@ -4,40 +4,37 @@
 // 22:51
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using SCSSdkClient.Object;
 
 namespace SCSSdkClient {
     /// <summary>
-    /// Convert class
+    ///     Convert class
     /// </summary>
     public class SCSSdkConvert {
-        private byte[] _data;
-        private int _offset;
- 
-
-        private readonly int[] _offsetAreas =
-            {0, 40, 500, 700, 1500, 1640, 2000, 2200, 2300, 4000, 4200, 4300, 4400, 6000};
-
-        private int _offsetArea;
         private const int StringSize = 64;
         private const int WheelSize = 16;
         private const int Substances = 25;
 
+
+        private readonly int[] _offsetAreas =
+            {0, 40, 500, 700, 1500, 1640, 2000, 2200, 2300, 4000, 4200, 4300, 4400, 6000};
+
+        private byte[] _data;
+        private int _offset;
+
+        private int _offsetArea;
+
         /// <summary>
-        /// Convert the Shared Memory Byte data structure in a C# object
+        ///     Convert the Shared Memory Byte data structure in a C# object
         /// </summary>
         /// <param name="structureDataBytes">
-        /// byte array from the shared memory
+        ///     byte array from the shared memory
         /// </param>
         /// <returns>
-        /// C# object with game data of the shared memory
+        ///     C# object with game data of the shared memory
         /// </returns>
         public SCSTelemetry Convert(byte[] structureDataBytes) {
- 
             _offsetArea = 0;
             SetOffset();
 
@@ -46,7 +43,7 @@ namespace SCSSdkClient {
             var retData = new SCSTelemetry();
 
             #region FIRST ZONE 
- 
+
             retData.Timestamp = GetUint();
             retData.Paused = GetBool();
 
@@ -63,7 +60,7 @@ namespace SCSSdkClient {
             retData.Game = GetUint().ToEnum<SCSGame>();
             retData.TelemetryVersion.Major = GetUint();
             retData.TelemetryVersion.Minor = GetUint();
-             
+
             retData.SetGameTime(GetUint());
             retData.TruckValues.ConstantsValues.MotorValues.ForwardGearCount = GetUint();
             retData.TruckValues.ConstantsValues.MotorValues.ReverseGearCount = GetUint();
@@ -72,7 +69,7 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.MotorValues.SelectorCount = GetUint();
             retData.JobValues.DeliveryTime = GetUint();
             retData.MaxTrailerCount = GetUint();
-            retData.JobValues.CargoValues.UnitCount = GetUint(); 
+            retData.JobValues.CargoValues.UnitCount = GetUint();
 
 
             retData.TruckValues.CurrentValues.MotorValues.GearValues.HShifterSlot = GetUint();
@@ -81,7 +78,7 @@ namespace SCSSdkClient {
             retData.TruckValues.CurrentValues.LightsValues.AuxRoof = GetUint().ToEnum<AuxLevel>();
             retData.TruckValues.CurrentValues.WheelsValues.Substance = GetUintArray(WheelSize);
 
-            retData.TruckValues.ConstantsValues.MotorValues.SlotHandlePosition = GetUintArray(32); 
+            retData.TruckValues.ConstantsValues.MotorValues.SlotHandlePosition = GetUintArray(32);
             retData.TruckValues.ConstantsValues.MotorValues.SlotSelectors = GetUintArray(32);
 
             retData.GamePlay.JobDelivered.DeliveryTime = GetUint();
@@ -96,7 +93,7 @@ namespace SCSSdkClient {
 
             retData.TruckValues.CurrentValues.MotorValues.GearValues.Selected = GetInt();
             retData.TruckValues.CurrentValues.DashboardValues.GearDashboards = GetInt();
-            retData.TruckValues.ConstantsValues.MotorValues.SlotGear =  GetIntArray(32);
+            retData.TruckValues.ConstantsValues.MotorValues.SlotGear = GetIntArray(32);
 
             retData.GamePlay.JobDelivered.EarnedXp = GetInt();
 
@@ -183,7 +180,7 @@ namespace SCSSdkClient {
 
             retData.JobValues.CargoLoaded = GetBool();
             retData.JobValues.SpecialJob = GetBool();
-              
+
             retData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake = GetBool();
             retData.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake = GetBool();
             retData.TruckValues.CurrentValues.DashboardValues.WarningValues.AirPressure = GetBool();
@@ -237,7 +234,7 @@ namespace SCSSdkClient {
             }
 
             retData.TruckValues.ConstantsValues.WheelsValues.PositionValues = tempPos;
-        
+
 
             retData.TruckValues.CurrentValues.AccelerationValues.LinearVelocity = GetFVector();
             retData.TruckValues.CurrentValues.AccelerationValues.AngularVelocity = GetFVector();
@@ -285,7 +282,7 @@ namespace SCSSdkClient {
             retData.JobValues.CitySource = GetString();
             retData.JobValues.CompanySourceId = GetString();
             retData.JobValues.CompanySource = GetString();
-            var tempShift = GetString(16); 
+            var tempShift = GetString(16);
             if (tempShift?.Length > 0) {
                 retData.TruckValues.ConstantsValues.MotorValues.ShifterTypeValue = tempShift.ToEnum<ShifterType>();
             }
@@ -295,14 +292,12 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.LicensePlateCountry = GetString();
 
             var tempJobMarket = GetString(32);
-            if (tempJobMarket?.Length > 0)
-            {
+            if (tempJobMarket?.Length > 0) {
                 retData.JobValues.Market = tempJobMarket.ToEnum<JobMarket>();
             }
 
             var tempfineOffence = GetString(16);
-            if (tempfineOffence?.Length > 0)
-            {
+            if (tempfineOffence?.Length > 0) {
                 retData.GamePlay.FinedEvent.Offence = tempfineOffence.ToEnum<Offence>();
             }
 
@@ -321,6 +316,7 @@ namespace SCSSdkClient {
             #endregion
 
             #region 10TH ZONE
+
             retData.JobValues.Income = GetULong();
 
             NextOffsetArea();
@@ -337,6 +333,7 @@ namespace SCSSdkClient {
             retData.GamePlay.TrainEvent.PayAmount = GetLong();
 
             NextOffsetArea();
+
             #endregion
 
             #region 12TH ZONE
@@ -360,18 +357,20 @@ namespace SCSSdkClient {
             for (var i = 0; i < Substances; i++) {
                 var tempSubstance = GetString();
                 if (tempSubstance.Length != 0) {
-                    retData.Substances.Add(new SCSTelemetry.Substance{Index =i, Value = tempSubstance});
+                    retData.Substances.Add(new SCSTelemetry.Substance {Index = i, Value = tempSubstance});
                 }
             }
 
             NextOffsetArea();
+
             #endregion
 
             #region 14TH ZONE
 
             retData.TrailerValues = GetTrailers();
+
             #endregion
-            
+
 
             return retData;
         }
@@ -390,7 +389,7 @@ namespace SCSSdkClient {
             var temp = (uint) ((_data[_offset + 3] << 24) |
                                (_data[_offset + 2] << 16) |
                                (_data[_offset + 1] << 8) |
-                               (_data[_offset]));
+                               _data[_offset]);
             _offset += 4;
             return temp;
         }
@@ -426,7 +425,7 @@ namespace SCSSdkClient {
             var temp = (_data[_offset + 3] << 24) |
                        (_data[_offset + 2] << 16) |
                        (_data[_offset + 1] << 8) |
-                       (_data[_offset]);
+                       _data[_offset];
             _offset += 4;
             return temp;
         }
@@ -455,11 +454,8 @@ namespace SCSSdkClient {
 
             _offset = _offsetAreas[_offsetArea];
         }
-        private void SetOffset(int off) {
 
-
-            _offset += off;
-        }
+        private void SetOffset(int off) => _offset += off;
 
         private string GetString(int length = StringSize) {
             var area = GetSubArray(length);
@@ -474,16 +470,16 @@ namespace SCSSdkClient {
 
             return res;
         }
-        private int[] GetIntArray(int length)
-        {
+
+        private int[] GetIntArray(int length) {
             var res = new int[length];
-            for (var i = 0; i < length; i++)
-            {
+            for (var i = 0; i < length; i++) {
                 res[i] = GetInt();
             }
 
             return res;
         }
+
         private float[] GetFloatArray(int length) {
             var res = new float[length];
             for (var i = 0; i < length; i++) {
@@ -502,50 +498,41 @@ namespace SCSSdkClient {
             return res;
         }
 
-        private SCSTelemetry.FVector GetFVector() {
-            return new SCSTelemetry.FVector {X = GetFloat(), Y = GetFloat(), Z = GetFloat()};
-        }
+        private SCSTelemetry.FVector GetFVector() => new SCSTelemetry.FVector
+                                                     {X = GetFloat(), Y = GetFloat(), Z = GetFloat()};
 
         private SCSTelemetry.FVector[] GetFVectorArray(int length) {
             var tempPos = new SCSTelemetry.FVector[length];
-            for (var j = 0; j < length; j++)
-            {
-                tempPos[j] = new SCSTelemetry.FVector { X = GetFloat() };
+            for (var j = 0; j < length; j++) {
+                tempPos[j] = new SCSTelemetry.FVector {X = GetFloat()};
             }
 
-            for (var j = 0; j < length; j++)
-            {
+            for (var j = 0; j < length; j++) {
                 tempPos[j].Y = GetFloat();
             }
 
-            for (var j = 0; j < length; j++)
-            {
+            for (var j = 0; j < length; j++) {
                 tempPos[j].Z = GetFloat();
             }
 
             return tempPos;
         }
 
-        private SCSTelemetry.DVector GetDVector() {
-            return new SCSTelemetry.DVector {X = GetDouble(), Y = GetDouble(), Z = GetDouble()};
-        }
+        private SCSTelemetry.DVector GetDVector() => new SCSTelemetry.DVector
+                                                     {X = GetDouble(), Y = GetDouble(), Z = GetDouble()};
 
-        private SCSTelemetry.Euler GetEuler() {
-            return new SCSTelemetry.Euler {Heading = GetFloat(), Pitch = GetFloat(), Roll = GetFloat()};
-        }
+        private SCSTelemetry.Euler GetEuler() => new SCSTelemetry.Euler
+                                                 {Heading = GetFloat(), Pitch = GetFloat(), Roll = GetFloat()};
 
-        private SCSTelemetry.Euler GetDEuler() {
-            return new SCSTelemetry.Euler
-                   {Heading = (float) GetDouble(), Pitch = (float) GetDouble(), Roll = (float) GetDouble()};
-        }
+        private SCSTelemetry.Euler GetDEuler() =>
+            new SCSTelemetry.Euler
+            {Heading = (float) GetDouble(), Pitch = (float) GetDouble(), Roll = (float) GetDouble()};
 
-        private SCSTelemetry.FPlacement GetFPlacement() {
-            return new SCSTelemetry.FPlacement {Position = GetFVector(), Orientation = GetEuler()};
-        }
+        private SCSTelemetry.FPlacement GetFPlacement() => new SCSTelemetry.FPlacement
+                                                           {Position = GetFVector(), Orientation = GetEuler()};
 
-        private SCSTelemetry.DPlacement GetDPlacement() {
-            return new SCSTelemetry.DPlacement {Position = GetDVector(), Orientation = GetDEuler()};
-        }
+        private SCSTelemetry.DPlacement GetDPlacement() => new SCSTelemetry.DPlacement
+                                                           {Position = GetDVector(), Orientation = GetDEuler()};
 
         private long GetLong() {
             var temp = new[] {
@@ -555,8 +542,8 @@ namespace SCSSdkClient {
             _offset += 8;
             return BitConverter.ToInt64(temp, 0);
         }
-        private ulong GetULong()
-        {
+
+        private ulong GetULong() {
             var temp = new[] {
                                  _data[_offset], _data[_offset + 1], _data[_offset + 2], _data[_offset + 3],
                                  _data[_offset + 4], _data[_offset + 5], _data[_offset + 6], _data[_offset + 7]
@@ -570,14 +557,15 @@ namespace SCSSdkClient {
             for (var i = 0; i < 10; i++) {
                 trailer[i] = GetTrailer();
             }
+
             return trailer;
         }
-         
+
         private SCSTelemetry.Trailer GetTrailer() {
-            
             var trailer = new SCSTelemetry.Trailer();
 
             #region bool Region
+
             trailer.WheelsConstant.Steerable = GetBoolArray(WheelSize);
             trailer.WheelsConstant.Simulated = GetBoolArray(WheelSize);
             trailer.WheelsConstant.Powered = GetBoolArray(WheelSize);
@@ -585,13 +573,13 @@ namespace SCSSdkClient {
             trailer.Wheelvalues.OnGround = GetBoolArray(WheelSize);
             trailer.Attached = GetBool();
             SetOffset(3);
+
             #endregion First Zone 0 - 83
 
             #region uint Region
 
             trailer.Wheelvalues.Substance = GetUintArray(WheelSize);
             trailer.WheelsConstant.Count = GetUint();
-
 
             #endregion Second Zone 84 - 151
 
@@ -608,6 +596,7 @@ namespace SCSSdkClient {
             trailer.Wheelvalues.LiftOffset = GetFloatArray(WheelSize);
 
             trailer.WheelsConstant.Radius = GetFloatArray(WheelSize);
+
             #endregion Third Zone 152 - 611
 
             #region floatvector Region
@@ -621,12 +610,12 @@ namespace SCSSdkClient {
 
             trailer.WheelsConstant.PositionValues = GetFVectorArray(WheelSize);
 
-
             #endregion 4Th Zone 612 - 863
 
             #region double placement Region
 
             trailer.Position = GetDPlacement();
+
             #endregion 5Th 864 - 911
 
             #region string Region
@@ -640,10 +629,10 @@ namespace SCSSdkClient {
             trailer.ChainType = GetString();
             trailer.LicensePlate = GetString();
             trailer.LicensePlateCountry = GetString();
-            trailer.LicensePlateCountryId = GetString(); 
-
+            trailer.LicensePlateCountryId = GetString();
 
             #endregion 6th Zone 912 - 1551
+
             return trailer;
         }
     }

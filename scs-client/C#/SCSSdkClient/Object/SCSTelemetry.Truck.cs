@@ -7,8 +7,7 @@
             /// <summary>
             ///     Initialise a truck object
             /// </summary>
-            public Truck()
-            {
+            public Truck() {
                 ConstantsValues = new Constants();
                 CurrentValues = new Current();
                 Positioning = new PositionData();
@@ -29,7 +28,5 @@
             /// </summary>
             public PositionData Positioning { get; internal set; }
         }
-
-
     }
 }

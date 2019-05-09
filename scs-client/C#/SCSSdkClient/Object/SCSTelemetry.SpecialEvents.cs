@@ -9,16 +9,15 @@ namespace SCSSdkClient.Object {
             /// <summary>
             ///     Event flag that displays if a driver is doing a job
             /// </summary>
-            /// 
             public bool OnJob { get; internal set; }
 
             /// <summary>
             ///     Event flag that displays (for some ticks) that a job was finished, doesn't matter how (cancelled, delivered, ...)
-            ///      Deprecated for Version 1.35 of both games. Use JobCancelled and JobDelivered Event for version starting with 1.35+
+            ///     Deprecated for Version 1.35 of both games. Use JobCancelled and JobDelivered Event for version starting with 1.35+
             ///     But should still work
             /// </summary>
-            /// 
             public bool JobFinished { get; internal set; }
+
             public bool JobCancelled { get; internal set; }
             public bool JobDelivered { get; internal set; }
             public bool Fined { get; internal set; }

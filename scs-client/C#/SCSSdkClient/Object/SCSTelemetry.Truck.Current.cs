@@ -9,8 +9,7 @@ namespace SCSSdkClient.Object {
                 /// <summary>
                 ///     Initialise a current truck object
                 /// </summary>
-                public Current()
-                {
+                public Current() {
                     MotorValues = new Motor();
                     DashboardValues = new Dashboard();
                     LightsValues = new Lights();
@@ -29,35 +28,41 @@ namespace SCSSdkClient.Object {
                 ///     Is the engine enabled?
                 /// </summary>
                 public bool EngineEnabled { get; internal set; }
+
                 /// <summary>
                 ///     Current values of the motor
-                ///     <seealso cref="Motor"/> for more information
+                ///     <seealso cref="Motor" /> for more information
                 /// </summary>
                 public Motor MotorValues { get; internal set; }
+
                 /// <summary>
                 ///     Values that are displayed at the dashboard like rpm, fuelValue, ...
-                ///     <seealso cref="Dashboard"/> for more information
+                ///     <seealso cref="Dashboard" /> for more information
                 /// </summary>
                 public Dashboard DashboardValues { get; internal set; }
+
                 /// <summary>
                 ///     Information about the Lights of the truck
-                ///     <seealso cref="Lights"/> for more information
+                ///     <seealso cref="Lights" /> for more information
                 /// </summary>
                 public Lights LightsValues { get; internal set; }
+
                 /// <summary>
                 ///     Current values of the wheels like rotation, substance, ...
-                ///     <seealso cref="Wheels"/>
+                ///     <seealso cref="Wheels" />
                 /// </summary>
                 public Wheels WheelsValues { get; internal set; }
+
                 /// <summary>
                 ///     Wear of the Truck
                 /// </summary>
                 public Damage DamageValues { get; internal set; }
+
                 /// <summary>
                 ///     Acceleration of the Truck
-                ///     <seealso cref="Acceleration"/> for more information
+                ///     <seealso cref="Acceleration" /> for more information
                 /// </summary>
-                public  Acceleration AccelerationValues { get; internal set; }
+                public Acceleration AccelerationValues { get; internal set; }
 
                 /// <summary>
                 ///     Represents world space position and orientation of the truck.
@@ -71,15 +76,16 @@ namespace SCSSdkClient.Object {
                     /// <summary>
                     ///     Initialise a motor object
                     /// </summary>
-                    public Motor()
-                    {
+                    public Motor() {
                         GearValues = new Gear();
                         BrakeValues = new Brakes();
                     }
+
                     /// <summary>
                     ///     Information to the current gears
                     /// </summary>
                     public Gear GearValues { get; internal set; }
+
                     /// <summary>
                     ///     Information around the brake state
                     /// </summary>
@@ -129,17 +135,15 @@ namespace SCSSdkClient.Object {
                         /// About: RetarderLevel
                         /// <0;max>
                         ///     where 0 is disabled retarder and max is maximal value found in Truck configuration
-                        /// 
                         /// See Also:
                         ///     <Constants.Motor.RetarderStepCount>
-
                         /// <summary>
                         /// Current level of the retarder
                         /// </summary>
                         /// <!----> **INFORMATION** <!---->
-                        ///  0;max where 0 is disabled retarder and max is maximal value found in TRUCK configuration
-                        ///  <!----> **INFORMATION** <!---->
-                        ///   <seealso cref="Constants.Motor.RetarderStepCount" />.
+                        /// 0;max where 0 is disabled retarder and max is maximal value found in TRUCK configuration
+                        /// <!----> **INFORMATION** <!---->
+                        /// <seealso cref="Constants.Motor.RetarderStepCount" />.
                         public uint RetarderLevel { get; internal set; }
 
                         /// <summary>
@@ -171,30 +175,30 @@ namespace SCSSdkClient.Object {
                     /// <summary>
                     ///     Initialise a dashboard object
                     /// </summary>
-                    public Dashboard()
-                    {
+                    public Dashboard() {
                         FuelValue = new Fuel();
-                        WarningValues = new Warnings(); 
+                        WarningValues = new Warnings();
                         Speed = new Movement();
-                        CruiseControlSpeed = new Movement(); 
+                        CruiseControlSpeed = new Movement();
                     }
 
                     /// About: Speed
                     /// Uses negative value to represent reverse movement
-                    /// 
+                    ///  
                     /// About: CruiseControlSpeed
                     /// Is zero if the cruise control is disabled
-                    /// 
-                    /// About: GearDashboard
                     ///  
+                    /// About: GearDashboard
+                    ///   
                     /// - > 0  - Forward gears
                     /// -    0  - Neutral
                     /// - < 0  - Reverse gears
-
-                    ///<summary>
+                     
+                    /// <summary>
                     ///     Information about fuel: amount, range, average consumption
                     /// </summary>
                     public Fuel FuelValue { get; internal set; }
+
                     /// <summary>
                     ///     Display active warnings
                     /// </summary>
@@ -271,7 +275,7 @@ namespace SCSSdkClient.Object {
                     ///     Is the CruiseControl active?
                     /// </summary>
                     public bool CruiseControl { get; internal set; }
-                     
+
 
                     /// <summary>
                     ///     Contains Fuel values
@@ -343,7 +347,7 @@ namespace SCSSdkClient.Object {
                     /// it is true as long the blinker is enabled regardless of the
                     /// physical enabled state of the light (i.e. it does not blink
                     /// and ignores enable state of electric).
-                    
+                     
                     /// <summary>
                     ///     Are the auxiliary front lights active?
                     /// </summary>
@@ -430,23 +434,27 @@ namespace SCSSdkClient.Object {
                     /// Positive velocity corresponds to forward movement
                     /// 
                     /// About: Steering
-                    /// Value is from <0.25,0.25> range in counterclockwise
+                    /// Value is from
+                    /// <0.25,0.25>
+                    /// range in counterclockwise
                     /// direction when looking from top (e.g. 0.25 corresponds to left and -0.25 corresponds to right)
                     /// 
                     /// Set to zero for non-steered wheels
-                    /// 
+ 
                     /// About: Rotation
                     /// Value is from
                     /// <0.0,1.0) range in which value increase corresponds to forward movement
-                    ///     About: Lift
-                    ///     For use with simple lifted/ non-lifted test or logical visualization of the lifting progress.
+                  
+                    /// About: Lift
+                    /// For use with simple lifted/ non-lifted test or logical visualization of the lifting progress.
                     ///  
-                    ///     - Value of 0 corresponds to non-lifted axle.
-                    ///     - Value of 1 corresponds to fully lifted axle.
-                    ///     Set to zero or not provided for non-liftable axles.
-                    ///     About: LiftOffset
-                    ///     Might have non-linear relation to lift ratio.
-                    ///     Set to zero or not provided for non-liftable axles.
+                    /// - Value of 0 corresponds to non-lifted axle.
+                    /// - Value of 1 corresponds to fully lifted axle.
+                    /// Set to zero or not provided for non-liftable axles.
+                     
+                    /// About: LiftOffset
+                    /// Might have non-linear relation to lift ratio.
+                    /// Set to zero or not provided for non-liftable axles.
                     
                     /// <summary>
                     ///     Substance below the wheel
@@ -511,7 +519,6 @@ namespace SCSSdkClient.Object {
                     ///     Is the wheel in contact with ground?
                     /// </summary>
                     public bool[] OnGround { get; internal set; }
-
                 }
 
                 /// <summary>

@@ -1,5 +1,4 @@
 ﻿#if LOGGING
-
 using System;
 using System.IO;
 using System.Text;
@@ -26,7 +25,6 @@ namespace SCSSdkClient {
         }
     }
 }
-
 
 
 #endif

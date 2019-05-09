@@ -1,6 +1,6 @@
 ﻿namespace SCSSdkClient {
     /// <summary>
-    /// Shifter Type
+    ///     Shifter Type
     /// </summary>
     public enum ShifterType {
         /// About: Values
@@ -10,20 +10,24 @@
         /// Manual     - Manual Shifter (some problems)
         /// HShifter   - HShifter
         Unknown,
+
         /// <summary>
-        /// Don't now
+        ///     Don't now
         /// </summary>
         Arcade,
+
         /// <summary>
-        /// Automatic Shifter
+        ///     Automatic Shifter
         /// </summary>
         Automatic,
+
         /// <summary>
-        /// Manual Shifter
+        ///     Manual Shifter
         /// </summary>
         Manual,
+
         /// <summary>
-        /// HShifter
+        ///     HShifter
         /// </summary>
         HShifter
     }

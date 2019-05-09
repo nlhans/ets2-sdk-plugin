@@ -100,7 +100,7 @@ bool handleGpe(const scs_named_value_t* info, const gameplayType type) {
         break;
     default:
         // something went wrong
-       return false;
+        return false;
     }
     auto i = gameplay;
     for (auto index = 0; index < length_gameplays[type]; index++) {

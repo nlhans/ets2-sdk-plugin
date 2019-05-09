@@ -90,4 +90,4 @@ namespace logger {
     void flush() { out.flush(); }
 }
 
-#endif 
+#endif

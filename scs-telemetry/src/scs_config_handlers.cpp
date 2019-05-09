@@ -14,13 +14,13 @@ extern scsTelemetryMap_t* telem_ptr;
 // const: substances_config
 // handle config id `substances`
 const scsConfigHandler_t substances_config[] = {
-        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_id, handleSubstancesId}
+    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_id, handleSubstancesId}
 };
 
 // const: controls_config
 // handle config id `controls`
 const scsConfigHandler_t controls_config[] = {
-        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_shifter_type, handleControlsShifterType}
+    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_shifter_type, handleControlsShifterType}
 };
 
 // const: hshifter_config
@@ -65,9 +65,9 @@ const scsConfigHandler_t truck_config[] = {
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_differential_ratio, handleTruckGearDifferential},
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_forward_ratio, handleTruckGearForwardRatio},
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_reverse_ratio, handleTruckGearReverseRatio},
-	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate, handleTruckLicensePlate},
-	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country, handleTruckLicensePlateCountry},
-	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country_id, handleTruckLicensePlateCountryId}
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate, handleTruckLicensePlate},
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country, handleTruckLicensePlateCountry},
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country_id, handleTruckLicensePlateCountryId}
 };
 
 // const: trailer_config
@@ -83,14 +83,14 @@ const scsConfigHandler_t trailer_config[] = {
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_radius, handleTrailerWheelRadius},
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_powered, handleTrailerWheelPowered},
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_liftable, handleTrailerWheelLiftable},
-		{SCS_TELEMETRY_CONFIG_ATTRIBUTE_body_type, handleTrailerBodyType},
-	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand_id, handleTrailerBrandId},
-	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand, handleTrailerBrand},
-	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_name, handleTrailerName},
-	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_chain_type, handleTrailerChainType},
-	    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate, handleTrailerLicensePlate},
-		{SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country, handleTrailerLicensePlateCountry},
-		{SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country_id, handleTrailerLicensePlateCountryId}
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_body_type, handleTrailerBodyType},
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand_id, handleTrailerBrandId},
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand, handleTrailerBrand},
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_name, handleTrailerName},
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_chain_type, handleTrailerChainType},
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate, handleTrailerLicensePlate},
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country, handleTrailerLicensePlateCountry},
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country_id, handleTrailerLicensePlateCountryId}
 };
 
 // const: job_config
@@ -109,11 +109,11 @@ const scsConfigHandler_t job_config[] = {
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_company, handleJobCompSrc},
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_income, handleJobIncome},
         {SCS_TELEMETRY_CONFIG_ATTRIBUTE_delivery_time, handleJobDeliveryTime},
-	{SCS_TELEMETRY_CONFIG_ATTRIBUTE_is_cargo_loaded, handleJobIsCargoLoaded},
-    {SCS_TELEMETRY_CONFIG_ATTRIBUTE_job_market, handleJobJobMarket},
-	{SCS_TELEMETRY_CONFIG_ATTRIBUTE_special_job, handleJobSpecialJob},
-	{SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_unit_count, handleJobUnitCount},
-	{SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_unit_mass, handleJobUnitMass}
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_is_cargo_loaded, handleJobIsCargoLoaded},
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_job_market, handleJobJobMarket},
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_special_job, handleJobSpecialJob},
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_unit_count, handleJobUnitCount},
+        {SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_unit_mass, handleJobUnitMass}
 };
 
 const int length_configs[] = {
@@ -129,7 +129,7 @@ const int length_configs[] = {
 
 // Function: handleCfg
 // brings the config attributes to the correct function
-bool handleCfg(const scs_named_value_t* info, const configType type, const unsigned int trailer_id ) { 
+bool handleCfg(const scs_named_value_t* info, const configType type, const unsigned int trailer_id) {
     const scsConfigHandler_t* configs = nullptr;
     switch (type) {
     case substances:
@@ -195,7 +195,7 @@ scsConfigHandle(Substances, Id) {
 // Function: handleControlsShifterType
 // handle the Controls ShifterType and write it to the memory
 scsConfigHandle(Controls, ShifterType) {
-    strncpy(telem_ptr->config_s.shifterType,current->value.value_string.value,16);
+    strncpy(telem_ptr->config_s.shifterType, current->value.value_string.value, 16);
 }
 #pragma endregion All handler of the id controls
 
@@ -322,8 +322,8 @@ scsConfigHandle(Truck, HookPosition) {
 }
 
 scsConfigHandle(Truck, WheelCount) {
-     
-    telem_ptr->config_ui.truckWheelCount = current->value.value_u32.value; 
+
+    telem_ptr->config_ui.truckWheelCount = current->value.value_u32.value;
 }
 
 scsConfigHandle(Truck, WheelPosition) {
@@ -402,29 +402,30 @@ scsConfigHandle(Truck, GearReverseRatio) {
 
     if (gear < 8) {
         telem_ptr->config_f.gearRatiosReverse[gear] = ratio;
-    } 
+    }
 }
 
 scsConfigHandle(Truck, LicensePlate) {
-	strncpy(telem_ptr->config_s.truckLicensePlate, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.truckLicensePlate, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Truck, LicensePlateCountry) {
-	strncpy(telem_ptr->config_s.truckLicensePlateCountry, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.truckLicensePlateCountry, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Truck, LicensePlateCountryId) {
-	strncpy(telem_ptr->config_s.truckLicensePlateCountryId, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->config_s.truckLicensePlateCountryId, current->value.value_string.value, stringsize);
 }
 #pragma endregion  All handler of the id truck
 
 #pragma region handleTrailer
-scsConfigHandle(Trailer, Id) { 
-    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.id, current->value.value_string.value, stringsize); 
+scsConfigHandle(Trailer, Id) {
+    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.id, current->value.value_string.value, stringsize);
 }
 
 scsConfigHandle(Trailer, CargoAccessoryId) {
-    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.cargoAcessoryId, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.cargoAcessoryId, current->value.value_string.value,
+            stringsize);
 }
 
 scsConfigHandle(Trailer, HookPosition) {
@@ -434,7 +435,7 @@ scsConfigHandle(Trailer, HookPosition) {
 }
 
 scsConfigHandle(Trailer, WheelCount) {
-    telem_ptr->trailer.trailer[trailer_id].con_ui.wheelCount = current->value.value_u32.value;  
+    telem_ptr->trailer.trailer[trailer_id].con_ui.wheelCount = current->value.value_u32.value;
 }
 
 scsConfigHandle(Trailer, WheelOffset) {
@@ -495,28 +496,37 @@ scsConfigHandle(Trailer, WheelLiftable) {
 }
 
 scsConfigHandle(Trailer, BodyType) {
-	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.bodyType, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.bodyType, current->value.value_string.value, stringsize);
 }
+
 scsConfigHandle(Trailer, BrandId) {
-	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.brandId, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.brandId, current->value.value_string.value, stringsize);
 }
+
 scsConfigHandle(Trailer, Brand) {
-	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.brand, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.brand, current->value.value_string.value, stringsize);
 }
+
 scsConfigHandle(Trailer, Name) {
-	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.name, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.name, current->value.value_string.value, stringsize);
 }
+
 scsConfigHandle(Trailer, ChainType) {
-	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.chainType, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.chainType, current->value.value_string.value, stringsize);
 }
+
 scsConfigHandle(Trailer, LicensePlate) {
-	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlate, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlate, current->value.value_string.value, stringsize);
 }
+
 scsConfigHandle(Trailer, LicensePlateCountry) {
-	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlateCountry, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlateCountry, current->value.value_string.value,
+            stringsize);
 }
+
 scsConfigHandle(Trailer, LicensePlateCountryId) {
-	strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlateCountryId, current->value.value_string.value, stringsize);
+    strncpy(telem_ptr->trailer.trailer[trailer_id].con_s.licensePlateCountryId, current->value.value_string.value,
+            stringsize);
 }
 
 #pragma endregion All handler for the id trailer
@@ -578,18 +588,22 @@ scsConfigHandle(Job, DeliveryTime) {
 }
 
 scsConfigHandle(Job, IsCargoLoaded) {
-	telem_ptr->config_b.isCargoLoaded = current->value.value_bool.value;
+    telem_ptr->config_b.isCargoLoaded = current->value.value_bool.value;
 }
+
 scsConfigHandle(Job, JobMarket) {
-	strncpy(telem_ptr->config_s.jobMarket, current->value.value_string.value, 20);
+    strncpy(telem_ptr->config_s.jobMarket, current->value.value_string.value, 20);
 }
+
 scsConfigHandle(Job, SpecialJob) {
-	telem_ptr->config_b.specialJob = current->value.value_bool.value;
+    telem_ptr->config_b.specialJob = current->value.value_bool.value;
 }
+
 scsConfigHandle(Job, UnitCount) {
-	telem_ptr->config_ui.unitCount = current->value.value_u32.value;
+    telem_ptr->config_ui.unitCount = current->value.value_u32.value;
 }
+
 scsConfigHandle(Job, UnitMass) {
-	telem_ptr->config_f.unitMass = current->value.value_float.value;
+    telem_ptr->config_f.unitMass = current->value.value_float.value;
 }
 #pragma endregion All handler of the id job

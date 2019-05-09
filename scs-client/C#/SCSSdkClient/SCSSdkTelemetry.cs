@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Runtime.Remoting.Lifetime;
 using System.Threading;
-using System.Windows.Forms.VisualStyles;
 using SCSSdkClient.Object;
+
 //TODO: possible idea: check if ets is running and if not change updaterate to infinity (why most of the user may not quit the application while ets is running)
 namespace SCSSdkClient {
     public delegate void TelemetryData(SCSTelemetry data, bool newTimestamp);
 
     /// <summary>
     ///     Handle the SCSSdkTelemetry.
-    ///     Currently IDisposable. Was implemented because of an error 
+    ///     Currently IDisposable. Was implemented because of an error
     /// </summary>
     public class SCSSdkTelemetry : IDisposable {
         private const string DefaultSharedMemoryMap = "Local\\SimTelemetrySCS";
@@ -26,12 +25,12 @@ namespace SCSSdkClient {
             Log.SaveShutdown();
         }
 #else
-         public void Dispose() => _updateTimer?.Dispose();
+        public void Dispose() => _updateTimer?.Dispose();
 
 #endif
-        
 
-    private SharedMemory SharedMemory;
+
+        private SharedMemory SharedMemory;
         private bool wasFinishingJob;
 
         private bool wasOnJob;
@@ -67,9 +66,7 @@ namespace SCSSdkClient {
         public event EventHandler Ferry;
         public event EventHandler Train;
 
-        public void pause() {
-            _updateTimer.Change(Timeout.Infinite, Timeout.Infinite);
-        }
+        public void pause() => _updateTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
         public void resume() {
             var tsInterval = new TimeSpan(0, 0, 0, 0, UpdateInterval);
@@ -106,14 +103,13 @@ namespace SCSSdkClient {
 #if LOGGING
             Log.Write("Every thing is set up correctly and the timer was started");
 #endif
-
         }
 
-        private void _updateTimer_Elapsed(object sender) { 
+        private void _updateTimer_Elapsed(object sender) {
             var scsTelemetry = SharedMemory.Update<SCSTelemetry>();
             var time = scsTelemetry.Timestamp;
             Data?.Invoke(scsTelemetry, time != lastTime);
-          //TODO: make it nicer thats a lot of code for such less work
+            //TODO: make it nicer thats a lot of code for such less work
             // Job close & start events
             if (wasFinishingJob != scsTelemetry.SpecialEventsValues.JobFinished) {
                 wasFinishingJob = scsTelemetry.SpecialEventsValues.JobFinished;
@@ -130,56 +126,44 @@ namespace SCSSdkClient {
             }
 
 
-            if (cancelled != scsTelemetry.SpecialEventsValues.JobCancelled)
-            {
+            if (cancelled != scsTelemetry.SpecialEventsValues.JobCancelled) {
                 cancelled = scsTelemetry.SpecialEventsValues.JobCancelled;
-                if (scsTelemetry.SpecialEventsValues.JobCancelled)
-                {
+                if (scsTelemetry.SpecialEventsValues.JobCancelled) {
                     JobCancelled?.Invoke(this, new EventArgs());
                 }
             }
 
-            if (delivered != scsTelemetry.SpecialEventsValues.JobDelivered)
-            {
+            if (delivered != scsTelemetry.SpecialEventsValues.JobDelivered) {
                 delivered = scsTelemetry.SpecialEventsValues.JobDelivered;
-                if (scsTelemetry.SpecialEventsValues.JobDelivered)
-                {
+                if (scsTelemetry.SpecialEventsValues.JobDelivered) {
                     JobDelivered?.Invoke(this, new EventArgs());
                 }
             }
 
-            if (fined != scsTelemetry.SpecialEventsValues.Fined)
-            {
+            if (fined != scsTelemetry.SpecialEventsValues.Fined) {
                 fined = scsTelemetry.SpecialEventsValues.Fined;
-                if (scsTelemetry.SpecialEventsValues.Fined)
-                {
+                if (scsTelemetry.SpecialEventsValues.Fined) {
                     Fined?.Invoke(this, new EventArgs());
                 }
             }
 
-            if (tollgate != scsTelemetry.SpecialEventsValues.Tollgate)
-            {
+            if (tollgate != scsTelemetry.SpecialEventsValues.Tollgate) {
                 tollgate = scsTelemetry.SpecialEventsValues.Tollgate;
-                if (scsTelemetry.SpecialEventsValues.Tollgate)
-                {
+                if (scsTelemetry.SpecialEventsValues.Tollgate) {
                     Tollgate?.Invoke(this, new EventArgs());
                 }
             }
 
-            if (ferry != scsTelemetry.SpecialEventsValues.Ferry)
-            {
+            if (ferry != scsTelemetry.SpecialEventsValues.Ferry) {
                 ferry = scsTelemetry.SpecialEventsValues.Ferry;
-                if (scsTelemetry.SpecialEventsValues.Ferry)
-                {
+                if (scsTelemetry.SpecialEventsValues.Ferry) {
                     Ferry?.Invoke(this, new EventArgs());
                 }
             }
 
-            if (train != scsTelemetry.SpecialEventsValues.Train)
-            {
+            if (train != scsTelemetry.SpecialEventsValues.Train) {
                 train = scsTelemetry.SpecialEventsValues.Train;
-                if (scsTelemetry.SpecialEventsValues.Train)
-                {
+                if (scsTelemetry.SpecialEventsValues.Train) {
                     Train?.Invoke(this, new EventArgs());
                 }
             }

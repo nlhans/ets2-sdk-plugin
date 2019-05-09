@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-#pragma warning disable 1570
+﻿#pragma warning disable 1570
 
 namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
@@ -9,10 +7,9 @@ namespace SCSSdkClient.Object {
         /// </summary>
         public class Control {
             /// <summary>
-            /// Initialise a Control object
+            ///     Initialise a Control object
             /// </summary>
-            public Control()
-            {
+            public Control() {
                 InputValues = new Input();
                 GameValues = new Game();
             }
@@ -21,6 +18,7 @@ namespace SCSSdkClient.Object {
             ///     Contains the values of the user input
             /// </summary>
             public Input InputValues { get; internal set; }
+
             /// <summary>
             ///     Cpntains the values the game use
             /// </summary>
@@ -28,9 +26,8 @@ namespace SCSSdkClient.Object {
 
 
             /// <inheritdoc />
-            public override string ToString() {
-                return $"Input Values:\n\t{InputValues.ToString().StringFormater()}\nGame Values:\n\t{GameValues.ToString().StringFormater()}";
-            }
+            public override string ToString() =>
+                $"Input Values:\n\t{InputValues.ToString().StringFormater()}\nGame Values:\n\t{GameValues.ToString().StringFormater()}";
 
             /// <summary>
             ///     Input value
@@ -49,7 +46,7 @@ namespace SCSSdkClient.Object {
                 /// 
                 /// About: Clutch
                 /// If the user presses the clutch button on digital input (e.g. keyboard) this value goes immediatelly to 1.0
-                
+
                 /// <summary>
                 ///     Steering received from input &lt;-1;1&gt;.
                 /// </summary>
@@ -87,7 +84,6 @@ namespace SCSSdkClient.Object {
                 /// <!----> **INFORMATION** <!---->
                 /// <seealso cref="Game.Clutch" />
                 public float Clutch { get; internal set; }
- 
             }
 
             /// <summary>
@@ -107,7 +103,7 @@ namespace SCSSdkClient.Object {
                 /// 
                 /// About: Clutch
                 /// Accounts for the automatic shifting or interpolation of player input.
-                
+
                 /// <summary>
                 ///     Steering as used by the simulation &lt;-1;1&gt;
                 /// </summary>
@@ -146,7 +142,6 @@ namespace SCSSdkClient.Object {
                 /// <!----> **INFORMATION** <!---->
                 /// <seealso cref="Input.Clutch" />
                 public float Clutch { get; internal set; }
-             
             }
         }
     }

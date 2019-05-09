@@ -22,14 +22,6 @@ namespace SCSSdkClient.Object {
             /// </summary>
             public bool Attached { get; internal set; }
 
-            
-
-            public class Damage {
-                public float Cargo { get; internal set; }
-                public float Wheels { get; internal set; }
-                public float Chassis { get; internal set; }
-            }
-
             /// <summary>
             ///     Default position of the hook in vehicle space
             /// </summary>
@@ -82,13 +74,20 @@ namespace SCSSdkClient.Object {
             public string LicensePlateCountryId { get; internal set; }
 
 
+            public class Damage {
+                public float Cargo { get; internal set; }
+                public float Wheels { get; internal set; }
+                public float Chassis { get; internal set; }
+            }
+
+
             /// <summary>
             ///     States of the Wheels
             /// </summary>
             public class Wheels {
                 /// About: Velocity
                 /// Positive velocity corresponds to forward movement
-                 
+              
                 /// About: Steering
                 /// Value is from
                 /// <0.25, 0.25>
@@ -96,22 +95,22 @@ namespace SCSSdkClient.Object {
                 /// when looking from top (e.g. 0.25 corresponds to left and -0.25 corresponds to right)
                 /// 
                 /// Set to zero for non-steered wheels
-                 
+                
                 /// About: Rotation
                 /// Value is from
                 /// <0.0, 1.0) range in which value increase corresponds to forward movement
-                
+               
                 /// About: Lift
-                ///     For use with simple lifted/ non-lifted test or logical visualization of the lifting progress.
+                /// For use with simple lifted/ non-lifted test or logical visualization of the lifting progress.
                 ///  
-                ///     - Value of 0 corresponds to non-lifted axle.
-                ///     - Value of 1 corresponds to fully lifted axle.
-                ///     Set to zero or not provided for non-liftable axles.
-                
-                ///     About: LiftOffset
-                ///     Might have non-linear relation to lift ratio.
-                ///     Set to zero or not provided for non-liftable axles.
-                
+                /// - Value of 0 corresponds to non-lifted axle.
+                /// - Value of 1 corresponds to fully lifted axle.
+                /// Set to zero or not provided for non-liftable axles.
+                 
+                /// About: LiftOffset
+                /// Might have non-linear relation to lift ratio.
+                /// Set to zero or not provided for non-liftable axles.
+                 
                 /// <summary>
                 ///     Substance below the wheel
                 /// </summary>

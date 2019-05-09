@@ -22,23 +22,19 @@ namespace SCSSdkClient.Object {
 
             /// About: RemainingDeliveryTime
             /// The RemainingDeliveryTime is negative if the delivery is to late
-
+            
             /// <summary>
             ///     Remaining in-game time until the job delivery window close
             /// </summary>
-            /// <!---->
-            /// **INFORMATION**
-            /// <!---->
+            /// <!----> **INFORMATION** <!---->
             /// Negative if the delivery is to late
-            /// <!---->
-            /// **INFORMATION**
-            /// <!---->
+            /// <!----> **INFORMATION** <!---->
             public Frequency RemainingDeliveryTime { get; protected internal set; }
+
             public bool CargoLoaded { get; internal set; }
             public bool SpecialJob { get; internal set; }
             public JobMarket Market { get; internal set; }
 
-           
 
             /// <summary>
             ///     Vargo values of an job
@@ -123,14 +119,13 @@ namespace SCSSdkClient.Object {
                 ///     How many units of the cargo the job consist of.
                 /// </summary>
                 public uint UnitCount { get; internal set; }
+
                 /// <summary>
-                /// Mass of the single unit of the cargo in kilograms.
+                ///     Mass of the single unit of the cargo in kilograms.
                 /// </summary>
-                public float UnitMass  { get; internal set; }
+                public float UnitMass { get; internal set; }
 
                 public float CargoDamage { get; internal set; }
-
-               
             }
         }
     }

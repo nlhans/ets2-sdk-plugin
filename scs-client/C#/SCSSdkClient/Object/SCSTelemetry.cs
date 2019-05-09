@@ -4,17 +4,16 @@
 
 namespace SCSSdkClient.Object {
     /// <summary>
-    ///     Telemetry Data of SCS SDK's 
+    ///     Telemetry Data of SCS SDK's
     /// </summary>
     //
     public partial class SCSTelemetry {
         private const float PiTimes2 = 6.2831853071795864769252867665590058f;
 
         /// <summary>
-        /// initialise an SCSTelemetry object
+        ///     initialise an SCSTelemetry object
         /// </summary>
-        public SCSTelemetry()
-        {
+        public SCSTelemetry() {
             GameVersion = new Version();
             TelemetryVersion = new Version();
             TruckValues = new Truck();
@@ -39,7 +38,7 @@ namespace SCSSdkClient.Object {
         /// 
         /// About: Temperatures
         /// Aproximated for entire truck, not at the wheel level.
-
+      
         /// <summary>
         ///     Timestamp not the in game time,
         /// </summary>
@@ -128,6 +127,7 @@ namespace SCSSdkClient.Object {
         ///     Navigation values
         /// </summary>
         public Navigation NavigationValues { get; internal set; }
+
         /// <summary>
         ///     Contains special Event Values like onJob and JobFinished
         /// </summary>
