@@ -10,7 +10,7 @@
  
 fork of [nlhans](https://github.com/nlhans/ets2-sdk-plugin) work
 
-# ** 1.35/SDK10**
+# **1.35/SDK10**
 
 
 **New Revision -> not compatible with old files. SM and C# object changed a lot, because of a lot new values. see update.md for more information**
