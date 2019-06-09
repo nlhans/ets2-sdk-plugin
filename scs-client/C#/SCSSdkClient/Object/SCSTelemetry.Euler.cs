@@ -34,6 +34,7 @@ namespace SCSSdkClient.Object{
             /// 0.5 to backward(south) and 0.75 to right(east).
             /// <!----> **INFORMATION** <!---->
             public float Heading { get; internal set; }
+
             /// <summary>
             /// Pitch
             /// </summary>
@@ -45,6 +46,7 @@ namespace SCSSdkClient.Object{
             /// and negative values pointing down(-0.25 directly to nadir).
             /// <!----> **INFORMATION** <!---->
             public float Pitch { get; internal set; }
+
             /// <summary>
             /// Roll
             /// </summary>

@@ -5,14 +5,14 @@
 #include "scssdk_telemetry.h"
 #include "eurotrucks2/scssdk_eut2.h"
 #include "eurotrucks2/scssdk_telemetry_eut2.h"
-
+#include "scs-telemetry-common.hpp"
 typedef struct scsConfigHandler_s
 {
 	char const *id;
-	void (*handle) (const scs_named_value_t* current);
+	void (*handle) (const scs_named_value_t* current, const unsigned int trailer_id);
 } scsConfigHandler_t;
 
-#define scsConfigHandle(id, attribute) void handle##id##attribute (const scs_named_value_t* current)
+#define scsConfigHandle(id, attribute) void handle##id##attribute (const scs_named_value_t* current, const unsigned int trailer_id  )
 
 // Define prototypes for all the various handlers
 
@@ -59,6 +59,9 @@ scsConfigHandle(Truck, WheelLiftable);
 scsConfigHandle(Truck, GearDifferential);
 scsConfigHandle(Truck, GearForwardRatio);
 scsConfigHandle(Truck, GearReverseRatio);
+scsConfigHandle(Truck, LicensePlate);
+scsConfigHandle(Truck, LicensePlateCountry);
+scsConfigHandle(Truck, LicensePlateCountryId);
 
 // Trailer
 scsConfigHandle(Trailer, Id);
@@ -71,6 +74,15 @@ scsConfigHandle(Trailer, WheelSimulated);
 scsConfigHandle(Trailer, WheelRadius);
 scsConfigHandle(Trailer, WheelPowered);
 scsConfigHandle(Trailer, WheelLiftable);
+scsConfigHandle(Trailer, BodyType);
+scsConfigHandle(Trailer, BrandId);
+scsConfigHandle(Trailer, Brand);
+scsConfigHandle(Trailer, Name);
+scsConfigHandle(Trailer, ChainType);
+scsConfigHandle(Trailer, LicensePlate);
+scsConfigHandle(Trailer, LicensePlateCountry);
+scsConfigHandle(Trailer, LicensePlateCountryId);
+
 
 // Job
 scsConfigHandle(Job, CargoId);
@@ -86,18 +98,11 @@ scsConfigHandle(Job, CompSrcId);
 scsConfigHandle(Job, CompSrc);
 scsConfigHandle(Job, Income);
 scsConfigHandle(Job, DeliveryTime);
+scsConfigHandle(Job, IsCargoLoaded);
+scsConfigHandle(Job, JobMarket);
+scsConfigHandle(Job, SpecialJob);
+scsConfigHandle(Job, UnitCount);
+scsConfigHandle(Job, UnitMass);
 
-
-
-
-
-
-
-
-
-
-enum configType { substances, controls, hshifter, truck, trailer, job };
-
-bool handleCfg(const scs_named_value_t* info,const configType type );
-void log_line(scs_log_type_t type, const char* text, ...);
+bool handleCfg(const scs_named_value_t* info,const configType type, const unsigned int trailer_id);
 #endif

@@ -50,10 +50,13 @@
   <ItemGroup>
     <Compile Include="AuxLevel.cs" />
     <Compile Include="Extension.cs" />
+    <Compile Include="JobMarket.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="Object\SCSTelemetry.GamePlayEvents.cs" />
     <Compile Include="Object\SCSTelemetry.Methods.cs" />
     <Compile Include="Object\SCSTelemetry.Substance.cs" />
     <Compile Include="Object\SCSTelemetry.Wheels.cs" />
+    <Compile Include="Offence.cs" />
     <Compile Include="SCSGame.cs" />
     <Compile Include="SCSSdkConvert.cs" />
     <Compile Include="SCSSdkTelemetry.cs" />

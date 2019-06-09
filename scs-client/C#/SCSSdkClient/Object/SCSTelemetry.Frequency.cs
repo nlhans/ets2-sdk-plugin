@@ -8,6 +8,10 @@ namespace SCSSdkClient.Object {
         ///     Like Time object represent minutes and DateTime object, but represent more a timespan positive or negative
         /// </summary>
         public class Frequency {
+            public Frequency(int i) => Value = i;
+
+            public Frequency() { }
+
             /// <summary>
             ///     Represented in number of in-game minutes
             /// </summary>
@@ -17,7 +21,8 @@ namespace SCSSdkClient.Object {
             ///     Represented in data of in-game minutes
             /// </summary>
             public DateTime Date => MinutesToDate(Value);
- 
+
+            public static implicit operator Frequency(int i) => new Frequency(i);
         }
     }
 }

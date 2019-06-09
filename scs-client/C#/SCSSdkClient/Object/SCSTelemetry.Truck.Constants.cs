@@ -14,23 +14,27 @@
                     WarningFactorValues = new WarningFactor();
                     WheelsValues = new WheelsConstants();
                 }
+
                 /// <summary>
                 ///     Constant Motor values of the truck like gearCount, rations, ...
-                ///     <seealso cref="Motor"/> for more information
+                ///     <seealso cref="Motor" /> for more information
                 /// </summary>
                 public Motor MotorValues { get; internal set; }
+
                 /// <summary>
-                ///     Capacity of fuel and adblue of the truck 
+                ///     Capacity of fuel and adblue of the truck
                 /// </summary>
                 public Capacity CapacityValues { get; internal set; }
+
                 /// <summary>
                 ///     Warning Factors of the truck
-                ///     <seealso cref="WarningFactor"/> for more information
+                ///     <seealso cref="WarningFactor" /> for more information
                 /// </summary>
                 public WarningFactor WarningFactorValues { get; internal set; }
+
                 /// <summary>
                 ///     Constant wheel values of the truck like radius, liftable, ...
-                ///     <seealso cref="WheelsConstants"/> for more information
+                ///     <seealso cref="WheelsConstants" /> for more information
                 /// </summary>
                 public WheelsConstants WheelsValues { get; internal set; }
 
@@ -57,13 +61,17 @@
                 /// </summary>
                 public string Name { get; internal set; }
 
+                public string LicensePlate { get; internal set; }
+                public string LicensePlateCountryId { get; internal set; }
+                public string LicensePlateCountry { get; internal set; }
+
                 /// <summary>
                 ///     Gear, Retarder, etc.
                 /// </summary>
                 public class Motor {
                     /// About: RetarderStepCount
-                    
                     /// Set to zero if retarder is not mounted on the truck
+                    
                     /// <summary>
                     ///     Number of forward gears on undamaged truck
                     /// </summary>

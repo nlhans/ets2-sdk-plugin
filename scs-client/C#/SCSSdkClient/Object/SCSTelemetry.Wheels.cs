@@ -37,7 +37,8 @@
             public bool[] Steerable { get; internal set; }
 
             /// <summary>
-            ///     Position of respective wheels in the vehicle space. For trailer it is described as offset ... but it should be the position too 
+            ///     Position of respective wheels in the vehicle space. For trailer it is described as offset ... but it should be the
+            ///     position too
             /// </summary>
             public FVector[] PositionValues { get; internal set; }
         }

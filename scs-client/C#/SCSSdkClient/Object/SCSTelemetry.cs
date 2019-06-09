@@ -4,27 +4,27 @@
 
 namespace SCSSdkClient.Object {
     /// <summary>
-    ///     Telemetry Data of SCS SDK's 
+    ///     Telemetry Data of SCS SDK's
     /// </summary>
     //
     public partial class SCSTelemetry {
         private const float PiTimes2 = 6.2831853071795864769252867665590058f;
 
         /// <summary>
-        /// initialise an SCSTelemetry object
+        ///     initialise an SCSTelemetry object
         /// </summary>
-        public SCSTelemetry()
-        {
+        public SCSTelemetry() {
             GameVersion = new Version();
             TelemetryVersion = new Version();
             TruckValues = new Truck();
             JobValues = new Job();
             CommonValues = new Common();
-            TrailerValues = new Trailer();
+            //TrailerValues = new Trailer();
             ControlValues = new Control();
             NavigationValues = new Navigation();
             SpecialEventsValues = new SpecialEvents();
             Substances = new List<Substance>();
+            GamePlay = new GamePlayEvents();
         }
 
 
@@ -38,7 +38,7 @@ namespace SCSSdkClient.Object {
         /// 
         /// About: Temperatures
         /// Aproximated for entire truck, not at the wheel level.
-
+      
         /// <summary>
         ///     Timestamp not the in game time,
         /// </summary>
@@ -109,9 +109,9 @@ namespace SCSSdkClient.Object {
         public Truck TruckValues { get; internal set; }
 
         /// <summary>
-        ///     Contains values of the Trailer
+        ///     Contains values of the Trailers
         /// </summary>
-        public Trailer TrailerValues { get; internal set; }
+        public Trailer[] TrailerValues { get; internal set; }
 
         /// <summary>
         ///     Contains values of the actual job
@@ -127,6 +127,7 @@ namespace SCSSdkClient.Object {
         ///     Navigation values
         /// </summary>
         public Navigation NavigationValues { get; internal set; }
+
         /// <summary>
         ///     Contains special Event Values like onJob and JobFinished
         /// </summary>
@@ -136,5 +137,9 @@ namespace SCSSdkClient.Object {
         ///     Contains string values to the substances used in values like Truck.Current.Wheels.Substance
         /// </summary>
         public List<Substance> Substances { get; internal set; }
+
+        public uint MaxTrailerCount { get; internal set; }
+
+        public GamePlayEvents GamePlay { get; internal set; }
     }
 }

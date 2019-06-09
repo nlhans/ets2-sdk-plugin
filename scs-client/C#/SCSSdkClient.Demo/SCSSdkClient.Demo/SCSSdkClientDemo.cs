@@ -7,7 +7,7 @@ namespace SCSSdkClient.Demo {
     /// <inheritdoc />
     public partial class SCSSdkClientDemo : Form {
         /// <summary>
-        /// The SCSSdkTelemetry object
+        ///     The SCSSdkTelemetry object
         /// </summary>
         public SCSSdkTelemetry Telemetry;
 
@@ -18,8 +18,15 @@ namespace SCSSdkClient.Demo {
             Telemetry.Data += Telemetry_Data;
             Telemetry.JobFinished += TelemetryOnJobFinished;
             Telemetry.JobStarted += TelemetryOnJobStarted;
-            Telemetry.TrailerConnected += TelemetryTrailerConnected;
-            Telemetry.TrailerDisconnected += TelemetryTrailerDisconnected;
+
+            Telemetry.JobCancelled += TelemetryJobCancelled;
+            Telemetry.JobDelivered += TelemetryJobDelivered;
+            Telemetry.Fined += TelemetryFined;
+            Telemetry.Tollgate += TelemetryTollgate;
+            Telemetry.Ferry += TelemetryFerry;
+            Telemetry.Train += TelemetryTrain;
+
+
             if (Telemetry.Error != null) {
                 lbGeneral.Text =
                     "General info:\r\nFailed to open memory map " +
@@ -28,7 +35,7 @@ namespace SCSSdkClient.Demo {
                     Telemetry.Error.Message +
                     "\r\n\r\nStacktrace:\r\n" +
                     Telemetry.Error.StackTrace;
-            } 
+            }
         }
 
         private void TelemetryOnJobFinished(object sender, EventArgs args) =>
@@ -36,20 +43,33 @@ namespace SCSSdkClient.Demo {
 
         private void TelemetryOnJobStarted(object sender, EventArgs e) =>
             MessageBox.Show("Just started job OR loaded game with active.");
-        private void TelemetryTrailerConnected(object sender, EventArgs e) =>
-            MessageBox.Show("A Trailer is now connected to you");
-        private void TelemetryTrailerDisconnected(object sender, EventArgs e) =>
-            MessageBox.Show("A Trailer is now not more connected to you");
+
+        private void TelemetryJobCancelled(object sender, EventArgs e) =>
+            MessageBox.Show("Job Cancelled");
+
+        private void TelemetryJobDelivered(object sender, EventArgs e) =>
+            MessageBox.Show("Job Delivered");
+
+        private void TelemetryFined(object sender, EventArgs e) =>
+            MessageBox.Show("Fined");
+
+        private void TelemetryTollgate(object sender, EventArgs e) =>
+            MessageBox.Show("Tollgate");
+
+        private void TelemetryFerry(object sender, EventArgs e) =>
+            MessageBox.Show("Ferry");
+
+        private void TelemetryTrain(object sender, EventArgs e) =>
+            MessageBox.Show("Train");
 
         private void Telemetry_Data(SCSTelemetry data, bool updated) {
-           
             try {
                 if (InvokeRequired) {
                     Invoke(new TelemetryData(Telemetry_Data), data, updated);
                     return;
                 }
 
-                lbGeneral.Text = "General info:\n "+
+                lbGeneral.Text = "General info:\n " +
                                  "\tSDK Version:\n" +
                                  $"\t\t\t{data.DllVersion}\n" +
                                  "\tGame:\n " +
@@ -66,21 +86,33 @@ namespace SCSSdkClient.Demo {
                                  $"\t\t\t{data.SpecialEventsValues.OnJob}\n" +
                                  "\tJob Finished:\n" +
                                  $"\t\t\t{data.SpecialEventsValues.JobFinished}\n" +
-                                 "\tTrailer Connected:\n" +
-                                 $"\t\t\t{data.SpecialEventsValues.TrailerConnected}\n";
-               
+                                 "\tJob Delivered:\n" +
+                                 $"\t\t\t{data.SpecialEventsValues.JobDelivered}\n" +
+                                 "\tJob Cancelled:\n" +
+                                 $"\t\t\t{data.SpecialEventsValues.JobCancelled}\n" +
+                                 "\tFined:\n" +
+                                 $"\t\t\t{data.SpecialEventsValues.Fined}\n" +
+                                 "\ttollgate:\n" +
+                                 $"\t\t\t{data.SpecialEventsValues.Tollgate}\n" +
+                                 "\tferry:\n" +
+                                 $"\t\t\t{data.SpecialEventsValues.Ferry}\n" +
+                                 "\ttrain:\n" +
+                                 $"\t\t\t{data.SpecialEventsValues.Train}\n";
+
                 common.Text = JsonConvert.SerializeObject(data.CommonValues, Formatting.Indented);
                 truck.Text = JsonConvert.SerializeObject(data.TruckValues, Formatting.Indented);
-                trailer.Text = JsonConvert.SerializeObject(data.TrailerValues, Formatting.Indented);
+                trailer.Text =
+                    JsonConvert.SerializeObject(data.TrailerValues[0],
+                                                Formatting
+                                                    .Indented); //TODO: UNTIL I WORK ON A BETTER DEMO SHOW ONLY TRAILER 0
                 job.Text = JsonConvert.SerializeObject(data.JobValues, Formatting.Indented);
                 control.Text = JsonConvert.SerializeObject(data.ControlValues, Formatting.Indented);
                 navigation.Text = JsonConvert.SerializeObject(data.NavigationValues, Formatting.Indented);
                 substances.Text = JsonConvert.SerializeObject(data.Substances, Formatting.Indented);
-
-                 
+                gameplayevent.Text = JsonConvert.SerializeObject(data.GamePlay, Formatting.Indented);
             } catch (Exception ex) {
                 // ignored atm i found no proper way to shut the telemetry down and down call this anymore when this or another thing is already disposed
-                Console.WriteLine("Telemetry was closed: "+ ex); 
+                Console.WriteLine("Telemetry was closed: " + ex);
             }
         }
 
@@ -92,9 +124,8 @@ namespace SCSSdkClient.Demo {
                 Telemetry.resume();
                 return;
             }
-              
+
             Telemetry.Dispose();
         }
-         
     }
 }

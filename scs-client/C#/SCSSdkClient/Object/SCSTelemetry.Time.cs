@@ -8,6 +8,10 @@ namespace SCSSdkClient.Object {
         ///     Represent a time object with time in minutes and a DateTime object
         /// </summary>
         public class Time {
+            public Time(uint i) => Value = i;
+
+            public Time() { }
+
             /// <summary>
             ///     Represented in number of in-game minutes
             /// </summary>
@@ -18,7 +22,7 @@ namespace SCSSdkClient.Object {
             /// </summary>
             public DateTime Date => MinutesToDate(Value);
 
-             
+            public static implicit operator Time(uint i) => new Time(i);
         }
     }
 }

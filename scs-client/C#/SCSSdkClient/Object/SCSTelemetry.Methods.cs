@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
@@ -11,7 +10,7 @@ namespace SCSSdkClient.Object {
         ///     DateTime object of the in-game time
         /// </returns>
         internal static DateTime MinutesToDate(uint minutes) =>
-            new DateTime((long) minutes * 10000000*60, DateTimeKind.Utc);
+            new DateTime((long) minutes * 10000000 * 60, DateTimeKind.Utc);
 
         /// <summary>
         ///     Converts int minutes in a DateTime object
@@ -21,7 +20,7 @@ namespace SCSSdkClient.Object {
         ///     DateTime object of the in-game time
         /// </returns>
         internal static DateTime MinutesToDate(int minutes) =>
-            new DateTime((long) Math.Abs(minutes) * 10000000*60, DateTimeKind.Utc);
+            new DateTime((long) Math.Abs(minutes) * 10000000 * 60, DateTimeKind.Utc);
 
 
         /// <summary>
@@ -97,14 +96,13 @@ namespace SCSSdkClient.Object {
                                };
         }
 
-        internal  void SetGameTime(uint gameTime) {
+        internal void SetGameTime(uint gameTime) {
             CommonValues.GameTime.Value = gameTime;
-            if (gameTime > 0&& gameTime<4000000000 && JobValues.DeliveryTime.Value>0) {
-                JobValues.RemainingDeliveryTime.Value = (int)(JobValues.DeliveryTime.Value - gameTime);
+            if (gameTime > 0 && gameTime < 4000000000 && JobValues.DeliveryTime.Value > 0) {
+                JobValues.RemainingDeliveryTime.Value = (int) (JobValues.DeliveryTime.Value - gameTime);
             } else {
                 JobValues.RemainingDeliveryTime.Value = 0;
             }
-            
         }
 
         internal void SetTruckPosition(DPlacement position) {

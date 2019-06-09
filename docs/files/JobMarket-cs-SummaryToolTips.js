@@ -1,0 +1,1 @@
+NDSummary.OnToolTipsLoaded("File:JobMarket.cs",{638:"<div class=\"NDToolTip TEnumeration LCSharp\"><div id=\"NDPrototype638\" class=\"NDPrototype NoParameterForm\"><span class=\"SHKeyword\">public enum</span> JobMarket</div></div>"});

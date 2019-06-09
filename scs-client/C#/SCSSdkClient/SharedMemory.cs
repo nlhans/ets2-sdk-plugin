@@ -10,7 +10,7 @@ namespace SCSSdkClient {
         /// <summary>
         ///     size of the shared memory in bytes
         /// </summary>
-        private const uint defaultMapSize = 16 * 1024;
+        private const uint defaultMapSize = 32 * 1024;
 
         /// <summary>
         ///     holds the byte to object convert class

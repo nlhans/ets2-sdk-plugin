@@ -1,6 +1,6 @@
 
   <a href="https://rencloud.github.io/scs-sdk-plugin/docs/" title="Documentation">
-    <img alt="" src="https://img.shields.io/badge/documentation-23.10-green.svg?style=for-the-badge" />
+    <img alt="" src="https://img.shields.io/badge/documentation-09.05-green.svg?style=for-the-badge" />
   </a>
  
   <a href="https://discord.gg/JDqkZZd" title="Discord">
@@ -10,10 +10,10 @@
  
 fork of [nlhans](https://github.com/nlhans/ets2-sdk-plugin) work
 
-**.dll and c# object is complete new and won't work with old code. Why change? A lot of missing values are added, job fire event complete change and should now detect every job and th ending of an job (delivered, canceled,...).**
+# **EXPERIMENTAL 1.35/SDK10**
 
-**IMPORTANT ADDITIONAL INFORMATION: Should the strings be incorrect, try the precompiled dll. 
-Another thing: I'm working on implementing logging functions for better support. In normal compile it shouldn't make any impact. Currently it doesn't log a lot. More comes with later updates. You could activate it if you define `LOGGING` in C# and C++ for the compiler (i will add something about that in the documentation), but at the moment it is not ready for usage.** 
+
+**New Revision -> not compatible with old files. SM and C# object changed a lot, because of a lot new values. see update.md for more information**
  
 # SCS Telemetry for EuroTruckSimulator 2 and AmericanTruckSimulator
 
@@ -42,7 +42,7 @@ Sadly the usage of the documentation generating syntax leads to a lot of `warnin
 This plug-in stores it's data inside a Memory Mapped File, or "Shared Memory". This allows it to operate without any access to harddrive, or configuration hassle by the user to locate the memory map.
 
 ### Telemetry fields and the c# object
-The following telemetry fields are supported, structure is like the c# object:
+The following telemetry fields are supported, structure is like the c# object. Starting with sdk 1.10, game patch 1.35 and ETS2 1.14, ATS 1.01 code for some part of the need different versions of the sdk. The plugin handles this. If a game lower than 1.35 is used, only the values without (1.14/1.01) are possible:
 
 	Basic Game Independent Values:
 		- Telemetry Timestamp (not the in-game time, only for usage in code, see documentation for more information #todo add link)
@@ -50,7 +50,9 @@ The following telemetry fields are supported, structure is like the c# object:
 		- SCSGame identifier as enum, currently ets2/ats/unknown
 		- GameVersion and Game Telemetry Version (major.minor)
 		- Dll version (usage in code)
-		- Substances 
+		- TelemetryVersion
+		
+		Substances 
 
 		Common Values:
 			- Scale
@@ -99,6 +101,9 @@ The following telemetry fields are supported, structure is like the c# object:
 				- Brand
 				- Id (code)
 				- Name
+				- LicensePlate (1.14/1.01)
+				- LicensePlateCountryId (1.14/1.01)
+				- LicensePlateCountry (1.14/1.01)
 
 
 			Current Values (Values that change a lot):
@@ -145,6 +150,7 @@ The following telemetry fields are supported, structure is like the c# object:
 					- Odometer
 					- Wipers
 					- Cruise Control ("special field", same like `CruiseControlspeed == 0`)
+					  
 				Acceleration:
 					- Linear Velocity
 					- Angular Velocity
@@ -198,9 +204,9 @@ The following telemetry fields are supported, structure is like the c# object:
 				- Contains "more fields" see at the bottom of the list
 
 
-		Trailer Values (will be set to 0,false, etc. if you have no trailer, while on job or with trailer ownership detached wont reset the values):
-			- Attached
-			- Damage
+		Trailer Values (will be set to 0,false, etc. if you have no trailer, while on job or with trailer ownership detached wont reset the values)[0-9] (array starting with 1.14/1.01 so 0 for 1 trailer or version lower than that):
+			- Attached			 
+			- Hook
 			- Position
 			Wheel Values:
 				- Substance
@@ -209,6 +215,8 @@ The following telemetry fields are supported, structure is like the c# object:
 				- Steering
 				- Rotation
 				- On Ground
+				- Lift
+				- LiftOffset
 
 			WheelsConstants:
 					- Count
@@ -218,7 +226,7 @@ The following telemetry fields are supported, structure is like the c# object:
 					- Liftable
 					- Steerable
 			
-			~~Cargo Values~~(moved to job values) 
+			~~CargoValues~~(moved to job values) 
 			
 			Acceleration:
 				- Linear Velocity
@@ -226,13 +234,30 @@ The following telemetry fields are supported, structure is like the c# object:
 				- Linear Acceleration
 				- Angular Acceleration
 
+			DamageValues: 
+				- Cargo (1.14/1.01)
+				- Wheels
+				- Chassis
+
 			- Chassis (code)
 			- Id (code)
 			- Name
+			- CargoAccessoryId
+			- BodyType (1.14/1.01)
+			- BrandId (1.14/1.01)
+			- Brand (1.14/1.01)
+			- Name (1.14/1.01)
+			- ChainType (1.14/1.01)
+			- LicensePlate (1.14/1.01)
+			- LicensePlateCountryId (1.14/1.01)
+			- LicensePlateCountry (1.14/1.01)
 		
 		Job Values(will be reset after the job finished flag is disappeared):
 			- Delivery Time (time object -> in-game minutes and datetime object)
 			- Remaining Delivery Time (calculated)
+			- CargoLoaded (1.14/1.01)
+			- SpecialJob (1.14/1.01)
+			- Market (1.14/1.01)
 			- City Destination Id (code)
 			- City Destination
 			- Company Destination Id (code)
@@ -246,6 +271,10 @@ The following telemetry fields are supported, structure is like the c# object:
 		 	Cargo Values:
 				- Mass 
 				- Name (code)
+				- Id (1.14/1.01)
+				- UnitCount (1.14/1.01)
+				- UnitMass (1.14/1.01)
+				- CargoDamage (1.14/1.01)
 
 		Control Values:
 			User Input:
@@ -268,8 +297,37 @@ The following telemetry fields are supported, structure is like the c# object:
 		SpecialEvents:
 			- On Job 
 			- Job Finished (flag that disappears after some time)
-			- TrailerConnected
-			- TrailerDisconnected (Both trailer events use the same flag, trailerConnected, from the memory)
+			- ~~TrailerConnected~~ (removed)
+			- ~~TrailerDisconnected (Both trailer events use the same flag, trailerConnected, from the memory)~~ (removed)
+			- Job Cancelled (1.14/1.01) (may not work atm?)
+			- Job Delivered (1.14/1.01)
+			- Fined (1.14/1.01)
+			- Tollgate (1.14/1.01)
+			- Ferry (1.14/1.01)
+			- Train (1.14/1.01)
+			 
+	    GameplayEvents (1.14/1.01): 
+  		    Cancelled:
+  			    - Penalty
+	        Delivered:
+				- AutoLoaded
+				- AutoParked
+				- CargoDamage
+				- DeliveryTime
+				- DistanceKm
+				- EarnedXp
+				- Revenue
+			Fined:
+				- Amount
+				- Offence 
+		    Tollgate:
+				- PayAmount
+			Transport:
+				- PayAmount
+				- SourceId
+				- SourceName
+				- TargetId
+				- TargedName  
 
 
 Also there are a few more fields you can use:
@@ -287,7 +345,7 @@ Also there are a few more fields you can use:
 		- Add a FVector and a DVector
 		- Rotate: Rotates specified vector by specified orientation 
 
-May I forgot something. When you found missing values or something else create an issue that would be great.
+May I forgot something or there is a missing version information. When you found missing values or something else create an issue that would be great.
 
 The fields are updated as fast as ETS2/ATS can and will do, as this is how the SDK has been designed by SCS. When a telemetry value has changed the SDK will immediately call a handler. This plug-in implements this handler which stores the data to the right field inside the data structure.
 There is no "sample ticker" yet. This must be done at the client side, by regularly checking if the timestamp has been updated.
@@ -298,4 +356,4 @@ There is no "sample ticker" yet. This must be done at the client side, by regula
 Actually I'm not fully happy with the actual demo. But I didn't reached my plan that works like the old one. Later I will change the current demo so that they will be a lot times better.
 
 ### Other
-For other languages you need to create/find a library that can open and read MemoryMapped files. The data storage format is binary and can be found in "scs-telemetry/inc/scs-telemetry-common.hpp". The shared memory map name is "Local\SCSTelemetry".
+For other languages you need to create/find a library that can open and read MemoryMapped files. The data storage format is binary and can be found in "scs-telemetry/inc/scs-telemetry-common.hpp". The shared memory map name is "Local\SCSTelemetry". I will add some more documentary in this header later.

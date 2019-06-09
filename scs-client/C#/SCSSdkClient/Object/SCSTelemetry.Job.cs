@@ -22,21 +22,22 @@ namespace SCSSdkClient.Object {
 
             /// About: RemainingDeliveryTime
             /// The RemainingDeliveryTime is negative if the delivery is to late
-
+            
             /// <summary>
             ///     Remaining in-game time until the job delivery window close
             /// </summary>
-            /// <!---->
-            /// **INFORMATION**
-            /// <!---->
+            /// <!----> **INFORMATION** <!---->
             /// Negative if the delivery is to late
-            /// <!---->
-            /// **INFORMATION**
-            /// <!---->
+            /// <!----> **INFORMATION** <!---->
             public Frequency RemainingDeliveryTime { get; protected internal set; }
 
+            public bool CargoLoaded { get; internal set; }
+            public bool SpecialJob { get; internal set; }
+            public JobMarket Market { get; internal set; }
+
+
             /// <summary>
-            ///     Vargo values of an job
+            ///     Cargo values of an job
             /// </summary>
             public Cargo CargoValues { get; internal set; }
 
@@ -91,7 +92,7 @@ namespace SCSSdkClient.Object {
             /// <summary>
             ///     Reward in internal game-specific currency.
             /// </summary>
-            public long Income { get; internal set; }
+            public ulong Income { get; internal set; }
 
             /// <summary>
             ///     Cargo Values
@@ -115,10 +116,16 @@ namespace SCSSdkClient.Object {
                 public string Name { get; internal set; }
 
                 /// <summary>
-                ///     Name of cargo accessory for internal use by code.
-                ///     Limited to C-identifier characters and dots.
+                ///     How many units of the cargo the job consist of.
                 /// </summary>
-                public string AccessoryId { get; internal set; }
+                public uint UnitCount { get; internal set; }
+
+                /// <summary>
+                ///     Mass of the single unit of the cargo in kilograms.
+                /// </summary>
+                public float UnitMass { get; internal set; }
+
+                public float CargoDamage { get; internal set; }
             }
         }
     }

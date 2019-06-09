@@ -6,6 +6,10 @@ namespace SCSSdkClient.Object {
         ///     Contains a in-game speed value (m/s), Kph (Km/h) and Mph of a speed value
         /// </summary>
         public class Movement {
+            public Movement(float f) => Value = f;
+
+            public Movement() { }
+
             /// <summary>
             ///     In-game speed value in m/s
             /// </summary>
@@ -20,6 +24,8 @@ namespace SCSSdkClient.Object {
             ///     In-game speed value in Mph
             /// </summary>
             public float Mph => Value * 2.25f;
+
+            public static implicit operator Movement(float f) => new Movement(f);
         }
     }
 }

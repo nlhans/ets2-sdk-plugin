@@ -58,6 +58,21 @@
  <div class="CBody"><p>Remaining in-game time until the job delivery window close</p></div>
 </div>
 
+<a name="SCSSdkClient.Object.SCSTelemetry.Job.CargoLoaded"></a><a name="Topic692"></a><div class="CTopic TProperty LCSharp">
+ <div class="CTitle">CargoLoaded</div>
+ <div id="NDPrototype692" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">bool</span> CargoLoaded { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
+</div>
+
+<a name="SCSSdkClient.Object.SCSTelemetry.Job.SpecialJob"></a><a name="Topic693"></a><div class="CTopic TProperty LCSharp">
+ <div class="CTitle">SpecialJob</div>
+ <div id="NDPrototype693" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">bool</span> SpecialJob { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
+</div>
+
+<a name="SCSSdkClient.Object.SCSTelemetry.Job.Market"></a><a name="Topic694"></a><div class="CTopic TProperty LCSharp">
+ <div class="CTitle">Market</div>
+ <div id="NDPrototype694" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <a href="../../index.html#File:JobMarket.cs:SCSSdkClient.JobMarket" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,638);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >JobMarket</a> Market { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
+</div>
+
 <a name="SCSSdkClient.Object.SCSTelemetry.Job.CargoValues"></a><a name="Topic459"></a><div class="CTopic TProperty LCSharp">
  <div class="CTitle">CargoValues</div>
  <div id="NDPrototype459" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <a href="../../index.html#File:Object/SCSTelemetry.Job.cs:SCSSdkClient.Object.SCSTelemetry.Job.Cargo" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,257);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Cargo</a> CargoValues { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
@@ -112,9 +127,9 @@
  <div class="CBody"><p>Name of the source company for display purposes.&nbsp; Localized using the current in-game language.</p></div>
 </div>
 
-<a name="SCSSdkClient.Object.SCSTelemetry.Job.Income"></a><a name="Topic268"></a><div class="CTopic TProperty LCSharp">
+<a name="SCSSdkClient.Object.SCSTelemetry.Job.Income"></a><a name="Topic695"></a><div class="CTopic TProperty LCSharp">
  <div class="CTitle">Income</div>
- <div id="NDPrototype268" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">long</span> Income { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
+ <div id="NDPrototype695" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">ulong</span> Income { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
  <div class="CBody"><p>Reward in internal game-specific currency.</p></div>
 </div>
 
@@ -146,10 +161,21 @@
  <div class="CBody"><p>Name for display purposes.&nbsp; Localized using the current in-game language.</p></div>
 </div>
 
-<a name="SCSSdkClient.Object.SCSTelemetry.Job.Cargo.AccessoryId"></a><a name="Topic453"></a><div class="CTopic TProperty LCSharp last">
- <div class="CTitle">AccessoryId</div>
- <div id="NDPrototype453" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">string</span> AccessoryId { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
- <div class="CBody"><p>Name of cargo accessory for internal use by code.&nbsp; Limited to C-identifier characters and dots.</p></div>
+<a name="SCSSdkClient.Object.SCSTelemetry.Job.Cargo.UnitCount"></a><a name="Topic696"></a><div class="CTopic TProperty LCSharp">
+ <div class="CTitle">UnitCount</div>
+ <div id="NDPrototype696" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">uint</span> UnitCount { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
+ <div class="CBody"><p>How many units of the cargo the job consist of.</p></div>
+</div>
+
+<a name="SCSSdkClient.Object.SCSTelemetry.Job.Cargo.UnitMass"></a><a name="Topic697"></a><div class="CTopic TProperty LCSharp">
+ <div class="CTitle">UnitMass</div>
+ <div id="NDPrototype697" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">float</span> UnitMass { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
+ <div class="CBody"><p>Mass of the single unit of the cargo in kilograms.</p></div>
+</div>
+
+<a name="SCSSdkClient.Object.SCSTelemetry.Job.Cargo.CargoDamage"></a><a name="Topic698"></a><div class="CTopic TProperty LCSharp last">
+ <div class="CTitle">CargoDamage</div>
+ <div id="NDPrototype698" class="NDPrototype NoParameterForm"><span class="SHKeyword">public</span> <span class="SHKeyword">float</span> CargoDamage { <span class="SHKeyword">get</span>; <span class="SHKeyword">internal set</span> }</div>
 </div>
 
 </body></html>

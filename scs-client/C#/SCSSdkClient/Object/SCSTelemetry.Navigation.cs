@@ -13,7 +13,7 @@ namespace SCSSdkClient.Object {
 
             /// About: SpeedLimit
             /// Respects the current state of the "Route Advisor speed limit" option
-           
+          
             /// <summary>
             ///     The value of truck's navigation distance (in meters)
             /// </summary>
