@@ -554,6 +554,7 @@ namespace SCSSdkClient {
 
         private SCSTelemetry.Trailer[] GetTrailers() {
             var trailer = new SCSTelemetry.Trailer[10];
+            //TODO : only 1 for old game versions
             for (var i = 0; i < 10; i++) {
                 trailer[i] = GetTrailer();
             }
