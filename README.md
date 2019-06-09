@@ -11,6 +11,9 @@
 fork of [nlhans](https://github.com/nlhans/ets2-sdk-plugin) work
 
 **.dll and c# object is complete new and won't work with old code. Why change? A lot of missing values are added, job fire event complete change and should now detect every job and th ending of an job (delivered, canceled,...).**
+
+**IMPORTANT ADDITIONAL INFORMATION: Should the strings be incorrect, try the precompiled dll. 
+Another thing: I'm working on implementing logging functions for better support. In normal compile it shouldn't make any impact. Currently it doesn't log a lot. More comes with later updates. You could activate it if you define `LOGGING` in C# and C++ for the compiler (i will add something about that in the documentation), but at the moment it is not ready for usage.** 
  
 # SCS Telemetry for EuroTruckSimulator 2 and AmericanTruckSimulator
 
