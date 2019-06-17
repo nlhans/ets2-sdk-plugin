@@ -1,3 +1,6 @@
+
+
+
 #ifndef SCS_CFG_HANDLERS_H
 #define SCS_CFG_HANDLERS_H
 
@@ -12,6 +15,17 @@ typedef struct scsConfigHandler_s
 	void (*handle) (const scs_named_value_t* current, const unsigned int trailer_id);
 } scsConfigHandler_t;
 
+/*  define: scsConfigHandle
+     
+    Makro of the scs_config event handle functions
+    Created with an id and attribute value to create the name `handle##id##attribute`
+
+    Parameter:
+   
+        current - the scs_config event that is handled
+        trailer_id - trailer id if needed to handle the event (0-9)    
+ 
+ */
 #define scsConfigHandle(id, attribute) void handle##id##attribute (const scs_named_value_t* current, const unsigned int trailer_id  )
 
 // Define prototypes for all the various handlers

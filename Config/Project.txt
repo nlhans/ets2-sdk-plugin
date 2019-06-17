@@ -47,7 +47,7 @@ Source Folder: ..\scs-client\C#\SCSSdkClient
 Source Folder 2: ..\scs-client\C#\SCSSdkClient.Demo
    Name: SCSSdkClient.Demo
 
-Source Folder 3: ..\scs-telemetry\src
+Source Folder 3: ..\scs-telemetry
    Name: SCSTelemetry
 
 Source Folder 4: ..\guides

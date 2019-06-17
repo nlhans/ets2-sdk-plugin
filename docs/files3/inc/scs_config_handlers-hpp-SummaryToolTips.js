@@ -1,0 +1,1 @@
+NDSummary.OnToolTipsLoaded("File3:inc/scs_config_handlers.hpp",{7:"<div class=\"NDToolTip TMacro LC\"><div class=\"TTSummary\">Makro of the scs_config event handle functions Created with an id and attribute value to create the name `handle##id##attribute`</div></div>"});

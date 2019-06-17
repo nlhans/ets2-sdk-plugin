@@ -1,1 +1,1 @@
-NDContentPage.OnToolTipsLoaded({419:"<div class=\"NDToolTip TInformation LCSharp\"><div class=\"TTSummary\">Set to zero if retarder is not mounted on the truck</div></div>"});
+NDContentPage.OnToolTipsLoaded({200:"<div class=\"NDToolTip TInformation LCSharp\"><div class=\"TTSummary\">Set to zero if retarder is not mounted on the truck</div></div>"});
