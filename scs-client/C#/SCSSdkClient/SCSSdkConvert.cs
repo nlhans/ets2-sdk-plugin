@@ -162,7 +162,7 @@ namespace SCSSdkClient {
             retData.TruckValues.CurrentValues.WheelsValues.Lift = GetFloatArray(WheelSize);
             retData.TruckValues.CurrentValues.WheelsValues.LiftOffset = GetFloatArray(WheelSize);
 
-            retData.GamePlay.JobDelivered.CargoCamage = GetFloat();
+            retData.GamePlay.JobDelivered.CargoDamage = GetFloat();
             retData.GamePlay.JobDelivered.DistanceKm = GetFloat();
 
             retData.JobValues.CargoValues.CargoDamage = GetFloat();

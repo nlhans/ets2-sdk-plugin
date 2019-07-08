@@ -33,7 +33,7 @@ namespace SCSSdkClient.Object {
             public class Delivered {
                 public bool AutoLoaded;
                 public bool AutoParked;
-                public float CargoCamage;
+                public float CargoDamage;  // Typo fixed thanks to Patrick-van-Halm https://github.com/RenCloud/scs-sdk-plugin/pull/32
                 public Time DeliveryTime;
                 public float DistanceKm;
                 public int EarnedXp;
