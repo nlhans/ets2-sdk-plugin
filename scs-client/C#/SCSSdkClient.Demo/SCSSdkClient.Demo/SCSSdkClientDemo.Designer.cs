@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SCSSdkClientDemo));
             this.hgf = new System.Windows.Forms.TabControl();
             this.tabAbout = new SCSSdkClient.Demo.CustomTabPage();
-            this.label1 = new System.Windows.Forms.Label();
             this.lbGeneral = new System.Windows.Forms.RichTextBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.lblDemo = new System.Windows.Forms.Label();
@@ -83,7 +82,6 @@
             // 
             // tabAbout
             // 
-            this.tabAbout.Controls.Add(this.label1);
             this.tabAbout.Controls.Add(this.lbGeneral);
             this.tabAbout.Controls.Add(this.richTextBox1);
             this.tabAbout.Controls.Add(this.lblDemo);
@@ -94,15 +92,6 @@
             this.tabAbout.TabIndex = 0;
             this.tabAbout.Text = "About";
             this.tabAbout.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 191);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "label1";
             // 
             // lbGeneral
             // 
@@ -335,7 +324,6 @@
         private System.Windows.Forms.RichTextBox navigation;
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.RichTextBox substances;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.RichTextBox gameplayevent;
     }
