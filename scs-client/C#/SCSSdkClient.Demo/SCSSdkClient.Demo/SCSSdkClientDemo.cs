@@ -36,6 +36,8 @@ namespace SCSSdkClient.Demo {
                     "\r\n\r\nStacktrace:\r\n" +
                     Telemetry.Error.StackTrace;
             }
+
+            l_updateRate.Text = Telemetry.UpdateInterval + "ms";
         }
 
         private void TelemetryOnJobFinished(object sender, EventArgs args) =>
@@ -69,7 +71,11 @@ namespace SCSSdkClient.Demo {
                     return;
                 }
 
+                l_updateRate.Text = Telemetry.UpdateInterval+ "ms";
+
                 lbGeneral.Text = "General info:\n " +
+                                 "\t SDK Running:\n" +
+                                 $"\t\t\t{data.SdkActive}\n"+
                                  "\tSDK Version:\n" +
                                  $"\t\t\t{data.DllVersion}\n" +
                                  "\tGame:\n " +

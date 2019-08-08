@@ -2,7 +2,7 @@
 using System.Threading;
 using SCSSdkClient.Object;
 
-//TODO: possible idea: check if ets is running and if not change updaterate to infinity (why most of the user may not quit the application while ets is running)
+//TODO: possible idea: check if ets is running and if not change update rate to infinity (why most of the user may not quit the application while ets is running)
 namespace SCSSdkClient {
     public delegate void TelemetryData(SCSTelemetry data, bool newTimestamp);
 
@@ -12,7 +12,12 @@ namespace SCSSdkClient {
     /// </summary>
     public class SCSSdkTelemetry : IDisposable {
         private const string DefaultSharedMemoryMap = "Local\\SimTelemetrySCS";
-        private const int DefaultUpdateInterval = 25;
+        private const int DefaultUpdateInterval = 100;
+        private const int DefaultPausedUpdateInterval = 1000;
+
+        private int updateInterval;
+        // todo: enhancement:  some way to set this value 
+        private int pausedUpdateInterval = DefaultPausedUpdateInterval;
 
         private Timer _updateTimer;
 
@@ -41,6 +46,7 @@ namespace SCSSdkClient {
         private bool tollgate;
         private bool ferry;
         private bool train;
+        private bool paused;
 
 
         public SCSSdkTelemetry() => Setup(DefaultSharedMemoryMap, DefaultUpdateInterval);
@@ -52,7 +58,9 @@ namespace SCSSdkClient {
         public SCSSdkTelemetry(string map, int interval) => Setup(map, interval);
 
         public string Map { get; private set; }
-        public int UpdateInterval { get; private set; }
+        public int UpdateInterval => paused ? pausedUpdateInterval : updateInterval;
+
+      
         public Exception Error { get; private set; }
 
         public event TelemetryData Data;
@@ -87,7 +95,7 @@ namespace SCSSdkClient {
 #endif
 
             Map = map;
-            UpdateInterval = interval;
+            updateInterval = interval; 
 
             SharedMemory = new SharedMemory();
             SharedMemory.Connect(map);
@@ -107,6 +115,22 @@ namespace SCSSdkClient {
 
         private void _updateTimer_Elapsed(object sender) {
             var scsTelemetry = SharedMemory.Update<SCSTelemetry>();
+            // check if sdk is NOT running
+            if (!scsTelemetry.SdkActive && !paused) {
+                // if so don't check so often the data 
+                var tsInterval = new TimeSpan(0, 0, 0, 0, DefaultPausedUpdateInterval);
+                _updateTimer.Change(tsInterval.Add(tsInterval), tsInterval);
+                paused = true;
+                // if sdk not active we don't need to do something
+                return;
+            }
+
+            if (paused && scsTelemetry.SdkActive) {
+                // ok sdk is active now
+                paused = false;
+                resume(); // going back to normal update rate
+            }
+
             var time = scsTelemetry.Timestamp;
             Data?.Invoke(scsTelemetry, time != lastTime);
             //TODO: make it nicer thats a lot of code for such less work

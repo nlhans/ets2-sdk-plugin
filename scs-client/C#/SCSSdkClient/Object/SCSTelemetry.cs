@@ -40,6 +40,11 @@ namespace SCSSdkClient.Object {
         /// Aproximated for entire truck, not at the wheel level.
       
         /// <summary>
+        ///     Is the sdk active (only reset when game is closed correct, crashes or kills won't set this value)
+        /// </summary> 
+        public bool SdkActive { get; internal set; }
+
+        /// <summary>
         ///     Timestamp not the in game time,
         /// </summary>
         /// <seealso cref="Common.GameTime" />

@@ -331,6 +331,10 @@ static auto clear_tollgate_ticker = 0;
 static auto clear_ferry_ticker = 0;
 static auto clear_train_ticker = 0;
 
+void clear_shared_memory() {
+	memset(telem_ptr, 0, SCS_PLUGIN_MMF_SIZE);
+}
+
 //TODO: REWORK BOTH CLEAN FUNCTION AND ADD MORE FOR SINGLE CONFIG attribute
 // Function: set_job_values_zero
 // set every job (cargo) values to 0/empty string
@@ -761,9 +765,10 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
     if (telem_ptr == nullptr) {
         return SCS_RESULT_generic_error;
     }
+	clear_shared_memory();
 
-    memset(telem_ptr, 0, SCS_PLUGIN_MMF_SIZE);
-
+	// set sdk active bit to true
+	telem_ptr->sdkActive = true;
     /*** INITIALIZE TELEMETRY MAP TO DEFAULT ***/
     telem_ptr->paused = true;
     telem_ptr->time = 0;
@@ -1042,6 +1047,8 @@ SCSAPI_VOID scs_telemetry_shutdown() {
 #if LOGGING
 	logger::flush();
 #endif
+    // set sdk active bit to false and reset all other data
+	clear_shared_memory();
     // Close MemoryMap
     if (telem_mem != nullptr) {
         telem_mem->Close();
