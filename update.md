@@ -1,11 +1,10 @@
 # Update log
 ## Rev 10 Update 1
 - change `DefaultUpdateInterval` from 25ms to 100ms of the Shared Memory File refresh timer to avoid crashed until i (or someone) have a better solution (see issue #38)
-- added value `SdkActive` that could create problems if not update both parts of the project. It's only a byte/bool but on the first place in the shared memory -> the update function won't work
-- c# library will going in `paused` state when `SdkActive == false`. Means that the update rate of the shared memory is now 1 second and not more the previous value
-- values are now reset when the game is closed correct (see #39). Crashs or kills of the game won't reset the values
+- added value `SdkActive` that could create problems if not update both parts of the project. It's only a byte/bool but on the first place in the shared memory -> the update function won't work when not updated both without small fix (offset + 1, 2 or 3 at the begin)
+- c# library will going in `paused` state when `SdkActive == false`. Means that the update rate of the shared memory is now 1 second and not higher, get back to high update rate when sdk is active again
+- values are now reset when the game is closed correct (see #39). Crashes or kills of the game won't reset the values
 - c# demo now has a status label that shows the current update rate of the sdk 
-
 
 
 

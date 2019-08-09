@@ -8,81 +8,81 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Information"></a><a name="Topic22"></a><div class="CTopic TGroup LC first">
+<a name="Information"></a><a name="Topic56"></a><div class="CTopic TGroup LC first">
  <div class="CTitle">Information</div>
 </div>
 
-<a name="How_to"></a><a name="Topic23"></a><div class="CTopic TInformation LC">
+<a name="How_to"></a><a name="Topic57"></a><div class="CTopic TInformation LC">
  <div class="CTitle">How to</div>
  <div class="CBody"><p>For what is this class?&nbsp; It is used to log to file.&nbsp; Normally it is not activated. That saves resources and the dll size is a lot smaller.&nbsp; To use this the simplest way is to use compiler preamble.&nbsp; Add the word 'LOGGING' to your compile preamble and this function and every code with the compiler '#if LOGGING' and at the end '#endif' will compile, too.&nbsp; This was implemented to make it hopefully easier to fix bugs.</p></div>
 </div>
 
-<a name="Functions"></a><a name="Topic24"></a><div class="CTopic TGroup LC">
+<a name="Functions"></a><a name="Topic58"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="Logger"></a><a name="Topic25"></a><div class="CTopic TFunction LC">
+<a name="Logger"></a><a name="Topic59"></a><div class="CTopic TFunction LC">
  <div class="CTitle">Logger</div>
- <div id="NDPrototype25" class="NDPrototype NoParameterForm"><span class="SHKeyword">namespace</span> logger</div>
+ <div id="NDPrototype59" class="NDPrototype NoParameterForm"><span class="SHKeyword">namespace</span> logger</div>
  <div class="CBody"><p>used to log to file, usage: add LOGGING to preamble to activate it globally in cpp, but use it with care not full tested yet and not many features also it rise dll size and may have impacted on the system (loading time, etc.)</p></div>
 </div>
 
-<a name="s2ws"></a><a name="Topic26"></a><div class="CTopic TFunction LC">
+<a name="s2ws"></a><a name="Topic60"></a><div class="CTopic TFunction LC">
  <div class="CTitle">s2ws</div>
- <div id="NDPrototype26" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">auto s2ws(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span> std::</td><td class="PType"><span class="SHKeyword">string</span>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">s</td></tr></table></td><td class="PAfterParameters">) -&gt; std::wstring</td></tr></table></div>
+ <div id="NDPrototype60" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">auto s2ws(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span> std::</td><td class="PType"><span class="SHKeyword">string</span>&nbsp;</td><td class="PNamePrefix">&amp;</td><td class="PName last">s</td></tr></table></td><td class="PAfterParameters">) -&gt; std::wstring</td></tr></table></div>
  <div class="CBody"><p>convert string to wchar (wstring)</p></div>
 </div>
 
-<a name="time_stamp"></a><a name="Topic27"></a><div class="CTopic TFunction LC">
+<a name="time_stamp"></a><a name="Topic61"></a><div class="CTopic TFunction LC">
  <div class="CTitle">time_stamp</div>
- <div id="NDPrototype27" class="NDPrototype NoParameterForm">auto time_stamp() -&gt; std::<span class="SHKeyword">string</span></div>
+ <div id="NDPrototype61" class="NDPrototype NoParameterForm">auto time_stamp() -&gt; std::<span class="SHKeyword">string</span></div>
  <div class="CBody"><p>current time to string</p></div>
 </div>
 
-<a name="exe_path"></a><a name="Topic28"></a><div class="CTopic TFunction LC">
+<a name="exe_path"></a><a name="Topic62"></a><div class="CTopic TFunction LC">
  <div class="CTitle">exe_path</div>
- <div id="NDPrototype28" class="NDPrototype NoParameterForm">auto exe_path() -&gt; std::<span class="SHKeyword">string</span></div>
+ <div id="NDPrototype62" class="NDPrototype NoParameterForm">auto exe_path() -&gt; std::<span class="SHKeyword">string</span></div>
  <div class="CBody"><p>get current path</p></div>
 </div>
 
-<a name="path_to_session_log_file"></a><a name="Topic29"></a><div class="CTopic TFunction LC">
+<a name="path_to_session_log_file"></a><a name="Topic63"></a><div class="CTopic TFunction LC">
  <div class="CTitle">path_to_session_log_file</div>
- <div id="NDPrototype29" class="NDPrototype NoParameterForm">auto path_to_session_log_file() -&gt; std::<span class="SHKeyword">string</span></div>
+ <div id="NDPrototype63" class="NDPrototype NoParameterForm">auto path_to_session_log_file() -&gt; std::<span class="SHKeyword">string</span></div>
  <div class="CBody"><p>get the path to the current log file</p></div>
 </div>
 
-<a name="directory_exists"></a><a name="Topic30"></a><div class="CTopic TFunction LC">
+<a name="directory_exists"></a><a name="Topic64"></a><div class="CTopic TFunction LC">
  <div class="CTitle">directory_exists</div>
- <div id="NDPrototype30" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">auto directory_exists(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">LPCTSTR&nbsp;</td><td class="PName last">sz_path</td></tr></table></td><td class="PAfterParameters">) -&gt; BOOL</td></tr></table></div>
+ <div id="NDPrototype64" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">auto directory_exists(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PModifierQualifier first"><span class="SHKeyword">const</span>&nbsp;</td><td class="PType">LPCTSTR&nbsp;</td><td class="PName last">sz_path</td></tr></table></td><td class="PAfterParameters">) -&gt; BOOL</td></tr></table></div>
  <div class="CBody"><p>check if a directory exists</p></div>
 </div>
 
-<a name="Constants"></a><a name="Topic31"></a><div class="CTopic TGroup LC">
+<a name="Constants"></a><a name="Topic65"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Constants</div>
 </div>
 
-<a name="path"></a><a name="Topic32"></a><div class="CTopic TConstant LC">
+<a name="path"></a><a name="Topic66"></a><div class="CTopic TConstant LC">
  <div class="CTitle">path</div>
  <div class="CBody"><p>the path to the current log file</p></div>
 </div>
 
-<a name="Variables"></a><a name="Topic33"></a><div class="CTopic TGroup LC">
+<a name="Variables"></a><a name="Topic67"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="out"></a><a name="Topic34"></a><div class="CTopic TVariable LC">
+<a name="out"></a><a name="Topic68"></a><div class="CTopic TVariable LC">
  <div class="CTitle">out</div>
- <div id="NDPrototype34" class="NDPrototype NoParameterForm">std::ofstream <span class="SHKeyword">out</span></div>
+ <div id="NDPrototype68" class="NDPrototype NoParameterForm">std::ofstream <span class="SHKeyword">out</span></div>
  <div class="CBody"><p>stream to file</p></div>
 </div>
 
-<a name="Functions(2)"></a><a name="Topic35"></a><div class="CTopic TGroup LC">
+<a name="Functions(2)"></a><a name="Topic69"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="flush"></a><a name="Topic36"></a><div class="CTopic TFunction LC last">
+<a name="flush"></a><a name="Topic70"></a><div class="CTopic TFunction LC last">
  <div class="CTitle">flush</div>
- <div id="NDPrototype36" class="NDPrototype NoParameterForm"><span class="SHKeyword">void</span> flush()</div>
+ <div id="NDPrototype70" class="NDPrototype NoParameterForm"><span class="SHKeyword">void</span> flush()</div>
  <div class="CBody"><p>flush the memory</p></div>
 </div>
 

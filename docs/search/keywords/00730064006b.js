@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("sdk",["Property"],[["SdkActive",,[["SCSSdkClient.Object.SCSTelemetry",,,,0,"File:Object/SCSTelemetry.cs:SCSSdkClient.Object.SCSTelemetry.SdkActive","CSharpClass:SCSSdkClient.Object.SCSTelemetry:SdkActive"]]]]);
