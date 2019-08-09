@@ -22,7 +22,7 @@
 #endif
 
 #include "scssdk.h"
-#define SCS_PLUGIN_MMF_NAME TEXT("Local\\SimTelemetrySCS")
+#define SCS_PLUGIN_MMF_NAME TEXT("Local\\SCSTelemetry")
 #define SCS_PLUGIN_MMF_SIZE (32*1024)
 /**
  * \brief string size for all strings (most of them) the amount of fields in the shared memory field
