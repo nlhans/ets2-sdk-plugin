@@ -1,3 +1,5 @@
+Due to personal time & energy constraints, I'm unable to maintain this repository for the community. Please refer to [Rencloud's implementation](https://github.com/RenCloud/scs-sdk-plugin) for a version that features newer versions of the SCS SDK.
+
 # Euro Truck Simulator 2 Telemetry
 
 [![Join the chat at https://gitter.im/nlhans/ets2-sdk-plugin](https://badges.gitter.im/nlhans/ets2-sdk-plugin.svg)](https://gitter.im/nlhans/ets2-sdk-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
